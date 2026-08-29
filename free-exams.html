@@ -2,1195 +2,455 @@
 <html lang="en">
 
 <head>
-
     <meta charset="utf-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <meta name="description"
-          content="NU Crackers Free Batch Exams">
+        content="NU Crackers Free Batch - Science, Arts and Commerce">
 
-    <title>Free Model Tests | NU Crackers</title>
+    <title>Free Batch | NU Crackers</title>
 
-    <link rel="icon"
-          href="images/nu crackers logo.jpg">
+    <link rel="icon" href="images/nu crackers logo.jpg">
 
-
-    <!-- Google Font -->
-    <link rel="preconnect"
-          href="https://fonts.googleapis.com">
-
-    <link rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
-          rel="stylesheet">
+        rel="stylesheet">
 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
 
-    <!-- Bootstrap -->
-    <link rel="stylesheet"
-          href="css/bootstrap.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        rel="stylesheet">
 
-
-    <!-- Font Awesome -->
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
-
-    <!-- Your CSS -->
-    <link rel="stylesheet"
-          href="css/style.css">
-
+    <link rel="stylesheet" href="css/style.css">
 
     <style>
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: #f6f8fc;
-        }
-
-
-        /* =========================
-           PAGE HERO
-        ========================= */
-
-        .exam-hero {
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #071952,
-                    #088395,
-                    #35a29f
-                );
-
-            padding: 90px 20px;
-
-            color: white;
-
-            text-align: center;
-
-            position: relative;
-
-            overflow: hidden;
-        }
-
-
-        .exam-hero::before {
-
-            content: "";
-
-            position: absolute;
-
-            width: 300px;
-            height: 300px;
-
-            background: rgba(255,255,255,0.08);
-
-            border-radius: 50%;
-
-            top: -120px;
-            right: -80px;
-        }
-
-
-        .exam-hero::after {
-
-            content: "";
-
-            position: absolute;
-
-            width: 220px;
-            height: 220px;
-
-            background: rgba(255,255,255,0.06);
-
-            border-radius: 50%;
-
-            bottom: -100px;
-            left: -60px;
-        }
-
-
-        .hero-content {
-
-            position: relative;
-
-            z-index: 2;
-        }
-
-
-        .hero-icon {
-
-            width: 75px;
-            height: 75px;
-
-            margin: 0 auto 20px;
-
-            border-radius: 20px;
-
-            display: flex;
-
-            align-items: center;
-            justify-content: center;
-
-            background: rgba(255,255,255,0.15);
-
-            backdrop-filter: blur(10px);
-
-            font-size: 32px;
-        }
-
-
-        .exam-hero h1 {
-
-            font-weight: 800;
-
-            font-size: clamp(
-                32px,
-                5vw,
-                52px
-            );
-        }
-
-
-        .exam-hero p {
-
-            max-width: 700px;
-
-            margin: 15px auto 0;
-
-            opacity: .9;
-
-            font-size: 16px;
-        }
-
-
-
-        /* =========================
-           EXAM SECTION
-        ========================= */
-
-        .exam-section {
-
-            padding: 80px 0;
-        }
-
-
-        .section-heading {
-
-            text-align: center;
-
-            margin-bottom: 50px;
-        }
-
-
-        .section-heading .small-title {
-
-            color: #088395;
-
-            font-weight: 700;
-
-            text-transform: uppercase;
-
-            letter-spacing: 2px;
-
-            font-size: 13px;
-        }
-
-
-        .section-heading h2 {
-
-            font-weight: 800;
-
-            color: #172033;
-
-            margin-top: 8px;
-        }
-
-
-        .section-heading p {
-
-            color: #6c757d;
-
-            max-width: 650px;
-
-            margin: 10px auto;
-        }
-
-
-
-        /* =========================
-           EXAM CARD
-        ========================= */
-
-        .exam-card {
-
+        .group-card {
+            border: 0;
+            border-radius: 24px;
+            padding: 35px 25px;
             background: white;
-
-            border-radius: 20px;
-
-            padding: 28px;
-
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+            transition: 0.3s ease;
             height: 100%;
-
-            border: 1px solid #e8edf5;
-
-            box-shadow:
-                0 10px 30px rgba(
-                    18,
-                    38,
-                    63,
-                    .08
-                );
-
-            transition: all .3s ease;
-
-            position: relative;
-
-            overflow: hidden;
-        }
-
-
-        .exam-card::before {
-
-            content: "";
-
-            position: absolute;
-
-            height: 4px;
-
-            left: 0;
-            right: 0;
-            top: 0;
-
-            background:
-                linear-gradient(
-                    90deg,
-                    #071952,
-                    #088395,
-                    #35a29f
-                );
-        }
-
-
-        .exam-card:hover {
-
-            transform: translateY(-8px);
-
-            box-shadow:
-                0 18px 40px rgba(
-                    18,
-                    38,
-                    63,
-                    .14
-                );
-        }
-
-
-        .exam-number {
-
-            width: 55px;
-            height: 55px;
-
-            border-radius: 15px;
-
-            display: flex;
-
-            align-items: center;
-            justify-content: center;
-
-            background: #e9f8f7;
-
-            color: #088395;
-
-            font-size: 20px;
-
-            font-weight: 800;
-
-            margin-bottom: 20px;
-        }
-
-
-        .exam-card h4 {
-
-            font-weight: 700;
-
-            color: #172033;
-
-            margin-bottom: 10px;
-        }
-
-
-        .exam-card p {
-
-            color: #6c757d;
-
-            font-size: 14px;
-
-            line-height: 1.7;
-
-            min-height: 48px;
-        }
-
-
-        .exam-meta {
-
-            display: flex;
-
-            gap: 10px;
-
-            flex-wrap: wrap;
-
-            margin: 18px 0;
-        }
-
-
-        .exam-meta span {
-
-            background: #f1f4f8;
-
-            color: #596579;
-
-            border-radius: 30px;
-
-            padding: 6px 12px;
-
-            font-size: 12px;
-
-            font-weight: 600;
-        }
-
-
-        .exam-btn {
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            gap: 8px;
-
-            width: 100%;
-
-            padding: 12px 20px;
-
-            border-radius: 12px;
-
-            text-decoration: none;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #071952,
-                    #088395
-                );
-
-            color: white;
-
-            font-weight: 600;
-
-            transition: .3s;
-        }
-
-
-        .exam-btn:hover {
-
-            color: white;
-
-            transform: translateY(-2px);
-
-            box-shadow:
-                0 8px 20px rgba(
-                    8,
-                    131,
-                    149,
-                    .25
-                );
-        }
-
-
-
-        /* =========================
-           BACK BUTTON
-        ========================= */
-
-        .back-area {
-
             text-align: center;
-
-            margin-top: 50px;
         }
 
+        .group-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.14);
+        }
 
-        .back-btn {
-
-            display: inline-flex;
-
+        .group-icon {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            display: flex;
             align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 38px;
+            background: #eef4ff;
+            color: #2563eb;
+        }
 
-            gap: 8px;
+        .group-card h3 {
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
 
-            padding: 11px 24px;
+        .group-card p {
+            color: #6b7280;
+            min-height: 50px;
+        }
 
-            border-radius: 30px;
-
-            border: 1px solid #dce2eb;
-
-            background: white;
-
-            color: #172033;
-
-            text-decoration: none;
-
+        .group-btn {
+            border-radius: 50px;
+            padding: 12px 25px;
             font-weight: 600;
-
-            transition: .3s;
         }
 
-
-        .back-btn:hover {
-
-            background: #071952;
-
-            color: white;
-
-            border-color: #071952;
+        .free-title {
+            max-width: 750px;
+            margin: auto;
         }
-
-
-
-        /* =========================
-           RESPONSIVE
-        ========================= */
-
-        @media (max-width: 767px) {
-
-            .exam-hero {
-
-                padding: 70px 20px;
-            }
-
-
-            .exam-section {
-
-                padding: 60px 15px;
-            }
-
-
-            .section-heading {
-
-                margin-bottom: 35px;
-            }
-
-
-            .exam-card {
-
-                padding: 24px;
-            }
-
-        }
-
-
     </style>
-
 </head>
-
 
 <body>
 
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg sticky-top">
 
-<!-- =========================
-     NAVBAR
-========================= -->
+        <div class="container">
 
-<nav class="navbar navbar-expand-lg sticky-top">
+            <a class="navbar-brand d-flex align-items-center gap-2"
+                href="index.html">
 
-    <div class="container">
+                <img src="images/nu crackers logo.jpg"
+                    alt="NU Crackers Logo">
 
-        <a class="navbar-brand d-flex align-items-center gap-2"
-           href="index.html">
+                <span>NU Crackers</span>
 
-            <img src="images/nu crackers logo.jpg"
-                 alt="NU Crackers Logo">
+            </a>
 
-            <span>NU Crackers</span>
-
-        </a>
-
-
-        <button class="navbar-toggler"
+            <button class="navbar-toggler"
                 type="button"
                 data-bs-toggle="collapse"
                 data-bs-target="#mainNav">
 
-            <span class="navbar-toggler-icon"></span>
+                <span class="navbar-toggler-icon"></span>
 
-        </button>
+            </button>
 
+            <div class="collapse navbar-collapse" id="mainNav">
 
-        <div class="collapse navbar-collapse"
-             id="mainNav">
+                <ul class="navbar-nav ms-auto align-items-lg-center">
 
-            <ul class="navbar-nav ms-auto align-items-lg-center">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">
+                            Home
+                        </a>
+                    </li>
 
-                <li class="nav-item">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="courses.html">
+                            Our Courses
+                        </a>
+                    </li>
 
-                    <a class="nav-link"
-                       href="index.html">
+                    <li class="nav-item">
+                        <a class="nav-link" href="services.html">
+                            Services
+                        </a>
+                    </li>
 
-                        Home
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">
+                            About Us
+                        </a>
+                    </li>
 
-                    </a>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">
+                            Contact
+                        </a>
+                    </li>
 
-                </li>
+                </ul>
 
-
-                <li class="nav-item">
-
-                    <a class="nav-link active"
-                       href="courses.html">
-
-                        Our Courses
-
-                    </a>
-
-                </li>
-
-
-                <li class="nav-item">
-
-                    <a class="nav-link"
-                       href="services.html">
-
-                        Services
-
-                    </a>
-
-                </li>
-
-
-                <li class="nav-item">
-
-                    <a class="nav-link"
-                       href="about.html">
-
-                        About Us
-
-                    </a>
-
-                </li>
-
-
-                <li class="nav-item">
-
-                    <a class="nav-link"
-                       href="contact.html">
-
-                        Contact
-
-                    </a>
-
-                </li>
-
-            </ul>
-
+            </div>
         </div>
 
-    </div>
+    </nav>
 
-</nav>
 
+    <!-- Hero -->
 
+    <section class="page-hero">
 
-<!-- =========================
-     HERO
-========================= -->
+        <div class="container text-center">
 
-<section class="exam-hero">
+            <div class="free-title">
 
-    <div class="container hero-content">
+                <span class="hero-badge">
+                    FREE BATCH
+                </span>
 
-        <div class="hero-icon">
-
-            <i class="fa-solid fa-file-pen"></i>
-
-        </div>
-
-
-        <h1>Free Model Tests</h1>
-
-        <p>
-            NU Crackers Free Batch-এর
-            সকল Model Test এখানে দেওয়া হয়েছে।
-            তোমার প্রস্তুতি যাচাই করতে নিয়মিত
-            Model Test-এ অংশগ্রহণ করো।
-        </p>
-
-    </div>
-
-</section>
-
-
-
-<!-- =========================
-     EXAMS
-========================= -->
-
-<section class="exam-section">
-
-    <div class="container">
-
-
-        <div class="section-heading">
-
-            <div class="small-title">
-                Free Batch
-            </div>
-
-            <h2>
-                Choose Your Exam
-            </h2>
-
-            <p>
-                নিচের যেকোনো Exam নির্বাচন করে
-                Google Form-এর মাধ্যমে পরীক্ষায়
-                অংশগ্রহণ করো।
-            </p>
-
-        </div>
-
-
-
-        <div class="row g-4">
-
-
-            <!-- EXAM 1 -->
-
-            <div class="col-md-6 col-lg-4">
-
-                <div class="exam-card">
-
-                    <div class="exam-number">
-                        01
-                    </div>
-
-                    <h4>
-                        Free Model Test - 01
-                    </h4>
-
-                    <p>
-                        গুরুত্বপূর্ণ বিষয়গুলোর উপর
-                        প্রথম Free Model Test।
-                    </p>
-
-                    <div class="exam-meta">
-
-                        <span>
-                            <i class="fa-solid fa-book me-1"></i>
-                            Mixed Subject
-                        </span>
-
-                        <span>
-                            <i class="fa-solid fa-clock me-1"></i>
-                            Model Test
-                        </span>
-
-                    </div>
-
-
-                    <a href="YOUR_GOOGLE_FORM_LINK_1"
-                       target="_blank"
-                       rel="noopener noreferrer"
-                       class="exam-btn">
-
-                        Start Exam
-
-                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
-
-                    </a>
-
-                </div>
-
-            </div>
-
-
-
-            <!-- EXAM 2 -->
-
-            <div class="col-md-6 col-lg-4">
-
-                <div class="exam-card">
-
-                    <div class="exam-number">
-                        02
-                    </div>
-
-                    <h4>
-                        Free Model Test - 02
-                    </h4>
-
-                    <p>
-                        Admission preparation-এর
-                        দ্বিতীয় practice test।
-                    </p>
-
-                    <div class="exam-meta">
-
-                        <span>
-                            <i class="fa-solid fa-book me-1"></i>
-                            Mixed Subject
-                        </span>
-
-                        <span>
-                            <i class="fa-solid fa-clock me-1"></i>
-                            Model Test
-                        </span>
-
-                    </div>
-
-
-                    <a href="YOUR_GOOGLE_FORM_LINK_2"
-                       target="_blank"
-                       rel="noopener noreferrer"
-                       class="exam-btn">
-
-                        Start Exam
-
-                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
-
-                    </a>
-
-                </div>
-
-            </div>
-
-
-
-            <!-- EXAM 3 -->
-
-            <div class="col-md-6 col-lg-4">
-
-                <div class="exam-card">
-
-                    <div class="exam-number">
-                        03
-                    </div>
-
-                    <h4>
-                        Free Model Test - 03
-                    </h4>
-
-                    <p>
-                        Admission exam-এর জন্য
-                        গুরুত্বপূর্ণ একটি practice test।
-                    </p>
-
-                    <div class="exam-meta">
-
-                        <span>
-                            <i class="fa-solid fa-book me-1"></i>
-                            Mixed Subject
-                        </span>
-
-                        <span>
-                            <i class="fa-solid fa-clock me-1"></i>
-                            Model Test
-                        </span>
-
-                    </div>
-
-
-                    <a href="YOUR_GOOGLE_FORM_LINK_3"
-                       target="_blank"
-                       rel="noopener noreferrer"
-                       class="exam-btn">
-
-                        Start Exam
-
-                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
-
-                    </a>
-
-                </div>
-
-            </div>
-
-
-
-            <!-- EXAM 4 -->
-
-            <div class="col-md-6 col-lg-4">
-
-                <div class="exam-card">
-
-                    <div class="exam-number">
-                        04
-                    </div>
-
-                    <h4>
-                        Free Model Test - 04
-                    </h4>
-
-                    <p>
-                        নিয়মিত practice-এর মাধ্যমে
-                        নিজের preparation যাচাই করো।
-                    </p>
-
-                    <div class="exam-meta">
-
-                        <span>
-                            <i class="fa-solid fa-book me-1"></i>
-                            Mixed Subject
-                        </span>
-
-                        <span>
-                            <i class="fa-solid fa-clock me-1"></i>
-                            Model Test
-                        </span>
-
-                    </div>
-
-
-                    <a href="YOUR_GOOGLE_FORM_LINK_4"
-                       target="_blank"
-                       rel="noopener noreferrer"
-                       class="exam-btn">
-
-                        Start Exam
-
-                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
-
-                    </a>
-
-                </div>
-
-            </div>
-
-
-
-            <!-- EXAM 5 -->
-
-            <div class="col-md-6 col-lg-4">
-
-                <div class="exam-card">
-
-                    <div class="exam-number">
-                        05
-                    </div>
-
-                    <h4>
-                        Free Model Test - 05
-                    </h4>
-
-                    <p>
-                        গুরুত্বপূর্ণ chapters-এর উপর
-                        আরেকটি practice examination।
-                    </p>
-
-                    <div class="exam-meta">
-
-                        <span>
-                            <i class="fa-solid fa-book me-1"></i>
-                            Mixed Subject
-                        </span>
-
-                        <span>
-                            <i class="fa-solid fa-clock me-1"></i>
-                            Model Test
-                        </span>
-
-                    </div>
-
-
-                    <a href="YOUR_GOOGLE_FORM_LINK_5"
-                       target="_blank"
-                       rel="noopener noreferrer"
-                       class="exam-btn">
-
-                        Start Exam
-
-                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
-
-                    </a>
-
-                </div>
-
-            </div>
-
-
-
-            <!-- EXAM 6 -->
-
-            <div class="col-md-6 col-lg-4">
-
-                <div class="exam-card">
-
-                    <div class="exam-number">
-                        06
-                    </div>
-
-                    <h4>
-                        Free Model Test - 06
-                    </h4>
-
-                    <p>
-                        নিজের প্রস্তুতি যাচাই করে
-                        পরীক্ষার জন্য আরও প্রস্তুত হও।
-                    </p>
-
-                    <div class="exam-meta">
-
-                        <span>
-                            <i class="fa-solid fa-book me-1"></i>
-                            Mixed Subject
-                        </span>
-
-                        <span>
-                            <i class="fa-solid fa-clock me-1"></i>
-                            Model Test
-                        </span>
-
-                    </div>
-
-
-                    <a href="YOUR_GOOGLE_FORM_LINK_6"
-                       target="_blank"
-                       rel="noopener noreferrer"
-                       class="exam-btn">
-
-                        Start Exam
-
-                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
-
-                    </a>
-
-                </div>
-
-            </div>
-
-
-        </div>
-
-
-
-        <!-- BACK -->
-
-        <div class="back-area">
-
-            <a href="courses.html"
-               class="back-btn">
-
-                <i class="fa-solid fa-arrow-left"></i>
-
-                Back to Courses
-
-            </a>
-
-        </div>
-
-
-    </div>
-
-</section>
-
-
-
-<!-- =========================
-     FOOTER
-========================= -->
-
-<footer>
-
-    <div class="container">
-
-        <div class="row g-4">
-
-
-            <div class="col-lg-4">
-
-                <h5>NU Crackers</h5>
+                <h1 class="mt-3">
+                    Choose Your Group
+                </h1>
 
                 <p class="mt-3">
+                    তোমার শিক্ষাগত Group নির্বাচন করো এবং
+                    Free Model Test-এ অংশগ্রহণ করো।
+                </p>
 
-                    স্বপ্ন জয়ের বিশ্বস্থ সারথি —
-                    শিক্ষার্থীদের সঠিক দিকনির্দেশনা,
-                    মানসম্মত শিক্ষা উপকরণ ও নিয়মিত
-                    অনুশীলনের মাধ্যমে ভর্তি প্রস্তুতিতে
-                    এগিয়ে নেওয়াই আমাদের লক্ষ্য।
+            </div>
 
+        </div>
+
+    </section>
+
+
+    <!-- Groups -->
+
+    <section class="section">
+
+        <div class="container">
+
+            <div class="section-title text-center mb-5">
+
+                <span class="eyebrow">
+                    SELECT GROUP
+                </span>
+
+                <h2>
+                    কোন Group-এর পরীক্ষা দিতে চাও?
+                </h2>
+
+                <p class="text-muted">
+                    নিচের তোমার Group নির্বাচন করো।
                 </p>
 
             </div>
 
 
-
-            <div class="col-md-4 col-lg-3">
-
-                <h5>Contact</h5>
-
-                <a class="footer-link"
-                   href="https://api.whatsapp.com/send?phone=8801410910547"
-                   target="_blank">
-
-                    <i class="fa-solid fa-phone me-2"></i>
-
-                    01410910547
-
-                </a>
+            <div class="row g-4">
 
 
-                <a class="footer-link"
-                   href="https://mail.google.com/mail/?view=cm&fs=1&to=nuadmissioncrackers@gmail.com"
-                   target="_blank">
+                <!-- Science -->
 
-                    <i class="fa-solid fa-envelope me-2"></i>
+                <div class="col-md-6 col-lg-4">
 
-                    nuadmissioncrackers@gmail.com
+                    <div class="group-card">
 
-                </a>
+                        <div class="group-icon">
+                            <i class="fa-solid fa-flask"></i>
+                        </div>
+
+                        <h3>
+                            Science Group
+                        </h3>
+
+                        <p>
+                            Chemistry, Physics, Biology,
+                            Higher Math এবং অন্যান্য বিষয়ভিত্তিক
+                            Model Test।
+                        </p>
+
+                        <a href="science-exams.html"
+                            class="btn btn-primary group-btn">
+
+                            View Exams
+
+                            <i class="fa-solid fa-arrow-right ms-2"></i>
+
+                        </a>
+
+                    </div>
+
+                </div>
 
 
-                <a class="footer-link"
-                   href="https://www.facebook.com/nucrackers06"
-                   target="_blank"
-                   rel="noopener">
+                <!-- Arts -->
 
-                    <i class="fa-brands fa-facebook me-2"></i>
+                <div class="col-md-6 col-lg-4">
 
-                    NU Crackers Facebook Page
+                    <div class="group-card">
 
-                </a>
+                        <div class="group-icon">
+                            <i class="fa-solid fa-book-open"></i>
+                        </div>
+
+                        <h3>
+                            Arts Group
+                        </h3>
+
+                        <p>
+                            Bangla, English, General Knowledge
+                            এবং Arts Group-এর গুরুত্বপূর্ণ
+                            Model Test।
+                        </p>
+
+                        <a href="arts-exams.html"
+                            class="btn btn-primary group-btn">
+
+                            View Exams
+
+                            <i class="fa-solid fa-arrow-right ms-2"></i>
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Commerce -->
+
+                <div class="col-md-6 col-lg-4">
+
+                    <div class="group-card">
+
+                        <div class="group-icon">
+                            <i class="fa-solid fa-chart-line"></i>
+                        </div>
+
+                        <h3>
+                            Commerce Group
+                        </h3>
+
+                        <p>
+                            Accounting, Management, Finance,
+                            Business Studies এবং
+                            অন্যান্য Model Test।
+                        </p>
+
+                        <a href="commerce-exams.html"
+                            class="btn btn-primary group-btn">
+
+                            View Exams
+
+                            <i class="fa-solid fa-arrow-right ms-2"></i>
+
+                        </a>
+
+                    </div>
+
+                </div>
 
             </div>
 
+        </div>
+
+    </section>
 
 
-            <div class="col-md-4 col-lg-2">
+    <!-- Footer -->
 
-                <h5>Quick Links</h5>
+    <footer>
 
-                <a class="footer-link"
-                   href="index.html">
+        <div class="container">
 
-                    Home
+            <div class="row g-4">
 
-                </a>
+                <div class="col-lg-4">
 
+                    <h5>NU Crackers</h5>
 
-                <a class="footer-link"
-                   href="courses.html">
+                    <p class="mt-3">
+                        স্বপ্ন জয়ের বিশ্বস্থ সারথি —
+                        শিক্ষার্থীদের সঠিক দিকনির্দেশনা,
+                        মানসম্মত শিক্ষা উপকরণ ও নিয়মিত
+                        অনুশীলনের মাধ্যমে ভর্তি প্রস্তুতিতে
+                        এগিয়ে নেওয়াই আমাদের লক্ষ্য।
+                    </p>
 
-                    Our Courses
-
-                </a>
-
-
-                <a class="footer-link"
-                   href="services.html">
-
-                    Services
-
-                </a>
+                </div>
 
 
-                <a class="footer-link"
-                   href="about.html">
+                <div class="col-md-4 col-lg-3">
 
-                    About Us
+                    <h5>Contact</h5>
 
-                </a>
+                    <a class="footer-link"
+                        href="https://api.whatsapp.com/send?phone=8801410910547"
+                        target="_blank">
 
-
-                <a class="footer-link"
-                   href="contact.html">
-
-                    Contact
-
-                </a>
-
-            </div>
-
-
-
-            <div class="col-md-4 col-lg-3">
-
-                <h5>Follow Us</h5>
-
-                <p>
-                    Admission preparation updates
-                    and educational content.
-                </p>
-
-
-                <div class="social">
-
-                    <a href="https://www.facebook.com/nucrackers06"
-                       target="_blank"
-                       rel="noopener"
-                       aria-label="Facebook">
-
-                        <i class="fa-brands fa-facebook-f"></i>
+                        <i class="fa-solid fa-phone me-2"></i>
+                        01410910547
 
                     </a>
 
 
-                    <a href="https://youtube.com/@nucrackers"
-                       target="_blank"
-                       aria-label="YouTube">
+                    <a class="footer-link"
+                        href="https://mail.google.com/mail/?view=cm&fs=1&to=nuadmissioncrackers@gmail.com"
+                        target="_blank">
 
-                        <i class="fa-brands fa-youtube"></i>
+                        <i class="fa-solid fa-envelope me-2"></i>
+                        nuadmissioncrackers@gmail.com
+
+                    </a>
+
+
+                    <a class="footer-link"
+                        href="https://www.facebook.com/nucrackers06"
+                        target="_blank">
+
+                        <i class="fa-brands fa-facebook me-2"></i>
+                        NU Crackers Facebook Page
 
                     </a>
 
+                </div>
 
-                    <a href="https://www.instagram.com/nuadmissioncrackers"
-                       target="_blank"
-                       aria-label="Instagram">
 
-                        <i class="fa-brands fa-instagram"></i>
+                <div class="col-md-4 col-lg-2">
 
+                    <h5>Quick Links</h5>
+
+                    <a class="footer-link" href="index.html">Home</a>
+
+                    <a class="footer-link" href="courses.html">
+                        Our Courses
                     </a>
+
+                    <a class="footer-link" href="services.html">
+                        Services
+                    </a>
+
+                    <a class="footer-link" href="about.html">
+                        About Us
+                    </a>
+
+                    <a class="footer-link" href="contact.html">
+                        Contact
+                    </a>
+
+                </div>
+
+
+                <div class="col-md-4 col-lg-3">
+
+                    <h5>Follow Us</h5>
+
+                    <p>
+                        Admission preparation updates
+                        and educational content.
+                    </p>
+
+                    <div class="social">
+
+                        <a href="https://www.facebook.com/nucrackers06"
+                            target="_blank">
+
+                            <i class="fa-brands fa-facebook-f"></i>
+
+                        </a>
+
+                        <a href="https://youtube.com/@nucrackers"
+                            target="_blank">
+
+                            <i class="fa-brands fa-youtube"></i>
+
+                        </a>
+
+                        <a href="https://www.instagram.com/nuadmissioncrackers"
+                            target="_blank">
+
+                            <i class="fa-brands fa-instagram"></i>
+
+                        </a>
+
+                    </div>
 
                 </div>
 
             </div>
 
 
-        </div>
+            <hr class="border-secondary my-4">
 
 
-        <hr class="border-secondary my-4">
+            <div class="text-center small">
 
+                © <span class="current-year"></span>
+                NU Crackers. All Rights Reserved.
 
-        <div class="text-center small">
-
-            ©
-            <span class="current-year"></span>
-
-            NU Crackers.
-            All Rights Reserved.
+            </div>
 
         </div>
 
-    </div>
-
-</footer>
+    </footer>
 
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+    </script>
 
-<!-- Bootstrap JS -->
-
-<script src="js/bootstrap.bundle.min.js"></script>
-
-
-<!-- Main JS -->
-
-<script src="js/main.js"></script>
-
+    <script src="js/main.js"></script>
 
 </body>
 
