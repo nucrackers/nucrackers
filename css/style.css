@@ -764,7 +764,7 @@ span{
     width: 100%;
     display: flex;
     align-items: center;
-    background: #fff;
+    background: #d99595;
     border: 1px solid #ddd;
     border-radius: 6px;
     overflow: hidden;
@@ -781,14 +781,14 @@ span{
     gap: 7px;
     padding: 0 18px;
     background: #8b0000;
-    color: #fff;
+    color: #f4eeee;
     font-size: 14px;
     font-weight: 700;
     z-index: 2;
 }
 
 .breaking-label i {
-    color: #ffd700;
+    color: #736515;
 }
 
 /* Moving Content Area */
