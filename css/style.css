@@ -832,7 +832,7 @@ span{
 /* Animation */
 @keyframes breakingMove {
     from {
-        transform: translateX(100%);
+        transform: translateX(40%);
     }
 
     to {
@@ -874,6 +874,6 @@ span{
     }
 
     .breaking-track {
-        animation-duration: 0.1ms;
+        animation-duration: 20s;
     }
 }
