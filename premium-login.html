@@ -1,47 +1,246 @@
 <!doctype html>
 <html lang="bn">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Premium Login | NU Crackers</title>
-<link rel="icon" href="assets/logo.jpg">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
-<style>
-  body { min-height: 100vh; display: flex; align-items: center; background: #f5f6fa; }
-  .login-card { max-width: 420px; width: 100%; margin: auto; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Premium Batch Login | NU Crackers</title>
+  <link rel="icon" href="images/nu crackers logo.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at 10% 20%, rgba(13,110,253,0.06) 0%, rgba(16,42,86,0.03) 90%), #f8fafc;
+      display: flex;
+      flex-direction: column;
+    }
+    .login-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 15px;
+    }
+    .auth-card {
+      max-width: 480px;
+      width: 100%;
+      background: #ffffff;
+      border-radius: 24px;
+      border: 1px solid rgba(16,42,86,0.08);
+      box-shadow: 0 20px 50px rgba(16,42,86,0.1);
+      overflow: hidden;
+    }
+    .auth-header {
+      background: linear-gradient(135deg, #071b3a 0%, #123b73 55%, #0d6efd 100%);
+      color: #fff;
+      padding: 32px 28px 24px;
+      text-align: center;
+      position: relative;
+    }
+    .auth-header img {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: #fff;
+      padding: 3px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+    }
+    .auth-body {
+      padding: 32px 28px;
+    }
+    .nav-pills-custom .nav-link {
+      color: #475467;
+      font-weight: 600;
+      border-radius: 12px;
+      padding: 10px 16px;
+      font-size: 0.95rem;
+    }
+    .nav-pills-custom .nav-link.active {
+      background: #102a56;
+      color: #ffffff;
+    }
+    .quick-roll-btn {
+      font-size: 0.8rem;
+      border-radius: 20px;
+      padding: 4px 12px;
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      color: #334155;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .quick-roll-btn:hover {
+      background: #e2e8f0;
+      border-color: #cbd5e1;
+      transform: translateY(-1px);
+    }
+  </style>
 </head>
 <body>
 
-<div class="container">
-  <div class="card login-card p-4">
-    <div class="text-center mb-3">
-      <img src="images/nu crackers logo.jpg" alt="NU Crackers" style="height:50px;">
-      <h4 class="fw-bold mt-3">Premium Batch Login</h4>
-      <p class="text-muted small">শুধুমাত্র Premium Batch-এর শিক্ষার্থীরা এখানে লগইন করতে পারবে।</p>
+  <!-- Top Simple Navigation Bar -->
+  <nav class="navbar navbar-expand-lg bg-white shadow-sm py-2">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+        <img src="images/nu crackers logo.jpg" alt="NU Crackers Logo" style="width: 48px; height: 48px; object-fit: contain;">
+        <span class="fw-bold fs-5 text-dark">NU Crackers</span>
+      </a>
+      <div class="ms-auto d-flex align-items-center gap-2">
+        <a href="courses.html" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
+          <i class="fa-solid fa-arrow-left me-1"></i> Our Courses
+        </a>
+      </div>
     </div>
+  </nav>
 
-    <form id="loginForm" novalidate>
-      <div class="mb-3">
-        <label class="form-label fw-semibold">তোমার নাম</label>
-        <input type="text" id="studentName" class="form-control" placeholder="যেমন: Rahim Ahmed" required>
+  <div class="login-container">
+    <div class="auth-card">
+      <div class="auth-header">
+        <img src="images/nu crackers logo.jpg" alt="NU Crackers Logo" class="mb-3">
+        <h3 class="fw-bold mb-1">Premium Exam Portal</h3>
+        <p class="text-white-50 small mb-0">স্বপ্ন জয়ের বিশ্বস্ত সারথি • National University Admission</p>
       </div>
-      <div class="mb-3">
-        <label class="form-label fw-semibold">রোল নম্বর</label>
-        <input type="text" id="studentRoll" class="form-control" placeholder="যেমন: 101" required>
-      </div>
-      <button type="submit" class="btn btn-brand w-100">Login</button>
-      <div id="loginMessage" class="d-none"></div>
-    </form>
 
-    <div class="text-center mt-3">
-      <a href="courses.html" class="small text-muted"><i class="fa-solid fa-arrow-left me-1"></i>ফিরে যাও</a>
+      <div class="auth-body">
+        <!-- Tab Navigation -->
+        <ul class="nav nav-pills nav-fill nav-pills-custom mb-4" id="authTabs" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="login-tab" data-bs-toggle="pill" data-bs-target="#login-panel" type="button" role="tab">
+              <i class="fa-solid fa-right-to-bracket me-1"></i> রোল দিয়ে লগইন
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="register-tab" data-bs-toggle="pill" data-bs-target="#register-panel" type="button" role="tab">
+              <i class="fa-solid fa-user-plus me-1"></i> নতুন রেজিস্ট্রেশন
+            </button>
+          </li>
+        </ul>
+
+        <!-- Notification Message Box -->
+        <div id="alertBox" class="alert d-none py-2 px-3 small rounded-3 mb-3"></div>
+
+        <div class="tab-content" id="authTabsContent">
+          <!-- LOGIN PANEL -->
+          <div class="tab-pane fade show active" id="login-panel" role="tabpanel">
+            <p class="text-muted small mb-3">
+              তোমার প্রিমিয়াম ব্যাচের <strong>রোল নম্বর</strong> ও <strong>নাম</strong> লিখে সরাসরি তোমার গ্রুপের পোর্টালে প্রবেশ করো:
+            </p>
+
+            <form id="loginForm">
+              <div class="mb-3">
+                <label for="loginRoll" class="form-label fw-semibold text-dark small">ইউনিক রোল নম্বর (Unique Roll)</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-light text-muted"><i class="fa-solid fa-id-card"></i></span>
+                  <input type="text" class="form-control" id="loginRoll" placeholder="যেমন: 101, 201, 301" required autocomplete="off">
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="loginName" class="form-label fw-semibold text-dark small">শিক্ষার্থীর পূর্ণ নাম (Full Name)</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-light text-muted"><i class="fa-solid fa-user"></i></span>
+                  <input type="text" class="form-control" id="loginName" placeholder="যেমন: তানভীর আহমেদ" required autocomplete="off">
+                </div>
+              </div>
+
+              <!-- Quick Demo Rolls for direct testing -->
+              <div class="mb-4">
+                <div class="small text-muted mb-2"><i class="fa-solid fa-wand-magic-sparkles me-1 text-warning"></i>টেস্টিংয়ের জন্য অনুমোদিত ডেমো রোল:</div>
+                <div class="d-flex flex-wrap gap-2">
+                  <button type="button" class="quick-roll-btn" data-roll="101" data-name="তানভীর আহমেদ" title="Science - তানভীর আহমেদ">
+                    🔬 Science (101 - তানভীর)
+                  </button>
+                  <button type="button" class="quick-roll-btn" data-roll="201" data-name="সাদিয়া আফরিন" title="Arts - সাদিয়া আফরিন">
+                    🎨 Arts (201 - সাদিয়া)
+                  </button>
+                  <button type="button" class="quick-roll-btn" data-roll="301" data-name="রাকিবুল ইসলাম" title="Commerce - রাকিবুল ইসলাম">
+                    📊 Commerce (301 - রাকিবুল)
+                  </button>
+                </div>
+              </div>
+
+              <button type="submit" id="loginSubmitBtn" class="btn btn-brand w-100 py-2 fw-semibold">
+                <span class="normal-state"><i class="fa-solid fa-arrow-right-to-bracket me-2"></i>লগইন করে সরাসরি গ্রুপ পোর্টালে যাও</span>
+                <span class="loading-state d-none"><span class="spinner-border spinner-border-sm me-2"></span>যাচাই করা হচ্ছে...</span>
+              </button>
+            </form>
+          </div>
+
+          <!-- REGISTER PANEL -->
+          <div class="tab-pane fade" id="register-panel" role="tabpanel">
+            <div class="alert alert-info py-2 px-3 small rounded-3 mb-3 border-0 bg-info bg-opacity-10 text-dark">
+              <i class="fa-solid fa-circle-info text-info me-1"></i>
+              <strong>অনুমোদন আবশ্যক:</strong> নতুন শিক্ষার্থী রেজিস্ট্রেশন করার পর <strong>এডমিন অ্যাপ্রুভ (Approve)</strong> করলে তবেই লগইন করে সংশ্লিষ্ট গ্রুপের পরীক্ষায় প্রবেশ করা যাবে।
+            </div>
+
+            <form id="registerForm">
+              <div class="mb-3">
+                <label for="regName" class="form-label fw-semibold text-dark small">পুরো নাম (Full Name)</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-light text-muted"><i class="fa-solid fa-user"></i></span>
+                  <input type="text" class="form-control" id="regName" placeholder="যেমন: সাজিদ হাসান" required>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="regRoll" class="form-label fw-semibold text-dark small">পছন্দসই / নির্ধারিত রোল নম্বর (Roll)</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-light text-muted"><i class="fa-solid fa-id-badge"></i></span>
+                  <input type="text" class="form-control" id="regRoll" placeholder="যেমন: 104 বা 505" required>
+                </div>
+              </div>
+
+              <div class="mb-4">
+                <label for="regGroup" class="form-label fw-semibold text-dark small">তোমার গ্রুপ নির্বাচন করো (Group)</label>
+                <select class="form-select" id="regGroup" required>
+                  <option value="" disabled selected>গ্রুপ বেছে নাও...</option>
+                  <option value="science">🔬 বিজ্ঞান ইউনিট (Science Group)</option>
+                  <option value="arts">🎨 মানবিক ইউনিট (Arts Group)</option>
+                  <option value="commerce">📊 ব্যবসায় শিক্ষা ইউনিট (Commerce Group)</option>
+                </select>
+                <div class="form-text text-muted small">গ্রুপ অনুযায়ী শুধুমাত্র সেই গ্রুপের মডেল টেস্টে প্রবেশাধিকার দেওয়া হবে।</div>
+              </div>
+
+              <button type="submit" id="registerSubmitBtn" class="btn btn-success w-100 py-2 fw-semibold">
+                <span class="normal-state"><i class="fa-solid fa-paper-plane me-2"></i>রেজিস্ট্রেশনের আবেদন জমা দিন</span>
+                <span class="loading-state d-none"><span class="spinner-border spinner-border-sm me-2"></span>জমা হচ্ছে...</span>
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <hr class="my-4 text-muted opacity-25">
+
+        <div class="d-flex justify-content-between align-items-center small text-muted">
+          <span><i class="fa-solid fa-shield-halved me-1 text-success"></i> NU Crackers Secured</span>
+          <div class="d-flex gap-3 align-items-center">
+            <a href="admin.html" class="text-primary fw-semibold text-decoration-none">
+              <i class="fa-solid fa-user-shield me-1"></i> এডমিন প্যানেল
+            </a>
+            <a href="contact.html" class="text-decoration-none">সাহায্য প্রয়োজন?</a>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-</div>
 
-<script type="module" src="js/premium-login.js"></script>
+  <footer class="text-center py-3 bg-white border-top small text-muted">
+    <div class="container d-flex flex-wrap justify-content-between align-items-center gap-2">
+      <div>© 2026 NU Crackers. All Rights Reserved. স্বপ্ন জয়ের বিশ্বস্ত সারথি।</div>
+      <div>
+        <a href="admin.html" class="text-decoration-none text-muted me-3">
+          <i class="fa-solid fa-lock me-1"></i> Admin Access
+        </a>
+        <a href="index.html" class="text-decoration-none text-muted">হোমপেজ</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script type="module" src="js/premium-login.js"></script>
 </body>
 </html>

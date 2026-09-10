@@ -1,0 +1,8 @@
+{
+  "name": "NU Crackers",
+  "description": "NU Crackers - স্বপ্ন জয়ের বিশ্বস্থ সারথি. National University honors admission preparation platform.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
