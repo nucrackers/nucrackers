@@ -803,7 +803,7 @@ span{
 .breaking-track {
     display: inline-flex;
     align-items: center;
-    animation: breakingMove 25s linear infinite;
+    animation: breakingMove 50s linear infinite;
 }
 
 /* News Links */
@@ -874,6 +874,6 @@ span{
     }
 
     .breaking-track {
-        animation-duration: 20s;
+        animation-duration: 0.5ms;
     }
 }
