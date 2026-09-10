@@ -756,3 +756,124 @@ span{
     --bs-btn-disabled-border-color: #0d6efd;
     --bs-gradient: none;
 }
+/* =========================
+   Breaking News
+========================= */
+
+.breaking-news {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    overflow: hidden;
+    margin: 15px 0;
+    height: 48px;
+}
+
+/* Breaking News Label */
+.breaking-label {
+    flex-shrink: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 0 18px;
+    background: #8b0000;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    z-index: 2;
+}
+
+.breaking-label i {
+    color: #ffd700;
+}
+
+/* Moving Content Area */
+.breaking-content {
+    flex: 1;
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+}
+
+/* Moving Track */
+.breaking-track {
+    display: inline-flex;
+    align-items: center;
+    animation: breakingMove 25s linear infinite;
+}
+
+/* News Links */
+.breaking-track a {
+    color: #222;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    padding: 0 45px;
+    position: relative;
+}
+
+.breaking-track a::before {
+    content: "•";
+    color: #8b0000;
+    font-size: 20px;
+    position: absolute;
+    left: 18px;
+    top: -2px;
+}
+
+.breaking-track a:hover {
+    color: #8b0000;
+}
+
+/* Animation */
+@keyframes breakingMove {
+    from {
+        transform: translateX(100%);
+    }
+
+    to {
+        transform: translateX(-100%);
+    }
+}
+
+/* Pause when mouse is over news */
+.breaking-news:hover .breaking-track {
+    animation-play-state: paused;
+}
+
+
+/* =========================
+   Mobile Responsive
+========================= */
+
+@media (max-width: 576px) {
+
+    .breaking-news {
+        height: 42px;
+        margin: 10px 0;
+    }
+
+    .breaking-label {
+        padding: 0 10px;
+        font-size: 11px;
+        gap: 4px;
+    }
+
+    .breaking-track a {
+        font-size: 13px;
+        padding: 0 30px;
+    }
+
+    .breaking-track a::before {
+        left: 10px;
+        font-size: 17px;
+    }
+
+    .breaking-track {
+        animation-duration: 20s;
+    }
+}

@@ -1,0 +1,30 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // students/{roll} -> লগইনের সময় roll+name যাচাই করতে পড়া লাগবে
+    // "list" বন্ধ রাখা হয়েছে যাতে কেউ পুরো student list query করে বের করতে না পারে;
+    // শুধু নির্দিষ্ট roll number জেনে "get" করা যাবে।
+    match /students/{roll} {
+      allow get: if true;
+      allow list: if false;
+      allow write: if false; // শুধু Firebase Console থেকে এডমিন যোগ করবে
+    }
+
+    match /exams/{examId} {
+      allow read: if true;   // প্রশ্ন সবাই পড়তে পারবে (লগইন করা থাকলে)
+      allow write: if false; // শুধু Firebase Console থেকে এডমিন exam বসাবে/বদলাবে
+
+      match /submissions/{roll} {
+        // লিডারবোর্ডের জন্য সবাই সব submission পড়তে পারবে
+        allow read: if true;
+
+        // একজন শিক্ষার্থী শুধু নিজের roll-এর ডকুমেন্টেই প্রথমবার লিখতে পারবে,
+        // পরে আর বদলাতে/মুছতে পারবে না (একবারই exam দেওয়া যাবে)
+        allow create: if request.auth != null;
+        allow update: if false;
+        allow delete: if false;
+      }
+    }
+  }
+}
