@@ -69,6 +69,7 @@ async function triggerGitHubSync(data) {
   pendingGitHubSync = false;
 
   try {
+    console.log(`[GitHub Sync] Starting auto-commit to ${repo}...`);
     const contentStr = JSON.stringify(data, null, 2);
     const contentBase64 = Buffer.from(contentStr).toString('base64');
 
@@ -118,7 +119,7 @@ async function triggerGitHubSync(data) {
   }
 }
 
-// 1. Student Login (Only Roll is required, Name is optional)
+// 1. Student Authentication Endpoint (Only roll is required)
 app.post('/api/auth/login', (req, res) => {
   const { roll } = req.body;
   if (!roll || typeof roll !== 'string' || !roll.trim()) {
@@ -162,7 +163,293 @@ app.post('/api/auth/login', (req, res) => {
   });
 });
 
-// 2. Admin APIs & Routes
+// 2. Student Self-Registration
+app.post('/api/auth/register', (req, res) => {
+  const { roll, name, group } = req.body;
+  if (!roll || typeof roll !== 'string' || !roll.trim()) {
+    return res.status(400).json({ success: false, message: 'অনুগ্রহ করে রোল নম্বর প্রদান করুন।' });
+  }
+  if (!name || typeof name !== 'string' || !name.trim()) {
+    return res.status(400).json({ success: false, message: 'অনুগ্রহ করে পূর্ণ নাম প্রদান করুন।' });
+  }
+  if (!group || !['science', 'arts', 'commerce'].includes(group.trim().toLowerCase())) {
+    return res.status(400).json({ success: false, message: 'অনুগ্রহ করে সঠিক বিভাগ (Science, Arts, Commerce) নির্বাচন করুন।' });
+  }
+
+  const cleanRoll = roll.trim();
+  const cleanName = name.trim();
+  const cleanGroup = group.trim().toLowerCase();
+
+  const db = readDb();
+  const existing = db.students.find(s => String(s.roll).trim().toLowerCase() === cleanRoll.toLowerCase());
+
+  if (existing) {
+    return res.status(409).json({
+      success: false,
+      message: `রোল নম্বর "${cleanRoll}" ইতিমধ্যে নথিবদ্ধ রয়েছে।`
+    });
+  }
+
+  const newStudent = {
+    roll: cleanRoll,
+    name: cleanName,
+    group: cleanGroup,
+    status: 'approved',
+    registeredAt: new Date().toISOString()
+  };
+
+  db.students.push(newStudent);
+  writeDb(db);
+
+  res.status(201).json({
+    success: true,
+    message: 'রেজিস্ট্রেশন সফল হয়েছে!',
+    student: newStudent
+  });
+});
+
+// 3. List Registered Students
+app.get('/api/students', (req, res) => {
+  const db = readDb();
+  const list = (db.students || []).map(s => ({
+    roll: s.roll,
+    name: s.name,
+    group: s.group,
+    status: s.status || 'approved'
+  }));
+  res.json({ success: true, count: list.length, students: list });
+});
+
+// 4. Exams Endpoints
+app.get('/api/exams', (req, res) => {
+  const { group, roll } = req.query;
+  const db = readDb();
+
+  let exams = db.exams || [];
+  if (group) {
+    exams = exams.filter(e => e.group.toLowerCase() === group.toLowerCase());
+  }
+
+  const sanitized = exams.map(e => {
+    let studentSubmission = null;
+    if (roll) {
+      studentSubmission = (db.submissions || []).find(
+        s => String(s.examId) === String(e.id) && String(s.roll).trim().toLowerCase() === String(roll).trim().toLowerCase()
+      );
+    }
+    return {
+      id: e.id,
+      title: e.title,
+      group: e.group,
+      duration: e.duration,
+      totalMarks: e.totalMarks || (e.questions ? e.questions.length : 0),
+      questionCount: e.questions ? e.questions.length : 0,
+      passingMarks: e.passingMarks || 0,
+      negativeMarking: e.negativeMarking || 0,
+      active: e.active !== false,
+      submitted: !!studentSubmission,
+      submissionSummary: studentSubmission ? {
+        score: studentSubmission.score,
+        totalMarks: studentSubmission.totalMarks,
+        submittedAt: studentSubmission.submittedAt
+      } : null
+    };
+  });
+
+  res.json({ success: true, count: sanitized.length, exams: sanitized });
+});
+
+app.get('/api/exams/:id', (req, res) => {
+  const { id } = req.params;
+  const { roll } = req.query;
+  const db = readDb();
+
+  const exam = (db.exams || []).find(e => String(e.id) === String(id));
+  if (!exam) return res.status(404).json({ success: false, message: 'পরীক্ষাটি পাওয়া যায়নি।' });
+
+  let alreadySubmitted = false;
+  let previousSubmission = null;
+  if (roll) {
+    previousSubmission = (db.submissions || []).find(
+      s => String(s.examId) === String(id) && String(s.roll).trim().toLowerCase() === String(roll).trim().toLowerCase()
+    );
+    if (previousSubmission) alreadySubmitted = true;
+  }
+
+  const sanitizedQuestions = (exam.questions || []).map((q, idx) => ({
+    id: q.id || idx + 1,
+    question: q.question,
+    options: q.options
+  }));
+
+  res.json({
+    success: true,
+    exam: {
+      id: exam.id,
+      title: exam.title,
+      group: exam.group,
+      duration: exam.duration,
+      totalMarks: exam.totalMarks || sanitizedQuestions.length,
+      passingMarks: exam.passingMarks || 0,
+      negativeMarking: exam.negativeMarking || 0,
+      questions: sanitizedQuestions,
+      alreadySubmitted,
+      previousSubmission: previousSubmission ? {
+        score: previousSubmission.score,
+        totalMarks: previousSubmission.totalMarks,
+        submittedAt: previousSubmission.submittedAt
+      } : null
+    }
+  });
+});
+
+app.post('/api/exams/:id/submit', (req, res) => {
+  const { id } = req.params;
+  const { roll, name, answers, timeSpent } = req.body;
+
+  if (!roll || typeof roll !== 'string' || !roll.trim()) {
+    return res.status(400).json({ success: false, message: 'রোল নম্বর আবশ্যক।' });
+  }
+
+  const cleanRoll = roll.trim();
+  const db = readDb();
+  const exam = (db.exams || []).find(e => String(e.id) === String(id));
+  if (!exam) return res.status(404).json({ success: false, message: 'পরীক্ষাটি পাওয়া যায়নি।' });
+
+  if (!db.submissions) db.submissions = [];
+  const existingSub = db.submissions.find(
+    s => String(s.examId) === String(id) && String(s.roll).trim().toLowerCase() === cleanRoll.toLowerCase()
+  );
+
+  if (existingSub) {
+    return res.status(409).json({
+      success: false,
+      alreadySubmitted: true,
+      message: 'আপনি ইতিমধ্যে এই পরীক্ষায় অংশগ্রহণ করেছেন।',
+      submission: existingSub
+    });
+  }
+
+  let score = 0;
+  let correctCount = 0;
+  let wrongCount = 0;
+  let skippedCount = 0;
+  const detailedResults = [];
+  const negMark = parseFloat(exam.negativeMarking) || 0;
+
+  (exam.questions || []).forEach((q, idx) => {
+    const qId = q.id || idx + 1;
+    const studentAns = answers ? answers[qId] : undefined;
+    const isCorrect = studentAns !== undefined && studentAns !== null && Number(studentAns) === Number(q.correctAnswer);
+    const isSkipped = studentAns === undefined || studentAns === null || studentAns === '';
+
+    if (isSkipped) {
+      skippedCount++;
+    } else if (isCorrect) {
+      correctCount++;
+      score += 1;
+    } else {
+      wrongCount++;
+      score -= negMark;
+    }
+
+    detailedResults.push({
+      questionId: qId,
+      question: q.question,
+      options: q.options,
+      studentAnswer: studentAns !== undefined ? Number(studentAns) : null,
+      correctAnswer: Number(q.correctAnswer),
+      isCorrect,
+      isSkipped,
+      explanation: q.explanation || ''
+    });
+  });
+
+  const finalScore = Math.max(0, Math.round(score * 100) / 100);
+  const totalQuestions = (exam.questions || []).length;
+  const percentage = totalQuestions > 0 ? Math.round((finalScore / totalQuestions) * 100) : 0;
+  const isPassed = finalScore >= (exam.passingMarks || 0);
+
+  const newSubmission = {
+    id: 'sub_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7),
+    examId: String(id),
+    examTitle: exam.title,
+    group: exam.group,
+    roll: cleanRoll,
+    name: (name || cleanRoll).trim(),
+    score: finalScore,
+    totalMarks: totalQuestions,
+    correctCount,
+    wrongCount,
+    skippedCount,
+    percentage,
+    isPassed,
+    timeSpent: timeSpent || 0,
+    submittedAt: new Date().toISOString(),
+    detailedResults
+  };
+
+  db.submissions.push(newSubmission);
+  writeDb(db);
+
+  res.json({
+    success: true,
+    message: 'উত্তরপত্র সফলভাবে জমা হয়েছে!',
+    result: {
+      submissionId: newSubmission.id,
+      score: finalScore,
+      totalMarks: totalQuestions,
+      correctCount,
+      wrongCount,
+      skippedCount,
+      percentage,
+      isPassed,
+      submittedAt: newSubmission.submittedAt
+    }
+  });
+});
+
+app.get('/api/exams/:id/leaderboard', (req, res) => {
+  const { id } = req.params;
+  const db = readDb();
+  const examSubmissions = (db.submissions || []).filter(s => String(s.examId) === String(id));
+
+  examSubmissions.sort((a, b) => {
+    if (b.score !== a.score) return b.score - a.score;
+    return (a.timeSpent || 0) - (b.timeSpent || 0);
+  });
+
+  const leaderboard = examSubmissions.map((s, idx) => ({
+    rank: idx + 1,
+    roll: s.roll,
+    name: s.name,
+    score: s.score,
+    totalMarks: s.totalMarks,
+    percentage: s.percentage,
+    timeSpent: s.timeSpent,
+    submittedAt: s.submittedAt
+  }));
+
+  res.json({ success: true, count: leaderboard.length, leaderboard });
+});
+
+app.get('/api/exams/:id/review', (req, res) => {
+  const { id } = req.params;
+  const { roll } = req.query;
+
+  if (!roll) return res.status(400).json({ success: false, message: 'রোল আবশ্যক।' });
+
+  const db = readDb();
+  const sub = (db.submissions || []).find(
+    s => String(s.examId) === String(id) && String(s.roll).trim().toLowerCase() === String(roll).trim().toLowerCase()
+  );
+
+  if (!sub) return res.status(404).json({ success: false, message: 'উত্তরপত্র পাওয়া যায়নি।' });
+
+  res.json({ success: true, submission: sub });
+});
+
+// 5. Admin Endpoints
 const ADMIN_PASSWORDS = ['Nucrackers#.com', 'nucrackers#.com', 'admin123'];
 
 app.post('/api/admin/login', (req, res) => {
@@ -219,7 +506,7 @@ app.post('/api/admin/students', (req, res) => {
   };
   db.students.push(newStudent);
   writeDb(db);
-  res.status(201).json({ success: true, message: `শিক্ষার্থী "${newStudent.name}" (রোল: ${newStudent.roll}) যুক্ত করা হয়েছে!`, student: newStudent });
+  res.status(201).json({ success: true, message: `শিক্ষার্থী "${newStudent.name}" যুক্ত করা হয়েছে!`, student: newStudent });
 });
 
 app.delete('/api/admin/students/:roll', (req, res) => {
@@ -238,6 +525,78 @@ app.put('/api/admin/students/:roll/approve', (req, res) => {
   student.status = 'approved';
   writeDb(db);
   res.json({ success: true, message: `রোল "${roll}" সফলভাবে অনুমোদন করা হয়েছে!` });
+});
+
+app.get('/api/admin/exams', (req, res) => {
+  const db = readDb();
+  res.json({ success: true, exams: db.exams || [] });
+});
+
+app.post('/api/admin/exams', (req, res) => {
+  const { title, group, duration, passingMarks, negativeMarking } = req.body;
+  if (!title || !group) {
+    return res.status(400).json({ success: false, message: 'পরীক্ষার নাম ও গ্রুপ আবশ্যক।' });
+  }
+  const db = readDb();
+  if (!db.exams) db.exams = [];
+  const newExam = {
+    id: 'exam_' + Date.now(),
+    title: String(title).trim(),
+    group: String(group).trim().toLowerCase(),
+    duration: Number(duration) || 30,
+    passingMarks: Number(passingMarks) || 0,
+    negativeMarking: Number(negativeMarking) || 0,
+    questions: [],
+    createdAt: new Date().toISOString()
+  };
+  db.exams.push(newExam);
+  writeDb(db);
+  res.status(201).json({ success: true, message: 'নতুন পরীক্ষা সফলভাবে তৈরি হয়েছে!', exam: newExam });
+});
+
+app.delete('/api/admin/exams/:id', (req, res) => {
+  const { id } = req.params;
+  const db = readDb();
+  db.exams = (db.exams || []).filter(e => String(e.id) !== String(id));
+  writeDb(db);
+  res.json({ success: true, message: 'পরীক্ষাটি মুছে ফেলা হয়েছে।' });
+});
+
+app.post('/api/admin/exams/:id/questions', (req, res) => {
+  const { id } = req.params;
+  const { question, options, correctAnswer, explanation } = req.body;
+  if (!question || !Array.isArray(options) || options.length < 2 || correctAnswer === undefined) {
+    return res.status(400).json({ success: false, message: 'প্রশ্ন, অপশন এবং সঠিক উত্তর আবশ্যক।' });
+  }
+  const db = readDb();
+  const exam = (db.exams || []).find(e => String(e.id) === String(id));
+  if (!exam) return res.status(404).json({ success: false, message: 'পরীক্ষাটি পাওয়া যায়নি।' });
+  if (!exam.questions) exam.questions = [];
+  const newQ = {
+    id: exam.questions.length + 1,
+    question: String(question).trim(),
+    options: options.map(o => String(o).trim()),
+    correctAnswer: Number(correctAnswer),
+    explanation: explanation ? String(explanation).trim() : ''
+  };
+  exam.questions.push(newQ);
+  writeDb(db);
+  res.status(201).json({ success: true, message: 'প্রশ্ন সফলভাবে যুক্ত হয়েছে!', question: newQ });
+});
+
+app.delete('/api/admin/exams/:id/questions/:questionId', (req, res) => {
+  const { id, questionId } = req.params;
+  const db = readDb();
+  const exam = (db.exams || []).find(e => String(e.id) === String(id));
+  if (!exam) return res.status(404).json({ success: false, message: 'পরীক্ষাটি পাওয়া যায়নি।' });
+  exam.questions = (exam.questions || []).filter(q => String(q.id) !== String(questionId));
+  writeDb(db);
+  res.json({ success: true, message: 'প্রশ্নটি মুছে ফেলা হয়েছে।' });
+});
+
+app.get('/api/admin/submissions', (req, res) => {
+  const db = readDb();
+  res.json({ success: true, submissions: db.submissions || [] });
 });
 
 // Serve static frontend files
