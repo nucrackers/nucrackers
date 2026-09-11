@@ -69,6 +69,13 @@
       "group": "science",
       "status": "approved",
       "registeredAt": "2026-09-10T13:57:07.266Z"
+    },
+    {
+      "roll": "777",
+      "name": "পরীক্ষামূলক শিক্ষার্থী",
+      "group": "science",
+      "status": "approved",
+      "registeredAt": "2026-09-11T14:00:36.081Z"
     }
   ],
   "exams": [
