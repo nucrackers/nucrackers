@@ -13,6 +13,13 @@
       "group": "arts",
       "status": "approved",
       "registeredAt": "2026-09-11T14:15:32.825Z"
+    },
+    {
+      "roll": "100",
+      "name": "Deepta Samadder",
+      "group": "science",
+      "status": "approved",
+      "registeredAt": "2026-09-11T14:17:12.619Z"
     }
   ],
   "exams": [
