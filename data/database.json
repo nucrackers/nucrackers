@@ -1,13 +1,6 @@
 {
   "students": [
     {
-      "roll": "101",
-      "name": "তানভীর আহমেদ",
-      "group": "science",
-      "status": "approved",
-      "registeredAt": "2026-09-01T10:00:00.000Z"
-    },
-    {
       "roll": "103",
       "name": "সুদীপ্ত কর্মকার",
       "group": "science",
