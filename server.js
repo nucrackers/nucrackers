@@ -48,6 +48,47 @@ function writeDb(data) {
 // API ROUTES
 // ==========================================
 
+// Admin: Synchronize/Restore students (Prevents data loss on Render restarts)
+app.post('/api/admin/students/sync', (req, res) => {
+  const { students } = req.body;
+  if (!Array.isArray(students)) return res.status(400).json({ success: false });
+  const db = readDb();
+  if (!Array.isArray(db.students)) db.students = [];
+  const existingRolls = new Set(db.students.map(s => String(s.roll).trim().toLowerCase()));
+  let addedCount = 0;
+  students.forEach(s => {
+    if (!s || !s.roll || !s.name) return;
+    const cleanRoll = String(s.roll).trim().toLowerCase();
+    if (!existingRolls.has(cleanRoll)) {
+      db.students.push({
+        roll: String(s.roll).trim(),
+        name: String(s.name).trim(),
+        group: String(s.group || 'science').trim().toLowerCase(),
+        status: s.status || 'approved',
+        registeredAt: s.registeredAt || new Date().toISOString()
+      });
+      existingRolls.add(cleanRoll);
+      addedCount++;
+    }
+  });
+  if (addedCount > 0) writeDb(db);
+  return res.json({ success: true, students: db.students });
+});
+
+app.put('/api/admin/students/bulk-replace', (req, res) => {
+  const { students } = req.body;
+  if (!Array.isArray(students)) return res.status(400).json({ success: false });
+  const db = readDb();
+  db.students = students.map(s => ({
+    roll: String(s.roll).trim(),
+    name: String(s.name).trim(),
+    group: String(s.group || 'science').trim().toLowerCase(),
+    status: s.status || 'approved',
+    registeredAt: s.registeredAt || new Date().toISOString()
+  }));
+  writeDb(db);
+  return res.json({ success: true, students: db.students });
+});
 // 1. Student Login via Unique Roll and Name
 app.post('/api/auth/login', (req, res) => {
   const { roll, name } = req.body;
