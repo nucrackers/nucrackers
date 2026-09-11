@@ -1,13 +1,5 @@
 {
-  "students": [
-    {
-      "roll": "103",
-      "name": "সুদীপ্ত কর্মকার",
-      "group": "science",
-      "status": "approved",
-      "registeredAt": "2026-09-01T10:10:00.000Z"
-    }
-  ],
+  "students": [],
   "exams": [
     {
       "id": "sci-01",
