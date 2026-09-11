@@ -1,5 +1,13 @@
 {
-  "students": [],
+  "students": [
+    {
+      "roll": "12701001",
+      "name": "uthso",
+      "group": "science",
+      "status": "approved",
+      "registeredAt": "2026-09-11T14:03:45.111Z"
+    }
+  ],
   "exams": [
     {
       "id": "sci-01",
