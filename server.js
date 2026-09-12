@@ -844,7 +844,197 @@ app.get('/api/admin/submissions', (req, res) => {
   const db = readDb();
   res.json({ success: true, submissions: db.submissions || [] });
 });
+// ==========================================
+// GOOGLE FORM & QUIZ TEXT PARSER UTILITIES
+// ==========================================
+function fetchHttpUrl(targetUrl, maxRedirects = 5) {
+  const httpModule = targetUrl.startsWith('https:') ? https : http;
+  return new Promise((resolve, reject) => {
+    if (maxRedirects <= 0) return reject(new Error('অতিরিক্ত রিডাইরেক্ট হয়েছে।'));
+    const req = httpModule.get(targetUrl, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+      },
+      timeout: 10000
+    }, (res) => {
+      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+        let nextUrl = res.headers.location;
+        if (!nextUrl.startsWith('http')) {
+          nextUrl = new URL(nextUrl, targetUrl).href;
+        }
+        return fetchHttpUrl(nextUrl, maxRedirects - 1).then(resolve).catch(reject);
+      }
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => resolve(data));
+    });
+    req.on('error', reject);
+    req.on('timeout', () => {
+      req.destroy();
+      reject(new Error('রিকোয়েস্ট টাইমআউট হয়েছে (সার্ভার রেসপন্স করেনি)।'));
+    });
+  });
+}
 
+function parseGoogleFormHtml(html) {
+  const match = html.match(/FB_PUBLIC_LOAD_DATA_\s*=\s*(\[.+?\]);\s*<\/script>/s);
+  if (!match) return null;
+  try {
+    const data = JSON.parse(match[1]);
+    const title = (data[1] && (data[1][8] || data[1][0])) || 'Google Form Exam';
+    const items = (data[1] && data[1][1]) || [];
+    const questions = [];
+
+    items.forEach((item) => {
+      const qText = item[1];
+      const rawOptions = item[4] && item[4][0] && item[4][0][1];
+      if (qText && Array.isArray(rawOptions) && rawOptions.length >= 2) {
+        const options = rawOptions.map(opt => String(opt[0] || '').trim()).filter(Boolean);
+        if (options.length >= 2) {
+          questions.push({
+            question: qText.trim(),
+            options: options.slice(0, 4),
+            correctIndex: 0,
+            correctAnswer: 0,
+            explanation: 'Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।'
+          });
+        }
+      }
+    });
+    return { title, questions };
+  } catch (e) {
+    return null;
+  }
+}
+
+function parseQuizRawText(text) {
+  const lines = text.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+  const questions = [];
+  let currentQ = null;
+
+  const qNumRegex = /^(\d+|[০-৯]+)[\.\:\-\)]\s*(.+)/;
+  const optRegex = /^(\([a-dA-Dক-ঘ১-৪]\)|\[[a-dA-Dক-ঘ১-৪]\]|[a-dA-Dক-ঘ১-৪][\.\:\-\)\s])\s*(.+)/;
+  const ansRegex = /^(ans|answer|উত্তর|সঠিক|সঠিক উত্তর)[\s\:\-\=]+([a-dA-D]|ক|খ|গ|ঘ|[১-৪]|1-4)/i;
+  const expRegex = /^(explanation|ব্যাখ্যা|নোট)[\s\:\-\=]+(.+)/i;
+
+  const charToIdx = {
+    'a': 0, 'b': 1, 'c': 2, 'd': 3,
+    'A': 0, 'B': 1, 'C': 2, 'D': 3,
+    'ক': 0, 'খ': 1, 'গ': 2, 'ঘ': 3,
+    '1': 0, '2': 1, '3': 2, '4': 3,
+    '১': 0, '২': 1, '৩': 2, '৪': 3
+  };
+
+  for (let line of lines) {
+    const qMatch = line.match(qNumRegex);
+    const optMatch = line.match(optRegex);
+    const ansMatch = line.match(ansRegex);
+    const expMatch = line.match(expRegex);
+
+    if (ansMatch && currentQ) {
+      const char = ansMatch[2];
+      if (charToIdx[char] !== undefined) {
+        currentQ.correctIndex = charToIdx[char];
+        currentQ.correctAnswer = charToIdx[char];
+      }
+    } else if (expMatch && currentQ) {
+      currentQ.explanation = expMatch[2];
+    } else if (optMatch && currentQ) {
+      currentQ.options.push(optMatch[2]);
+    } else if (qMatch) {
+      if (currentQ && currentQ.options.length >= 2) {
+        questions.push(currentQ);
+      }
+      currentQ = {
+        question: qMatch[2],
+        options: [],
+        correctIndex: 0,
+        correctAnswer: 0,
+        explanation: 'সংগৃহীত প্রশ্ন।'
+      };
+    } else if (currentQ && currentQ.options.length === 0) {
+      currentQ.question += ' ' + line;
+    }
+  }
+
+  if (currentQ && currentQ.options.length >= 2) {
+    questions.push(currentQ);
+  }
+
+  return questions;
+}
+
+// 18b. Admin: Parse Google Form URL, HTML, or raw text
+app.post('/api/admin/parse-google-form', async (req, res) => {
+  const { url, html, rawText } = req.body;
+
+  try {
+    if (url) {
+      const cleanUrl = String(url).trim();
+      if (!cleanUrl.startsWith('http://') && !cleanUrl.startsWith('https://')) {
+        return res.status(400).json({ success: false, message: 'সঠিক লিংক দিন (https://... দিয়ে শুরু হতে হবে)।' });
+      }
+
+      const fetchedHtml = await fetchHttpUrl(cleanUrl);
+      const parsed = parseGoogleFormHtml(fetchedHtml);
+      if (!parsed || parsed.questions.length === 0) {
+        return res.status(400).json({
+          success: false,
+          message: 'Google Form থেকে প্রশ্ন পাওয়া যায়নি। ফর্মটি পাবলিক আছে কিনা নিশ্চিত করুন অথবা মেথড ২ বা ৩ (HTML/টেক্সট পেস্ট) ব্যবহার করুন।'
+        });
+      }
+
+      return res.json({
+        success: true,
+        source: 'google-form-url',
+        title: parsed.title,
+        questions: parsed.questions,
+        totalFound: parsed.questions.length
+      });
+    }
+
+    if (html) {
+      const parsed = parseGoogleFormHtml(String(html));
+      if (!parsed || parsed.questions.length === 0) {
+        return res.status(400).json({
+          success: false,
+          message: 'প্রদত্ত HTML কোডে Google Form-এর কোনো প্রশ্ন পাওয়া যায়নি।'
+        });
+      }
+
+      return res.json({
+        success: true,
+        source: 'google-form-html',
+        title: parsed.title,
+        questions: parsed.questions,
+        totalFound: parsed.questions.length
+      });
+    }
+
+    if (rawText) {
+      const parsedQuestions = parseQuizRawText(String(rawText));
+      if (!parsedQuestions || parsedQuestions.length === 0) {
+        return res.status(400).json({
+          success: false,
+          message: 'টেক্সট থেকে কোনো প্রশ্ন ফরম্যাট শনাক্ত করা যায়নি। প্রশ্ন নম্বর (১., ২.) ও অপশন (ক, খ, গ, ঘ) থাকা নিশ্চিত করুন।'
+        });
+      }
+
+      return res.json({
+        success: true,
+        source: 'raw-text',
+        title: 'ইমপোর্টকৃত মডেল টেস্ট',
+        questions: parsedQuestions,
+        totalFound: parsedQuestions.length
+      });
+    }
+
+    return res.status(400).json({ success: false, message: 'Google Form লিংক, HTML অথবা প্রশ্নের টেক্সট প্রদান করুন।' });
+  } catch (err) {
+    console.error('Google form parse error:', err);
+    res.status(500).json({ success: false, message: 'পার্সিংয়ে সমস্যা হয়েছে: ' + err.message });
+  }
+});
 // Serve static frontend files
 app.use(express.static(__dirname, { extensions: ['html'] }));
 
