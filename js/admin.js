@@ -372,7 +372,23 @@ document.addEventListener('DOMContentLoaded', () => {
       examSelect.innerHTML = '<option value="">কোনো পরীক্ষা সক্রিয় নেই</option>';
       examQuestionsContainer.innerHTML = '<div class="alert alert-info">কোনো পরীক্ষা পাওয়া যায়নি। নতুন পরীক্ষা তৈরি করুন।</div>';
       return;
-      currentSelectedExamId = examSelect.value;
+    }
+
+    const previousVal = examSelect.value;
+
+    examSelect.innerHTML = cachedExams.map(ex => {
+      const groupEmoji = ex.group === 'science' ? '🔬' : ex.group === 'arts' ? '🎨' : '📊';
+      const qCount = (ex.questions || []).length;
+      return `<option value="${ex.id}">${groupEmoji} [${ex.group.toUpperCase()}] ${escapeHtml(ex.title)} (${qCount}টি প্রশ্ন)</option>`;
+    }).join('');
+
+    if (previousVal && cachedExams.some(e => e.id === previousVal)) {
+      examSelect.value = previousVal;
+    } else {
+      examSelect.value = cachedExams[0].id;
+    }
+
+    currentSelectedExamId = examSelect.value;
     const importTargetExamSelect = document.getElementById('importTargetExamSelect');
     if (importTargetExamSelect) {
       importTargetExamSelect.innerHTML = examSelect.innerHTML;
@@ -380,6 +396,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     renderSelectedExamQuestions();
   }
+
+  examSelect.addEventListener('change', () => {
+    currentSelectedExamId = examSelect.value;
+    const importTargetExamSelect = document.getElementById('importTargetExamSelect');
+    if (importTargetExamSelect) {
+      importTargetExamSelect.innerHTML = examSelect.innerHTML;
+      importTargetExamSelect.value = currentSelectedExamId;
+    }
+    renderSelectedExamQuestions();
+  });
 
   examSelect.addEventListener('change', () => {
     currentSelectedExamId = examSelect.value;
