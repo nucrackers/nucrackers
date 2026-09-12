@@ -166,18 +166,6 @@
           ],
           "correctIndex": 0,
           "explanation": "শূন্য মাধ্যমে আলোর বেগ প্রায় ৩ × ১০^৮ মিটার/সেকেন্ড বা ৩,০০,০০০ কিলোমিটার/সেকেন্ড।"
-        },
-        {
-          "id": 12,
-          "question": "Q",
-          "options": [
-            "A",
-            "B",
-            "C",
-            "D"
-          ],
-          "correctAnswer": 0,
-          "explanation": ""
         }
       ]
     },
