@@ -509,6 +509,7 @@ document.addEventListener('DOMContentLoaded', () => {
           question,
           options: [opt0, opt1, opt2, opt3],
           correctIndex,
+          correctAnswer: correctIndex,
           explanation
         })
       });
