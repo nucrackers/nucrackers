@@ -408,37 +408,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   examSelect.addEventListener('change', () => {
-    currentSelectedExamId = examSelect.value;
-    const importTargetExamSelect = document.getElementById('importTargetExamSelect');
-    if (importTargetExamSelect) {
-      importTargetExamSelect.value = currentSelectedExamId;
-    }
-    renderSelectedExamQuestions();
-  });
-    }
-
-    const previousVal = examSelect.value;
-
-    examSelect.innerHTML = cachedExams.map(ex => {
-      const groupEmoji = ex.group === 'science' ? '🔬' : ex.group === 'arts' ? '🎨' : '📊';
-      const qCount = (ex.questions || []).length;
-      return `<option value="${ex.id}">${groupEmoji} [${ex.group.toUpperCase()}] ${escapeHtml(ex.title)} (${qCount}টি প্রশ্ন)</option>`;
-    }).join('');
-
-    if (previousVal && cachedExams.some(e => e.id === previousVal)) {
-      examSelect.value = previousVal;
-    } else {
-      examSelect.value = cachedExams[0].id;
-    }
-
-    currentSelectedExamId = examSelect.value;
-    renderSelectedExamQuestions();
-  }
-
-  examSelect.addEventListener('change', () => {
-    currentSelectedExamId = examSelect.value;
-    renderSelectedExamQuestions();
-  });
+  
 
   // Render questions of chosen exam
   function renderSelectedExamQuestions() {
