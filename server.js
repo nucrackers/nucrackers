@@ -1,6 +1,8 @@
 import express from 'express';
 import path from 'path';
 import fs from 'fs';
+import https from 'https';
+import http from 'http';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -568,6 +570,250 @@ app.post('/api/admin/exams/:id/questions', (req, res) => {
   if (!question || !Array.isArray(options) || options.length < 2 || correctAnswer === undefined) {
     return res.status(400).json({ success: false, message: 'প্রশ্ন, অপশন এবং সঠিক উত্তর আবশ্যক।' });
   }
+  // Helper to fetch URL with redirects for Google Form
+function fetchHttpUrl(targetUrl, maxRedirects = 5) {
+  return new Promise((resolve, reject) => {
+    if (maxRedirects === 0) return reject(new Error('অতিরিক্ত রিডাইরেক্ট হয়েছে।'));
+    const protocol = targetUrl.startsWith('https') ? https : http;
+    const req = protocol.get(targetUrl, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+      },
+      timeout: 9000
+    }, (res) => {
+      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+        let nextUrl = res.headers.location;
+        if (!nextUrl.startsWith('http')) {
+          nextUrl = new URL(nextUrl, targetUrl).href;
+        }
+        return fetchHttpUrl(nextUrl, maxRedirects - 1).then(resolve).catch(reject);
+      }
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => resolve(data));
+    });
+    req.on('error', reject);
+    req.on('timeout', () => {
+      req.destroy();
+      reject(new Error('রিকোয়েস্ট টাইমআউট হয়েছে (সার্ভার রেসপন্স করেনি)।'));
+    });
+  });
+}
+
+function parseGoogleFormHtml(html) {
+  const match = html.match(/FB_PUBLIC_LOAD_DATA_\s*=\s*(\[.+?\]);\s*<\/script>/s);
+  if (!match) return null;
+  try {
+    const data = JSON.parse(match[1]);
+    const title = (data[1] && (data[1][8] || data[1][0])) || 'Google Form Exam';
+    const items = (data[1] && data[1][1]) || [];
+    const questions = [];
+
+    items.forEach((item, idx) => {
+      const qText = item[1];
+      const rawOptions = item[4] && item[4][0] && item[4][0][1];
+      if (qText && Array.isArray(rawOptions) && rawOptions.length >= 2) {
+        const options = rawOptions.map(opt => String(opt[0] || '').trim()).filter(Boolean);
+        if (options.length >= 2) {
+          questions.push({
+            question: qText.trim(),
+            options: options.slice(0, 4),
+            correctIndex: 0,
+            explanation: 'Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।'
+          });
+        }
+      }
+    });
+    return { title, questions };
+  } catch (e) {
+    return null;
+  }
+}
+
+function parseQuizRawText(text) {
+  const lines = text.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+  const questions = [];
+  let currentQ = null;
+
+  const qNumRegex = /^(\d+|[০-৯]+)[\.\:\-\)]\s*(.+)/;
+  const optRegex = /^(\([a-dA-Dক-ঘ১-৪]\)|\[[a-dA-Dক-ঘ১-৪]\]|[a-dA-Dক-ঘ১-৪][\.\:\-\)\s])\s*(.+)/;
+  const ansRegex = /^(ans|answer|উত্তর|সঠিক|সঠিক উত্তর)[\s\:\-\=]+([a-dA-D]|ক|খ|গ|ঘ|[১-৪]|1-4)/i;
+  const expRegex = /^(explanation|ব্যাখ্যা|নোট)[\s\:\-\=]+(.+)/i;
+
+  const charToIdx = {
+    'a': 0, 'b': 1, 'c': 2, 'd': 3,
+    'A': 0, 'B': 1, 'C': 2, 'D': 3,
+    'ক': 0, 'খ': 1, 'গ': 2, 'ঘ': 3,
+    '1': 0, '2': 1, '3': 2, '4': 3,
+    '১': 0, '২': 1, '৩': 2, '৪': 3
+  };
+
+  for (let line of lines) {
+    const qMatch = line.match(qNumRegex);
+    const optMatch = line.match(optRegex);
+    const ansMatch = line.match(ansRegex);
+    const expMatch = line.match(expRegex);
+
+    if (ansMatch && currentQ) {
+      const char = ansMatch[2];
+      if (charToIdx[char] !== undefined) {
+        currentQ.correctIndex = charToIdx[char];
+      }
+    } else if (expMatch && currentQ) {
+      currentQ.explanation = expMatch[2];
+    } else if (optMatch && currentQ) {
+      currentQ.options.push(optMatch[2]);
+    } else if (qMatch) {
+      if (currentQ && currentQ.options.length >= 2) {
+        questions.push(currentQ);
+      }
+      currentQ = {
+        question: qMatch[2],
+        options: [],
+        correctIndex: 0,
+        explanation: 'Google Drive / Form থেকে সংগৃহীত।'
+      };
+    } else if (currentQ && currentQ.options.length === 0) {
+      currentQ.question += ' ' + line;
+    }
+  }
+
+  if (currentQ && currentQ.options.length >= 2) {
+    questions.push(currentQ);
+  }
+
+  return questions;
+}
+
+// 18b. Admin: Parse Google Form URL, HTML, or raw text
+app.post('/api/admin/parse-google-form', async (req, res) => {
+  const { url, html, rawText } = req.body;
+
+  try {
+    if (url) {
+      const cleanUrl = String(url).trim();
+      if (!cleanUrl.startsWith('http://') && !cleanUrl.startsWith('https://')) {
+        return res.status(400).json({ success: false, message: 'সঠিক লিংক দিন (https://... দিয়ে শুরু হতে হবে)।' });
+      }
+
+      const fetchedHtml = await fetchHttpUrl(cleanUrl);
+      const parsed = parseGoogleFormHtml(fetchedHtml);
+      if (!parsed || parsed.questions.length === 0) {
+        return res.status(400).json({
+          success: false,
+          message: 'Google Form থেকে কোনো বহুনির্বাচনী প্রশ্ন পাওয়া যায়নি। ফর্মটি পাবলিক আছে কিনা নিশ্চিত করুন অথবা মেথড ২ বা ৩ (HTML/টেক্সট পেস্ট) ব্যবহার করুন।'
+        });
+      }
+
+      return res.json({
+        success: true,
+        source: 'google-form-url',
+        title: parsed.title,
+        questions: parsed.questions,
+        totalFound: parsed.questions.length
+      });
+    }
+
+    if (html) {
+      const parsed = parseGoogleFormHtml(String(html));
+      if (!parsed || parsed.questions.length === 0) {
+        return res.status(400).json({
+          success: false,
+          message: 'প্রদত্ত HTML কোডে Google Form-এর কোনো প্রশ্ন পাওয়া যায়নি।'
+        });
+      }
+
+      return res.json({
+        success: true,
+        source: 'google-form-html',
+        title: parsed.title,
+        questions: parsed.questions,
+        totalFound: parsed.questions.length
+      });
+    }
+
+    if (rawText) {
+      const parsedQuestions = parseQuizRawText(String(rawText));
+      if (!parsedQuestions || parsedQuestions.length === 0) {
+        return res.status(400).json({
+          success: false,
+          message: 'টেক্সট থেকে কোনো প্রশ্ন ফরম্যাট শনাক্ত করা যায়নি। প্রশ্ন নম্বর (১., ২. বা 1., 2.) ও অপশন (ক, খ, গ, ঘ বা A, B, C, D) থাকা নিশ্চিত করুন।'
+        });
+      }
+
+      return res.json({
+        success: true,
+        source: 'raw-text',
+        title: 'ইমপোর্টকৃত মডেল টেস্ট',
+        questions: parsedQuestions,
+        totalFound: parsedQuestions.length
+      });
+    }
+
+    return res.status(400).json({ success: false, message: 'Google Form লিংক, HTML অথবা প্রশ্নের টেক্সট প্রদান করুন।' });
+  } catch (err) {
+    console.error('Google form parse error:', err);
+    res.status(500).json({ success: false, message: 'পার্সিংয়ে সমস্যা হয়েছে: ' + err.message });
+  }
+});
+
+// 18c. Admin: Bulk add questions to exam
+app.post('/api/admin/exams/:id/bulk-questions', (req, res) => {
+  const { id } = req.params;
+  const { questions } = req.body;
+
+  if (!Array.isArray(questions) || questions.length === 0) {
+    return res.status(400).json({ success: false, message: 'যোগ করার মতো কোনো প্রশ্ন পাওয়া যায়নি।' });
+  }
+
+  const db = readDb();
+  const exam = (db.exams || []).find(e => e.id === id);
+
+  if (!exam) {
+    return res.status(404).json({ success: false, message: 'পরীক্ষা খুঁজে পাওয়া যায়নি।' });
+  }
+
+  if (!Array.isArray(exam.questions)) exam.questions = [];
+
+  let nextId = exam.questions.reduce((max, q) => Math.max(max, Number(q.id) || 0), 0) + 1;
+  let addedCount = 0;
+
+  for (const q of questions) {
+    if (!q.question || !Array.isArray(q.options) || q.options.length < 2) continue;
+
+    const cleanOptions = q.options.map(o => String(o).trim()).filter(Boolean);
+    if (cleanOptions.length < 2) continue;
+
+    let idx = Number(q.correctIndex);
+    if (isNaN(idx) || idx < 0 || idx >= cleanOptions.length) {
+      idx = 0;
+    }
+
+    exam.questions.push({
+      id: nextId++,
+      question: String(q.question).trim(),
+      options: cleanOptions,
+      correctIndex: idx,
+      explanation: q.explanation ? String(q.explanation).trim() : 'কোনো ব্যাখ্যা দেওয়া হয়নি।'
+    });
+    addedCount++;
+  }
+
+  if (addedCount === 0) {
+    return res.status(400).json({ success: false, message: 'কোনো বৈধ প্রশ্ন যুক্ত করা সম্ভব হয়নি।' });
+  }
+
+  exam.totalMarks = exam.questions.length;
+  writeDb(db);
+
+  res.status(201).json({
+    success: true,
+    message: `সফলভাবে ${addedCount}টি প্রশ্ন মড়েল টেস্টে যুক্ত করা হয়েছে!`,
+    addedCount,
+    totalQuestions: exam.questions.length,
+    totalMarks: exam.totalMarks
+  });
+});
   const db = readDb();
   const exam = (db.exams || []).find(e => String(e.id) === String(id));
   if (!exam) return res.status(404).json({ success: false, message: 'পরীক্ষাটি পাওয়া যায়নি।' });
