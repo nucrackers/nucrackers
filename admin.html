@@ -332,9 +332,14 @@
                 <div id="selectedExamBadge" class="mt-2"></div>
               </div>
               <div class="col-md-5 col-lg-4 text-md-end">
-                <button type="button" class="btn btn-outline-primary rounded-pill px-4" data-bs-toggle="modal" data-bs-target="#createExamModal">
-                  <i class="fa-solid fa-plus-circle me-1"></i> নতুন মডেল টেস্ট তৈরি করুন
+                <div class="col-md-5 col-lg-4 text-md-end d-flex flex-wrap justify-content-md-end gap-2">
+                <button type="button" class="btn btn-success rounded-pill px-3 shadow-sm" data-bs-toggle="modal" data-bs-target="#googleFormImportModal">
+                  <i class="fa-brands fa-google me-1"></i> Google Form ইমপোর্ট
                 </button>
+                <button type="button" class="btn btn-outline-primary rounded-pill px-3" data-bs-toggle="modal" data-bs-target="#createExamModal">
+                  <i class="fa-solid fa-plus-circle me-1"></i> নতুন মডেল টেস্ট
+                </button>
+                </div>
               </div>
             </div>
           </div>
@@ -352,7 +357,12 @@
                     <span class="text-muted small">নির্বাচিত পরীক্ষায় প্রশ্ন ও ৪টি অপশন যোগ হবে</span>
                   </div>
                 </div>
-
+<div class="alert alert-info py-2 px-3 small d-flex align-items-center justify-content-between mb-3 rounded-3 border-0 bg-primary bg-opacity-10 text-primary">
+                  <div><i class="fa-brands fa-google me-1"></i> গুগল ফর্ম থেকে সব প্রশ্ন এক ক্লিকে আনুন</div>
+                  <button type="button" class="btn btn-sm btn-primary rounded-pill px-3 py-0 fw-bold" data-bs-toggle="modal" data-bs-target="#googleFormImportModal" style="font-size: 0.75rem; height: 26px;">
+                    ইমপোর্ট
+                  </button>
+</div>
                 <div id="questionAlert" class="alert d-none"></div>
 
                 <form id="addQuestionForm">
@@ -527,7 +537,142 @@
       </div>
     </div>
   </div>
+<!-- GOOGLE FORM / DRIVE IMPORT MODAL -->
+  <div class="modal fade" id="googleFormImportModal" tabindex="-1" aria-labelledby="googleFormImportModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+      <div class="modal-content border-0 shadow-lg rounded-4">
+        <div class="modal-header border-0 bg-primary text-white p-4">
+          <div class="d-flex align-items-center gap-3">
+            <div class="bg-white text-primary rounded-circle p-2 d-flex align-items-center justify-content-center" style="width:44px; height:44px; font-size:22px;">
+              <i class="fa-brands fa-google"></i>
+            </div>
+            <div>
+              <h5 class="modal-title fw-bold mb-0" id="googleFormImportModalLabel">Google Form ও Drive থেকে প্রশ্ন ইমপোর্ট</h5>
+              <small class="text-white-50">গুগল ফর্মের প্রশ্ন সরাসরি আপনার মডেল টেস্টে স্বয়ংক্রিয়ভাবে যুক্ত করুন</small>
+            </div>
+          </div>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
 
+        <div class="modal-body p-4">
+          <!-- Target Exam Selection -->
+          <div class="bg-light p-3 rounded-3 mb-4 border">
+            <label for="importTargetExamSelect" class="form-label fw-bold text-dark small mb-1">
+              <i class="fa-solid fa-bullseye text-primary me-1"></i> কোন মডেল টেস্টে প্রশ্ন যুক্ত করতে চান?
+            </label>
+            <select class="form-select fw-semibold" id="importTargetExamSelect">
+              <!-- Populated dynamically -->
+            </select>
+            <div class="form-text small text-muted mt-1">নির্বাচিত মডেল টেস্টে নতুন প্রশ্নগুলো সরাসরি যুক্ত হয়ে যাবে এবং পূর্ণমান স্বয়ংক্রিয়ভাবে আপডেট হবে।</div>
+          </div>
+
+          <!-- Tabs for Import Methods -->
+          <ul class="nav nav-pills nav-fill mb-3" id="importMethodTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active rounded-pill fw-semibold py-2" id="method-url-tab" data-bs-toggle="pill" data-bs-target="#method-url" type="button" role="tab">
+                <i class="fa-solid fa-link me-1"></i> ১. Google Form লিংক
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link rounded-pill fw-semibold py-2" id="method-text-tab" data-bs-toggle="pill" data-bs-target="#method-text" type="button" role="tab">
+                <i class="fa-solid fa-paste me-1"></i> ২. প্রশ্ন কপি-পেস্ট
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link rounded-pill fw-semibold py-2" id="method-file-tab" data-bs-toggle="pill" data-bs-target="#method-file" type="button" role="tab">
+                <i class="fa-solid fa-file-arrow-up me-1"></i> ৩. ফাইল আপলোড
+              </button>
+            </li>
+          </ul>
+
+          <div class="tab-content" id="importMethodTabContent">
+            <!-- METHOD 1: GOOGLE FORM URL -->
+            <div class="tab-pane fade show active" id="method-url" role="tabpanel">
+              <div class="mb-3">
+                <label for="gformUrlInput" class="form-label fw-bold small text-muted">Google Form-এর লিংক দিন (Public Link) *</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-white"><i class="fa-solid fa-globe text-primary"></i></span>
+                  <input type="url" class="form-control" id="gformUrlInput" placeholder="https://forms.gle/... বা https://docs.google.com/forms/d/e/.../viewform">
+                </div>
+                <div class="form-text small text-muted">
+                  <i class="fa-solid fa-info-circle me-1"></i> গুগল ফর্মের 'Send' বাটনে ক্লিক করে পাওয়া শর্ট লিংক বা ফুল ভিউ লিংক দিন।
+                </div>
+              </div>
+              <button type="button" class="btn btn-primary rounded-pill px-4 fw-bold" id="btnFetchGForm">
+                <i class="fa-solid fa-magnifying-glass me-1"></i> ফর্ম থেকে প্রশ্ন আনুন
+              </button>
+            </div>
+
+            <!-- METHOD 2: PASTE TEXT / QUESTIONS -->
+            <div class="tab-pane fade" id="method-text" role="tabpanel">
+              <div class="mb-3">
+                <label for="gformRawTextInput" class="form-label fw-bold small text-muted">Google Drive বা ডক থেকে কপি করা প্রশ্ন পেস্ট করুন *</label>
+                <textarea class="form-control font-monospace" id="gformRawTextInput" rows="8" placeholder="উদাহরণ:
+১. পরমাণুর নিউক্লিয়াসে কি থাকে?
+(ক) প্রোটন ও নিউট্রন
+(খ) ইলেকট্রন ও প্রোটন
+(গ) শুধু নিউট্রন
+(ঘ) শুধু ইলেকট্রন
+উত্তর: ক
+ব্যাখ্যা: পরমাণুর নিউক্লিয়াসে ধনাত্মক চার্জযুক্ত প্রোটন ও চার্জহীন নিউট্রন থাকে।
+
+2. What is the capital of Bangladesh?
+A) Dhaka
+B) Chittagong
+C) Khulna
+D) Sylhet
+Answer: A"></textarea>
+                <div class="form-text small text-muted">
+                  বাংলা (ক, খ, গ, ঘ) অথবা ইংরেজি (A, B, C, D) যেকোনো ফরম্যাটে প্রশ্ন পেস্ট করতে পারবেন।
+                </div>
+              </div>
+              <button type="button" class="btn btn-primary rounded-pill px-4 fw-bold" id="btnParseRawText">
+                <i class="fa-solid fa-wand-magic-sparkles me-1"></i> প্রশ্নগুলো পার্স করুন
+              </button>
+            </div>
+
+            <!-- METHOD 3: FILE UPLOAD -->
+            <div class="tab-pane fade" id="method-file" role="tabpanel">
+              <div class="mb-3">
+                <label for="gformFileInput" class="form-label fw-bold small text-muted">Google Form / Drive থেকে এক্সপোর্ট করা ফাইল (.txt, .csv, .json, .html) আপলোড করুন</label>
+                <input class="form-control" type="file" id="gformFileInput" accept=".txt,.csv,.json,.html,.htm">
+                <div class="form-text small text-muted">আপনার ফর্মের প্রশ্ন বা রেসপন্স ফাইল আপলোড করলেই সিস্টেম নিজে থেকে প্রশ্ন আলাদা করে নেবে।</div>
+              </div>
+              <button type="button" class="btn btn-primary rounded-pill px-4 fw-bold" id="btnProcessFile">
+                <i class="fa-solid fa-upload me-1"></i> ফাইল থেকে প্রশ্ন আনুন
+              </button>
+            </div>
+          </div>
+
+          <!-- Alert area -->
+          <div id="importAlert" class="alert d-none mt-3"></div>
+
+          <!-- Parsed Questions Preview Area -->
+          <div id="parsedQuestionsPreviewContainer" class="d-none mt-4 border-top pt-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <div>
+                <h6 class="fw-bold text-dark mb-0" id="parsedCountTitle">এক্সট্র্যাক্টকৃত প্রশ্নসমূহ</h6>
+                <small class="text-muted">প্রশ্নগুলো দেখে নিন এবং সঠিক উত্তর ঠিক আছে কিনা যাচাই করুন</small>
+              </div>
+              <span class="badge bg-success px-3 py-2 rounded-pill fs-6" id="parsedQuestionsBadge">০টি প্রশ্ন</span>
+            </div>
+
+            <div id="parsedQuestionsList" style="max-height: 380px; overflow-y: auto;" class="pe-1">
+              <!-- Rendered preview cards -->
+            </div>
+
+            <div class="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
+              <button type="button" class="btn btn-outline-secondary rounded-pill px-4" data-bs-dismiss="modal">বাতিল</button>
+              <button type="button" class="btn btn-success rounded-pill px-4 fw-bold shadow" id="btnCommitBulkQuestions">
+                <i class="fa-solid fa-check-double me-1"></i> এই মডেল টেস্টে যুক্ত করুন
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+              </div>
   <!-- FOOTER -->
   <footer class="py-4 mt-5 bg-white border-top">
     <div class="container text-center text-muted small">
