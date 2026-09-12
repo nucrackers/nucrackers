@@ -372,6 +372,23 @@ document.addEventListener('DOMContentLoaded', () => {
       examSelect.innerHTML = '<option value="">কোনো পরীক্ষা সক্রিয় নেই</option>';
       examQuestionsContainer.innerHTML = '<div class="alert alert-info">কোনো পরীক্ষা পাওয়া যায়নি। নতুন পরীক্ষা তৈরি করুন।</div>';
       return;
+      currentSelectedExamId = examSelect.value;
+    const importTargetExamSelect = document.getElementById('importTargetExamSelect');
+    if (importTargetExamSelect) {
+      importTargetExamSelect.innerHTML = examSelect.innerHTML;
+      importTargetExamSelect.value = currentSelectedExamId;
+    }
+    renderSelectedExamQuestions();
+  }
+
+  examSelect.addEventListener('change', () => {
+    currentSelectedExamId = examSelect.value;
+    const importTargetExamSelect = document.getElementById('importTargetExamSelect');
+    if (importTargetExamSelect) {
+      importTargetExamSelect.value = currentSelectedExamId;
+    }
+    renderSelectedExamQuestions();
+  });
     }
 
     const previousVal = examSelect.value;
@@ -678,7 +695,299 @@ document.addEventListener('DOMContentLoaded', () => {
       submissionsTableBody.innerHTML = `<tr><td colspan="7" class="text-center py-3 text-danger"><i class="fa-solid fa-triangle-exclamation me-1"></i>${err.message}</td></tr>`;
     }
   }
+// ==========================================
+  // GOOGLE FORM & DRIVE QUESTION IMPORTER
+  // ==========================================
+  let stagedImportQuestions = [];
 
+  const importAlert = document.getElementById('importAlert');
+  const parsedPreviewContainer = document.getElementById('parsedQuestionsPreviewContainer');
+  const parsedQuestionsList = document.getElementById('parsedQuestionsList');
+  const parsedQuestionsBadge = document.getElementById('parsedQuestionsBadge');
+  const btnCommitBulkQuestions = document.getElementById('btnCommitBulkQuestions');
+  const importModalEl = document.getElementById('googleFormImportModal');
+
+  // Method 1: Fetch Google Form by URL
+  document.getElementById('btnFetchGForm')?.addEventListener('click', async () => {
+    const urlInput = document.getElementById('gformUrlInput');
+    const url = urlInput ? urlInput.value.trim() : '';
+    const btn = document.getElementById('btnFetchGForm');
+
+    hideAlert(importAlert);
+    if (!url) {
+      showAlert(importAlert, 'অনুগ্রহ করে একটি সঠিক Google Form লিংক প্রবেশ করান।', 'warning');
+      return;
+    }
+
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> প্রশ্ন সংগ্রহ করা হচ্ছে...';
+
+    try {
+      const res = await fetch('/api/admin/parse-google-form', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url })
+      });
+
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.message || 'Google Form থেকে প্রশ্ন সংগ্রহ করা যায়নি।');
+      }
+
+      showAlert(importAlert, `✅ Google Form থেকে সফলভাবে <strong>${data.questions.length}</strong>টি প্রশ্ন উদ্ধার করা হয়েছে! নিচের তালিকায় দেখে নিশ্চিত করুন।`, 'success');
+      renderImportPreview(data.questions);
+    } catch (err) {
+      showAlert(importAlert, `<i class="fa-solid fa-triangle-exclamation me-1"></i> ${err.message}`, 'danger');
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fa-solid fa-magnifying-glass me-1"></i> ফর্ম থেকে প্রশ্ন আনুন';
+    }
+  });
+
+  // Method 2: Parse Raw Text / Copy-Pasted Quiz
+  document.getElementById('btnParseRawText')?.addEventListener('click', async () => {
+    const rawTextInput = document.getElementById('gformRawTextInput');
+    const rawText = rawTextInput ? rawTextInput.value.trim() : '';
+    const btn = document.getElementById('btnParseRawText');
+
+    hideAlert(importAlert);
+    if (!rawText) {
+      showAlert(importAlert, 'প্রশ্ন এবং অপশনগুলো টেক্সট বক্সে পেস্ট করুন।', 'warning');
+      return;
+    }
+
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> পার্স করা হচ্ছে...';
+
+    try {
+      const res = await fetch('/api/admin/parse-google-form', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ rawText })
+      });
+
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.message || 'টেক্সট থেকে প্রশ্ন পার্স করা যায়নি।');
+      }
+
+      showAlert(importAlert, `✅ টেক্সট থেকে সফলভাবে <strong>${data.questions.length}</strong>টি প্রশ্ন উদ্ধার করা হয়েছে!`, 'success');
+      renderImportPreview(data.questions);
+    } catch (err) {
+      showAlert(importAlert, `<i class="fa-solid fa-triangle-exclamation me-1"></i> ${err.message}`, 'danger');
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles me-1"></i> প্রশ্নগুলো পার্স করুন';
+    }
+  });
+
+  // Method 3: File Upload (CSV, TXT, JSON, HTML)
+  document.getElementById('btnProcessFile')?.addEventListener('click', () => {
+    const fileInput = document.getElementById('gformFileInput');
+    const file = fileInput?.files?.[0];
+    const btn = document.getElementById('btnProcessFile');
+
+    hideAlert(importAlert);
+    if (!file) {
+      showAlert(importAlert, 'অনুগ্রহ করে একটি ফাইল নির্বাচন করুন।', 'warning');
+      return;
+    }
+
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> ফাইল পড়া হচ্ছে...';
+
+    const reader = new FileReader();
+    reader.onload = async (e) => {
+      const content = e.target.result;
+      try {
+        let payload = {};
+        if (file.name.endsWith('.html') || file.name.endsWith('.htm')) {
+          payload = { html: content };
+        } else if (file.name.endsWith('.json')) {
+          try {
+            const parsedJson = JSON.parse(content);
+            if (Array.isArray(parsedJson)) {
+              payload = { questions: parsedJson };
+            } else {
+              payload = { rawText: content };
+            }
+          } catch {
+            payload = { rawText: content };
+          }
+        } else {
+          payload = { rawText: content };
+        }
+
+        const res = await fetch('/api/admin/parse-google-form', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+        if (!res.ok || !data.success) {
+          throw new Error(data.message || 'ফাইল থেকে প্রশ্ন বের করা যায়নি।');
+        }
+
+        showAlert(importAlert, `✅ ফাইল থেকে সফলভাবে <strong>${data.questions.length}</strong>টি প্রশ্ন উদ্ধার করা হয়েছে!`, 'success');
+        renderImportPreview(data.questions);
+      } catch (err) {
+        showAlert(importAlert, `<i class="fa-solid fa-triangle-exclamation me-1"></i> ${err.message}`, 'danger');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-upload me-1"></i> ফাইল থেকে প্রশ্ন আনুন';
+      }
+    };
+
+    reader.onerror = () => {
+      showAlert(importAlert, 'ফাইল পড়তে ত্রুটি হয়েছে।', 'danger');
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fa-solid fa-upload me-1"></i> ফাইল থেকে প্রশ্ন আনুন';
+    };
+
+    reader.readAsText(file);
+  });
+
+  // Render questions preview inside modal
+  function renderImportPreview(questions) {
+    stagedImportQuestions = questions || [];
+    if (stagedImportQuestions.length === 0) {
+      parsedPreviewContainer?.classList.add('d-none');
+      return;
+    }
+
+    parsedPreviewContainer?.classList.remove('d-none');
+    if (parsedQuestionsBadge) {
+      parsedQuestionsBadge.textContent = `${stagedImportQuestions.length}টি প্রশ্ন`;
+    }
+
+    const optLetters = ['ক', 'খ', 'গ', 'ঘ'];
+
+    parsedQuestionsList.innerHTML = stagedImportQuestions.map((q, qIndex) => {
+      const optionsHtml = (q.options || []).map((opt, optIndex) => {
+        const isChecked = (q.correctIndex || 0) === optIndex;
+        return `
+          <div class="col-sm-6">
+            <div class="form-check p-2 border rounded-3 bg-white">
+              <input class="form-check-input ms-0 me-2 stage-correct-radio" type="radio" 
+                     name="stage_q_correct_${qIndex}" 
+                     id="stage_q_${qIndex}_opt_${optIndex}" 
+                     data-q-idx="${qIndex}" 
+                     value="${optIndex}" ${isChecked ? 'checked' : ''}>
+              <label class="form-check-label small fw-semibold text-dark d-flex align-items-center" for="stage_q_${qIndex}_opt_${optIndex}">
+                <span class="badge bg-light text-primary border me-1">${optLetters[optIndex] || optIndex + 1}</span>
+                <span>${escapeHtml(opt)}</span>
+              </label>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      return `
+        <div class="card p-3 mb-3 border bg-light rounded-3 stage-q-card" id="stage_card_${qIndex}">
+          <div class="d-flex justify-content-between align-items-start mb-2">
+            <span class="badge bg-primary rounded-pill px-3 py-1">প্রশ্ন ${qIndex + 1}</span>
+            <button type="button" class="btn btn-outline-danger btn-sm rounded-pill px-2 py-0 remove-stage-q-btn" data-q-idx="${qIndex}" title="এই প্রশ্নটি বাদ দিন">
+              <i class="fa-solid fa-xmark"></i> বাদ দিন
+            </button>
+          </div>
+          <div class="fw-bold text-dark mb-2">${escapeHtml(q.question)}</div>
+          <div class="row g-2 mb-2">
+            ${optionsHtml}
+          </div>
+          ${q.explanation ? `<div class="small text-muted fst-italic"><i class="fa-solid fa-circle-info me-1 text-primary"></i>${escapeHtml(q.explanation)}</div>` : ''}
+        </div>
+      `;
+    }).join('');
+
+    // Attach listener to radio buttons to update correctIndex
+    parsedQuestionsList.querySelectorAll('.stage-correct-radio').forEach(radio => {
+      radio.addEventListener('change', (e) => {
+        const qIdx = parseInt(e.target.getAttribute('data-q-idx'), 10);
+        const optIdx = parseInt(e.target.value, 10);
+        if (stagedImportQuestions[qIdx]) {
+          stagedImportQuestions[qIdx].correctIndex = optIdx;
+        }
+      });
+    });
+
+    // Attach listener to remove individual question
+    parsedQuestionsList.querySelectorAll('.remove-stage-q-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const qIdx = parseInt(e.currentTarget.getAttribute('data-q-idx'), 10);
+        stagedImportQuestions.splice(qIdx, 1);
+        renderImportPreview(stagedImportQuestions);
+      });
+    });
+
+    // Scroll to preview container smoothly
+    parsedPreviewContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  // Commit all staged questions to target exam
+  btnCommitBulkQuestions?.addEventListener('click', async () => {
+    const targetExamSelect = document.getElementById('importTargetExamSelect');
+    const targetExamId = targetExamSelect ? targetExamSelect.value : currentSelectedExamId;
+
+    hideAlert(importAlert);
+
+    if (!targetExamId) {
+      showAlert(importAlert, 'অনুগ্রহ করে একটি মডেল টেস্ট নির্বাচন করুন।', 'warning');
+      return;
+    }
+
+    if (!stagedImportQuestions || stagedImportQuestions.length === 0) {
+      showAlert(importAlert, 'যুক্ত করার মতো কোনো প্রশ্ন নেই।', 'warning');
+      return;
+    }
+
+    btnCommitBulkQuestions.disabled = true;
+    btnCommitBulkQuestions.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> মডেল টেস্টে যুক্ত হচ্ছে...';
+
+    try {
+      const res = await fetch(`/api/admin/exams/${targetExamId}/bulk-questions`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ questions: stagedImportQuestions })
+      });
+
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.message || 'প্রশ্ন যুক্ত করতে সমস্যা হয়েছে।');
+      }
+
+      showAlert(importAlert, `🎉 <strong>অভিনন্দন!</strong> ${data.addedCount}টি প্রশ্ন সফলভাবে নির্বাচিত মডেল টেস্টে যুক্ত করা হয়েছে!`, 'success');
+
+      // Clear staged questions and hide preview
+      stagedImportQuestions = [];
+      setTimeout(() => {
+        parsedPreviewContainer?.classList.add('d-none');
+      }, 1000);
+
+      // Refresh Exams in admin UI
+      await loadExams();
+      if (examSelect) {
+        examSelect.value = targetExamId;
+        currentSelectedExamId = targetExamId;
+        renderSelectedExamQuestions();
+      }
+      loadStats();
+
+      // Close modal after 1.8s
+      setTimeout(() => {
+        if (importModalEl) {
+          const bsModal = bootstrap.Modal.getInstance(importModalEl);
+          if (bsModal) bsModal.hide();
+        }
+      }, 1800);
+
+    } catch (err) {
+      showAlert(importAlert, `<i class="fa-solid fa-triangle-exclamation me-1"></i> ${err.message}`, 'danger');
+    } finally {
+      btnCommitBulkQuestions.disabled = false;
+      btnCommitBulkQuestions.innerHTML = '<i class="fa-solid fa-check-double me-1"></i> এই মডেল টেস্টে যুক্ত করুন';
+    }
+  });
   // Refresh All Button
   document.getElementById('refreshAllBtn')?.addEventListener('click', () => {
     loadAllAdminData();
