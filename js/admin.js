@@ -417,12 +417,48 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Update Badge
+    // Update Badge
     const groupName = exam.group === 'science' ? 'বিজ্ঞান' : exam.group === 'arts' ? 'মানবিক' : 'ব্যবসায় শিক্ষা';
+    const duration = exam.durationMinutes || exam.duration || 15;
+    const marks = (exam.totalMarks !== undefined && exam.totalMarks !== null && !isNaN(exam.totalMarks))
+      ? exam.totalMarks
+      : ((exam.questions && exam.questions.length) ? exam.questions.length : 0);
+
     selectedExamBadge.innerHTML = `
-      <span class="badge bg-primary rounded-pill px-3 py-1 me-1">${groupName} বিভাগ</span>
-      <span class="badge bg-light text-dark border rounded-pill px-3 py-1 me-1"><i class="fa-regular fa-clock me-1"></i>${exam.durationMinutes} মিনিট</span>
-      <span class="badge bg-light text-dark border rounded-pill px-3 py-1"><i class="fa-solid fa-trophy text-warning me-1"></i>পূর্ণমান: ${exam.totalMarks}</span>
+      <div class="d-flex flex-wrap align-items-center gap-2 mt-1">
+        <span class="badge bg-primary rounded-pill px-3 py-2">${groupName} বিভাগ</span>
+        <button type="button" class="btn btn-sm btn-outline-danger rounded-pill px-3 py-1 fw-bold shadow-sm" id="btnQuickEditDuration" title="পরীক্ষার সময় পরিবর্তন করুন">
+          <i class="fa-solid fa-clock text-danger me-1"></i> সময়: ${duration} মিনিট <i class="fa-solid fa-pen-to-square ms-1 small"></i>
+        </button>
+        <span class="badge bg-light text-dark border rounded-pill px-3 py-2"><i class="fa-solid fa-trophy text-warning me-1"></i>পূর্ণমান: ${marks}</span>
+      </div>
     `;
+
+    document.getElementById('btnQuickEditDuration')?.addEventListener('click', async () => {
+      const currentMin = exam.durationMinutes || exam.duration || 15;
+      const input = prompt(`"${exam.title}" পরীক্ষার জন্য কত মিনিট সময় দিতে চান?`, currentMin);
+      if (input === null) return;
+      const newMins = parseInt(input.trim(), 10);
+      if (isNaN(newMins) || newMins < 1) {
+        alert('সঠিক মিনিট (১ বা তার বেশি) লিখুন।');
+        return;
+      }
+      try {
+        const res = await fetch(`/api/admin/exams/${exam.id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ durationMinutes: newMins, duration: newMins })
+        });
+        const d = await res.json();
+        if (!res.ok || !d.success) throw new Error(d.message || 'সময় আপডেট করা যায়নি।');
+        exam.durationMinutes = newMins;
+        exam.duration = newMins;
+        renderSelectedExamQuestions();
+        alert(`✅ সময় সফলভাবে ${newMins} মিনিট সেট করা হয়েছে!`);
+      } catch (err) {
+        alert('ত্রুটি: ' + err.message);
+      }
+    });
 
     const questions = exam.questions || [];
     examQuestionCount.textContent = `${questions.length}টি প্রশ্ন রয়েছে`;
@@ -958,6 +994,36 @@ document.addEventListener('DOMContentLoaded', () => {
         parsedPreviewContainer?.classList.add('d-none');
       }, 1000);
 
+      // 16b. Admin: Update exam details (Duration, Marks, etc.)
+app.put('/api/admin/exams/:id', (req, res) => {
+  const { id } = req.params;
+  const { durationMinutes, duration, title, subject, totalMarks, passMarks, negativeMark } = req.body;
+
+  const db = readDb();
+  const exam = (db.exams || []).find(e => e.id === id);
+
+  if (!exam) {
+    return res.status(404).json({ success: false, message: 'পরীক্ষা খুঁজে পাওয়া যায়নি।' });
+  }
+
+  const newDuration = Number(durationMinutes || duration || exam.durationMinutes || exam.duration || 15);
+  exam.durationMinutes = newDuration;
+  exam.duration = newDuration;
+
+  if (title) exam.title = String(title).trim();
+  if (subject) exam.subject = String(subject).trim();
+  if (passMarks !== undefined) exam.passMarks = Number(passMarks);
+  if (negativeMark !== undefined) exam.negativeMark = Number(negativeMark);
+  if (totalMarks !== undefined) exam.totalMarks = Number(totalMarks);
+
+  writeDb(db);
+
+  res.json({
+    success: true,
+    message: `পরীক্ষার সময় সফলভাবে ${newDuration} মিনিট আপডেট করা হয়েছে।`,
+    exam
+  });
+});
       // Refresh Exams in admin UI
       await loadExams();
       if (examSelect) {
