@@ -1035,6 +1035,65 @@ app.post('/api/admin/parse-google-form', async (req, res) => {
     res.status(500).json({ success: false, message: 'পার্সিংয়ে সমস্যা হয়েছে: ' + err.message });
   }
 });
+// 18c. Admin: Bulk add questions to exam
+app.post('/api/admin/exams/:id/bulk-questions', (req, res) => {
+  const { id } = req.params;
+  const { questions } = req.body;
+
+  if (!Array.isArray(questions) || questions.length === 0) {
+    return res.status(400).json({ success: false, message: 'যোগ করার মতো কোনো প্রশ্ন পাওয়া যায়নি।' });
+  }
+
+  const db = readDb();
+  const exam = (db.exams || []).find(e => e.id === id);
+
+  if (!exam) {
+    return res.status(404).json({ success: false, message: 'পরীক্ষা খুঁজে পাওয়া যায়নি।' });
+  }
+
+  if (!Array.isArray(exam.questions)) exam.questions = [];
+
+  let nextId = exam.questions.reduce((max, q) => Math.max(max, Number(q.id) || 0), 0) + 1;
+  let addedCount = 0;
+
+  for (const q of questions) {
+    if (!q.question || !Array.isArray(q.options) || q.options.length < 2) continue;
+
+    const cleanOptions = q.options.map(o => String(o).trim()).filter(Boolean);
+    if (cleanOptions.length < 2) continue;
+
+    const rawIdx = q.correctIndex !== undefined ? q.correctIndex : q.correctAnswer;
+    let idx = Number(rawIdx);
+    if (isNaN(idx) || idx < 0 || idx >= cleanOptions.length) {
+      idx = 0;
+    }
+
+    exam.questions.push({
+      id: nextId++,
+      question: String(q.question).trim(),
+      options: cleanOptions,
+      correctIndex: idx,
+      correctAnswer: idx,
+      explanation: q.explanation ? String(q.explanation).trim() : 'কোনো ব্যাখ্যা দেওয়া হয়নি।'
+    });
+    addedCount++;
+  }
+
+  if (addedCount === 0) {
+    return res.status(400).json({ success: false, message: 'কোনো বৈধ প্রশ্ন যুক্ত করা সম্ভব হয়নি।' });
+  }
+
+  exam.totalMarks = exam.questions.length;
+  writeDb(db);
+
+  res.status(201).json({
+    success: true,
+    message: `সফলভাবে ${addedCount}টি প্রশ্ন মডেল টেস্টে যুক্ত করা হয়েছে!`,
+    addedCount,
+    totalQuestions: exam.questions.length,
+    totalMarks: exam.totalMarks
+  });
+});
 // Serve static frontend files
 app.use(express.static(__dirname, { extensions: ['html'] }));
 
