@@ -407,8 +407,6 @@ document.addEventListener('DOMContentLoaded', () => {
     renderSelectedExamQuestions();
   });
 
-  examSelect.addEventListener('change', () => {
-  
 
   // Render questions of chosen exam
   function renderSelectedExamQuestions() {
