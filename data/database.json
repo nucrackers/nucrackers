@@ -681,6 +681,16 @@
         }
       ],
       "createdAt": "2026-09-12T14:25:38.582Z"
+    },
+    {
+      "id": "exam_1789246647625",
+      "title": "Special Genaral knowledge Exam",
+      "group": "science",
+      "duration": 30,
+      "passingMarks": 0,
+      "negativeMarking": 0,
+      "questions": [],
+      "createdAt": "2026-09-12T20:57:27.625Z"
     }
   ],
   "submissions": [
