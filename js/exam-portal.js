@@ -302,7 +302,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         <div class="d-flex align-items-center gap-3 mt-2 mt-sm-0">
           <div class="text-end">
-            <span class="badge bg-dark rounded-pill px-3 py-2 fs-6" id="timerBadge">
+            <span class="badge bg-danger text-white rounded-pill px-3 py-2 fs-6 shadow-sm border border-white" id="timerBadge">
               <i class="fa-regular fa-clock me-1 text-warning"></i> <span id="timerDigits">--:--</span>
             </span>
           </div>
@@ -436,6 +436,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const timerDigits = document.getElementById('timerDigits');
       const timerBadge = document.getElementById('timerBadge');
       if (!timerDigits) return;
+      if (remainingSeconds <= 120) {
+        timerBadge.className = 'badge bg-danger text-white rounded-pill px-3 py-2 fs-6 shadow-sm border border-white animate__animated animate__pulse animate__infinite';
+      } else {
+        timerBadge.className = 'badge bg-danger text-white rounded-pill px-3 py-2 fs-6 shadow-sm border border-white';
+      }
 
       const m = Math.floor(remainingSeconds / 60);
       const s = remainingSeconds % 60;
