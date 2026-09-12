@@ -658,6 +658,16 @@
           "explanation": "ক্রেতা পণ্য ফেরত পাঠানোর সময় বিক্রেতাকে জানিয়ে ডেবিট নোট (Debit Note) প্রস্তুত করে পাঠায়।"
         }
       ]
+    },
+    {
+      "id": "exam_1789223138582",
+      "title": "Model test  3",
+      "group": "science",
+      "duration": 30,
+      "passingMarks": 0,
+      "negativeMarking": 0,
+      "questions": [],
+      "createdAt": "2026-09-12T14:25:38.582Z"
     }
   ],
   "submissions": [
