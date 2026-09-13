@@ -164,7 +164,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <p class="text-muted small mb-3">${escapeHtml(exam.description || '')}</p>
 
                 <div class="d-flex flex-wrap gap-2 py-2 border-top border-bottom mb-3 text-muted small">
-                  <span><i class="fa-regular fa-clock me-1 text-primary"></i>${exam.durationMinutes} মিনিট</span>
+               <span><i class="fa-regular fa-clock me-1 text-primary"></i>${exam.durationMinutes || exam.duration || 15} মিনিট</span>
                   <span class="mx-1">•</span>
                   <span><i class="fa-regular fa-circle-question me-1 text-primary"></i>${exam.questionCount}টি প্রশ্ন</span>
                   <span class="mx-1">•</span>
