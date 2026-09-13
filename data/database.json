@@ -1755,6 +1755,175 @@
           "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
         }
       ]
+    },
+    {
+      "id": "sub_1789280460382_y3gwb",
+      "examId": "arts-01",
+      "examTitle": "Arts Live Model Test 01",
+      "group": "arts",
+      "roll": "42202141",
+      "name": "42202141",
+      "score": 0,
+      "totalMarks": 10,
+      "correctCount": 0,
+      "wrongCount": 10,
+      "skippedCount": 0,
+      "percentage": 0,
+      "isPassed": true,
+      "timeSpent": 0,
+      "submittedAt": "2026-09-13T06:21:00.382Z",
+      "detailedResults": [
+        {
+          "questionId": 1,
+          "question": "বাংলা সাহিত্যের প্রাচীনতম নিদর্শন কোনটি?",
+          "options": [
+            "শ্রীকৃষ্ণকীর্তন",
+            "চর্যাপদ",
+            "মঙ্গলকাব্য",
+            "পদ্মাবতী"
+          ],
+          "studentAnswer": 1,
+          "correctAnswer": null,
+          "isCorrect": false,
+          "isSkipped": false,
+          "explanation": "চর্যাপদ বাংলা সাহিত্যের প্রাচীনতম লিখিত কাব্য নিদর্শন, যা ১৯০৭ সালে হরপ্রসাদ শাস্ত্রী নেপালের রাজদরবারের রয়েল লাইব্রেরি থেকে আবিষ্কার করেন।"
+        },
+        {
+          "questionId": 2,
+          "question": "Choose the correct spelling:",
+          "options": [
+            "Lieuetenant",
+            "Lieutenant",
+            "Leutenant",
+            "Lieutenent"
+          ],
+          "studentAnswer": 1,
+          "correctAnswer": null,
+          "isCorrect": false,
+          "isSkipped": false,
+          "explanation": "সঠিক বানান হলো 'Lieutenant' (Lie-u-ten-ant টেকনিক দিয়ে মনে রাখা যায়)।"
+        },
+        {
+          "questionId": 3,
+          "question": "মুজিবনগর সরকার কবে শপথ গ্রহণ করে?",
+          "options": [
+            "১০ এপ্রিল ১৯৭১",
+            "১৭ এপ্রিল ১৯৭১",
+            "২৬ মার্চ ১৯৭১",
+            "১৬ ডিসেম্বর ১৯৭১"
+          ],
+          "studentAnswer": 1,
+          "correctAnswer": null,
+          "isCorrect": false,
+          "isSkipped": false,
+          "explanation": "মুজিবনগর সরকার ১৯৭১ সালের ১৭ এপ্রিল মেহেরপুরের বৈদ্যনাথতলার আম্রকাননে আনুষ্ঠানিকভাবে শপথ গ্রহণ করে।"
+        },
+        {
+          "questionId": 4,
+          "question": "'সন্ধি' ব্যাকরণের কোন অংশে আলোচিত হয়?",
+          "options": [
+            "ধ্বনি বা Phonology",
+            "রূপতত্ত্ব",
+            "বাক্যতত্ত্ব",
+            "অর্থতত্ত্ব"
+          ],
+          "studentAnswer": 0,
+          "correctAnswer": null,
+          "isCorrect": false,
+          "isSkipped": false,
+          "explanation": "যেহেতু সন্ধি হলো পাশাপাশি দুটি ধ্বনির মিলন, তাই এটি ধ্বনিতত্ত্বে (Phonology) আলোচিত হয়।"
+        },
+        {
+          "questionId": 5,
+          "question": "What is the synonym of 'Competent'?",
+          "options": [
+            "Inept",
+            "Capable",
+            "Clumsy",
+            "Sluggish"
+          ],
+          "studentAnswer": 2,
+          "correctAnswer": null,
+          "isCorrect": false,
+          "isSkipped": false,
+          "explanation": "Competent অর্থ দক্ষ বা যোগ্য। এর সমার্থক শব্দ হলো Capable।"
+        },
+        {
+          "questionId": 6,
+          "question": "বাংলাদেশের একমাত্র প্রবাল দ্বীপ কোনটি?",
+          "options": [
+            "সন্দ্বীপ",
+            "হাতিয়া",
+            "সেন্টমার্টিন",
+            "মহেশখালী"
+          ],
+          "studentAnswer": 2,
+          "correctAnswer": null,
+          "isCorrect": false,
+          "isSkipped": false,
+          "explanation": "সেন্টমার্টিন দ্বীপ বঙ্গোপসাগরের উত্তর-পূর্ব অংশে অবস্থিত বাংলাদেশের একমাত্র প্রবাল দ্বীপ।"
+        },
+        {
+          "questionId": 7,
+          "question": "'কাজী নজরুল ইসলাম' কোন পত্রিকার সম্পাদক ছিলেন?",
+          "options": [
+            "ধূমকেতু",
+            "সওগাত",
+            "সবুজপত্র",
+            "লাঙল ও ধূমকেতু"
+          ],
+          "studentAnswer": 0,
+          "correctAnswer": null,
+          "isCorrect": false,
+          "isSkipped": false,
+          "explanation": "১৯২২ সালের ১২ আগস্ট কাজী নজরুল ইসলামের সম্পাদনায় অর্ধ-সাপ্তাহিক 'ধূমকেতু' পত্রিকা প্রকাশিত হয়।"
+        },
+        {
+          "questionId": 8,
+          "question": "He has been absent _____ Monday last.",
+          "options": [
+            "for",
+            "since",
+            "from",
+            "on"
+          ],
+          "studentAnswer": 1,
+          "correctAnswer": null,
+          "isCorrect": false,
+          "isSkipped": false,
+          "explanation": "নির্দিষ্ট পয়েন্ট অফ টাইম নির্দেশ করতে Present Perfect Continuous বা Present Perfect-এ 'since' ব্যবহৃত হয়।"
+        },
+        {
+          "questionId": 9,
+          "question": "বিশ্বের দীর্ঘতম নদী কোনটি?",
+          "options": [
+            "আমাজন",
+            "নীলনদ",
+            "মিসিসিপি",
+            "ইয়াংসিকিয়াং"
+          ],
+          "studentAnswer": 1,
+          "correctAnswer": null,
+          "isCorrect": false,
+          "isSkipped": false,
+          "explanation": "আফ্রিকা মহাদেশে প্রবাহিত নীল নদ (Nile River) বিশ্বের দীর্ঘতম নদী (দৈর্ঘ্য প্রায় ৬৬৫০ কিমি)।"
+        },
+        {
+          "questionId": 10,
+          "question": "কোন বানানটি শুদ্ধ?",
+          "options": [
+            "শশব্যস্ত",
+            "শশব্যস্ত",
+            "শশব্যস্থ",
+            "শ্বশব্যস্ত"
+          ],
+          "studentAnswer": 1,
+          "correctAnswer": null,
+          "isCorrect": false,
+          "isSkipped": false,
+          "explanation": "সঠিক শুদ্ধ বানান হলো 'শশব্যস্ত' (শশকের ন্যায় ব্যস্ত)।"
+        }
+      ]
     }
   ]
 }
