@@ -689,21 +689,7 @@
       "duration": 30,
       "passingMarks": 0,
       "negativeMarking": 0,
-      "questions": [
-        {
-          "id": 30,
-          "question": "সুন্দরবনকে 'ওয়ার্ল্ড হেরিটেজ সাইট' হিসেবে ঘোষণা করে কোন সংস্থা?",
-          "options": [
-            "UNICEF",
-            "UNESCO",
-            "UNDP",
-            "UNEP"
-          ],
-          "correctIndex": 0,
-          "correctAnswer": 0,
-          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
-        }
-      ],
+      "questions": [],
       "createdAt": "2026-09-12T20:57:27.625Z",
       "totalMarks": 30
     },
