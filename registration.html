@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="NU Crackers - প্রিমিয়াম ব্যাচ ভর্তি রেজিস্ট্রেশন ফরম। জাতীয় বিশ্ববিদ্যালয় অনার্স ভর্তি প্রস্তুতি।">
+  <title>প্রিমিয়াম ব্যাচ ভর্তি রেজিস্ট্রেশন | NU Crackers</title>
+  <link rel="icon" href="assets/logo.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body { font-family: 'Hind Siliguri', 'Poppins', sans-serif; background-color: #f4f7fb; color: #1e293b; }
+    .reg-hero { background: linear-gradient(135deg, #071b3a 0%, #102a56 55%, #0d6efd 100%); color: #fff; padding: 45px 0 35px; }
+    .payment-box { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+    .form-card { background: #ffffff; border-radius: 20px; box-shadow: 0 10px 30px rgba(16, 42, 86, 0.08); border: 1px solid #e2e8f0; }
+    .form-control, .form-select { border-radius: 12px; border: 1.5px solid #cbd5e1; padding: 10px 14px; }
+    .group-choice-card { border: 2px solid #e2e8f0; border-radius: 14px; padding: 12px 16px; cursor: pointer; display: flex; align-items: center; gap: 12px; }
+    .group-choice-card.active { border-color: #0d6efd; background-color: #eff6ff; }
+  </style>
+</head>
+<body>
+  <header class="reg-hero text-center">
+    <div class="container">
+      <a href="index.html" class="btn btn-sm btn-outline-light rounded-pill mb-3 px-3">
+        <i class="fa-solid fa-arrow-left me-1"></i> মূল ওয়েবসাইটে ফিরুন
+      </a>
+      <h1 class="fw-bold mb-2">🎯 প্রিমিয়াম ব্যাচ ভর্তি রেজিস্ট্রেশন</h1>
+      <p class="text-white-50 max-w-700 mx-auto">সঠিক তথ্য দিয়ে ফরমটি পূরণ করুন। ফি পরিশোধের পর আপনার ৮-ডিজিটের ইউনিক রোল নম্বর সরাসরি WhatsApp-এ প্রদান করা হবে।</p>
+    </div>
+  </header>
+
+  <main class="container my-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        
+        <!-- পেমেন্ট নির্দেশনা -->
+        <div class="payment-box p-4 mb-4">
+          <h5 class="fw-bold text-dark mb-3"><i class="fa-solid fa-wallet text-primary me-2"></i>ফি পরিশোধের নম্বরসমূহ (Send Money)</h5>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="p-3 border rounded-3 bg-light d-flex justify-content-between align-items-center">
+                <div>
+                  <span class="badge bg-danger mb-1">bKash Personal</span>
+                  <div class="fw-bold fs-5 font-monospace text-dark">01977797746</div>
+                </div>
+                <button class="btn btn-sm btn-outline-secondary rounded-pill copy-btn" data-copy="01977797746"><i class="fa-regular fa-copy"></i></button>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="p-3 border rounded-3 bg-light d-flex justify-content-between align-items-center">
+                <div>
+                  <span class="badge bg-warning text-dark mb-1">Nagad Personal</span>
+                  <div class="fw-bold fs-5 font-monospace text-dark">01977797746</div>
+                </div>
+                <button class="btn btn-sm btn-outline-secondary rounded-pill copy-btn" data-copy="01977797746"><i class="fa-regular fa-copy"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- রেজিস্ট্রেশন ফরম -->
+        <div class="form-card p-4 p-md-5">
+          <div id="formAlert" class="alert d-none mb-4"></div>
+
+          <form id="registrationForm">
+            <!-- 1. Your Name -->
+            <div class="mb-3">
+              <label class="form-label">১. আপনার পূর্ণ নাম <span class="text-danger">*</span></label>
+              <input type="text" id="regName" class="form-control" placeholder="যেমন: মো: আব্দুল্লাহ" required>
+            </div>
+
+            <div class="row">
+              <!-- 2. Your College -->
+              <div class="col-md-6 mb-3">
+                <label class="form-label">২. আপনার কলেজ <span class="text-danger">*</span></label>
+                <input type="text" id="regCollege" class="form-control" placeholder="যেমন: ঢাকা কলেজ" required>
+              </div>
+              <!-- 3. Your District -->
+              <div class="col-md-6 mb-3">
+                <label class="form-label">৩. আপনার জেলা <span class="text-danger">*</span></label>
+                <input type="text" id="regDistrict" class="form-control" placeholder="যেমন: ঢাকা" required>
+              </div>
+            </div>
+
+            <!-- 4. Your Group -->
+            <div class="mb-3">
+              <label class="form-label d-block">৪. আপনার বিভাগ (Group) <span class="text-danger">*</span></label>
+              <div class="row g-2">
+                <div class="col-md-4">
+                  <label class="group-choice-card active w-100" id="card-science">
+                    <input type="radio" name="regGroup" value="science" checked class="form-check-input">
+                    <span class="fw-bold">বিজ্ঞান (Science)</span>
+                  </label>
+                </div>
+                <div class="col-md-4">
+                  <label class="group-choice-card w-100" id="card-arts">
+                    <input type="radio" name="regGroup" value="arts" class="form-check-input">
+                    <span class="fw-bold">মানবিক (Arts)</span>
+                  </label>
+                </div>
+                <div class="col-md-4">
+                  <label class="group-choice-card w-100" id="card-commerce">
+                    <input type="radio" name="regGroup" value="commerce" class="form-check-input">
+                    <span class="fw-bold">ব্যবসা শিক্ষা (Commerce)</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- 5. WhatsApp Number -->
+            <div class="mb-3">
+              <label class="form-label">৫. সক্রিয় WhatsApp নম্বর <span class="text-danger">*</span></label>
+              <input type="tel" id="regWhatsapp" class="form-control" placeholder="017XXXXXXXX" required>
+            </div>
+
+            <!-- 6. Payment Method -->
+            <div class="mb-3">
+              <label class="form-label">৬. পেমেন্ট মেথড <span class="text-danger">*</span></label>
+              <select id="regPaymentMethod" class="form-select" required>
+                <option value="bKash" selected>bKash (বিকাশ)</option>
+                <option value="Nagad">Nagad (নগদ)</option>
+              </select>
+            </div>
+
+            <div class="row">
+              <!-- 7. Sender Number -->
+              <div class="col-md-6 mb-3">
+                <label class="form-label">৭. যে নম্বর থেকে টাকা পাঠিয়েছেন <span class="text-danger">*</span></label>
+                <input type="tel" id="regPaymentNumber" class="form-control" placeholder="01XXXXXXXXX" required>
+              </div>
+              <!-- 8. Transaction ID -->
+              <div class="col-md-6 mb-3">
+                <label class="form-label">৮. ট্রানজেকশন আইডি (TrxID) <span class="text-danger">*</span></label>
+                <input type="text" id="regTransactionId" class="form-control font-monospace text-uppercase" placeholder="যেমন: BL7A8X9K" required>
+              </div>
+            </div>
+
+            <button type="submit" id="submitRegBtn" class="btn btn-primary btn-lg w-100 rounded-pill fw-bold py-3 mt-2 shadow">
+              <i class="fa-solid fa-paper-plane me-2"></i>ভর্তি আবেদন জমা দিন
+            </button>
+          </form>
+        </div>
+
+        <!-- স্ট্যাটাস চেক টুল -->
+        <div class="text-center mt-4">
+          <p class="text-muted small">ইতিমধ্যে আবেদন করেছেন? <a href="#checkStatusCollapse" data-bs-toggle="collapse" class="fw-bold text-primary">আপনার আবেদনের স্ট্যাটাস ও রোল নম্বর যাচাই করুন</a></p>
+          <div class="collapse mt-3" id="checkStatusCollapse">
+            <div class="card card-body text-start border-0 shadow-sm rounded-4 p-4">
+              <div class="input-group">
+                <input type="text" id="statusQueryInput" class="form-control" placeholder="WhatsApp নম্বর বা TrxID দিন">
+                <button class="btn btn-outline-primary px-4 fw-bold" id="btnCheckStatus">যাচাই করুন</button>
+              </div>
+              <div id="statusResultBox" class="mt-3 d-none"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // কপি বাটন
+    document.querySelectorAll('.copy-btn').forEach(btn => {
+      btn.onclick = () => {
+        navigator.clipboard.writeText(btn.dataset.copy);
+        btn.innerHTML = '<i class="fa-solid fa-check text-success"></i>';
+        setTimeout(() => btn.innerHTML = '<i class="fa-regular fa-copy"></i>', 1500);
+      };
+    });
+
+    // গ্রুপ চয়েস কার্ড সিলেকশন
+    document.querySelectorAll('input[name="regGroup"]').forEach(radio => {
+      radio.onchange = () => {
+        document.querySelectorAll('.group-choice-card').forEach(c => c.classList.remove('active'));
+        radio.closest('.group-choice-card').classList.add('active');
+      };
+    });
+
+    // ফর্ম সাবমিট
+    const form = document.getElementById('registrationForm');
+    const alertBox = document.getElementById('formAlert');
+    const submitBtn = document.getElementById('submitRegBtn');
+
+    form.onsubmit = async (e) => {
+      e.preventDefault();
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>জমা হচ্ছে...';
+
+      const payload = {
+        name: document.getElementById('regName').value.trim(),
+        college: document.getElementById('regCollege').value.trim(),
+        district: document.getElementById('regDistrict').value.trim(),
+        group: document.querySelector('input[name="regGroup"]:checked').value,
+        whatsapp: document.getElementById('regWhatsapp').value.trim(),
+        paymentMethod: document.getElementById('regPaymentMethod').value,
+        paymentNumber: document.getElementById('regPaymentNumber').value.trim(),
+        transactionId: document.getElementById('regTransactionId').value.trim().toUpperCase()
+      };
+
+      try {
+        const res = await fetch('/api/registration/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (!res.ok || !data.success) throw new Error(data.message);
+
+        alertBox.className = 'alert alert-success p-3 rounded-3';
+        alertBox.innerHTML = `<strong>🎉 আবেদন সফল!</strong> ${data.message}`;
+        alertBox.classList.remove('d-none');
+        form.reset();
+      } catch (err) {
+        alertBox.className = 'alert alert-danger p-3 rounded-3';
+        alertBox.innerHTML = `<strong>ত্রুটি:</strong> ${err.message}`;
+        alertBox.classList.remove('d-none');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane me-2"></i>ভর্তি আবেদন জমা দিন';
+      }
+    };
+
+    // স্ট্যাটাস চেক
+    document.getElementById('btnCheckStatus').onclick = async () => {
+      const q = document.getElementById('statusQueryInput').value.trim();
+      const resBox = document.getElementById('statusResultBox');
+      if (!q) return;
+      resBox.className = 'mt-3 alert alert-info';
+      resBox.innerHTML = 'যাচাই করা হচ্ছে...';
+      resBox.classList.remove('d-none');
+
+      try {
+        const res = await fetch(`/api/registration/check-status?query=${encodeURIComponent(q)}`);
+        const data = await res.json();
+        if (!res.ok || !data.success) throw new Error(data.message);
+
+        const s = data.student;
+        const isApproved = s.status === 'approved' && s.roll;
+        resBox.className = `mt-3 alert ${isApproved ? 'alert-success' : 'alert-warning'}`;
+        resBox.innerHTML = `
+          <strong>নাম:</strong> ${s.name} (${s.group.toUpperCase()})<br>
+          <strong>অবস্থা:</strong> ${isApproved ? '<span class="badge bg-success">অনুমোদিত</span>' : '<span class="badge bg-warning text-dark">পেন্ডিং</span>'}<br>
+          ${isApproved ? `<div class="mt-2 fs-5"><strong>আপনার ৮-ডিজিট রোল:</strong> <code class="fw-bold">${s.roll}</code></div><a href="/premium-login.html" class="btn btn-sm btn-success mt-2">লগইন করুন</a>` : 'আপনার তথ্য এডমিন যাচাই করছেন, অনুমোদন হলে হোয়াটসঅ্যাপে রোল দেওয়া হবে।'}
+        `;
+      } catch (err) {
+        resBox.className = 'mt-3 alert alert-danger';
+        resBox.innerHTML = err.message;
+      }
+    };
+  </script>
+</body>
+</html>
