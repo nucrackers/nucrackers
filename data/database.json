@@ -691,19 +691,6 @@
       "negativeMarking": 0,
       "questions": [
         {
-          "id": 5,
-          "question": "বিশ্বকাপের ইতিহাসেই প্রথমবার ফাইনাল ম্যাচে 'হাফ-টাইম শো' পরিচালনায় কোন ব্যান্ড পারফর্ম করে?",
-          "options": [
-            "বিটিএস (BTS)",
-            "কোল্ডপ্লে (Coldplay)",
-            "লিংকিন পার্ক (Linkin Park)",
-            "মারুন ৫ (Maroon 5)"
-          ],
-          "correctIndex": 0,
-          "correctAnswer": 0,
-          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
-        },
-        {
           "id": 6,
           "question": "২০২৬ ফিফা বিশ্বকাপের সেরা উদীয়মান খেলোয়াড় (Man of the Match) কে নির্বাচিত হন?",
           "options": [
