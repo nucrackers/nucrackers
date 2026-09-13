@@ -1154,6 +1154,137 @@ app.post('/api/admin/exams/:id/bulk-questions', (req, res) => {
     totalMarks: exam.totalMarks
   });
 });
+// ৮-ডিজিট রোল নম্বর তৈরির অ্যালগরিদম
+function generate8DigitRoll(db, group, yearStr = '27') {
+  const cleanGroup = String(group || 'science').trim().toLowerCase();
+  let groupDigit = '1';
+  if (cleanGroup === 'arts') groupDigit = '2';
+  else if (cleanGroup === 'commerce') groupDigit = '3';
+
+  const cleanYear = String(yearStr).replace(/[^0-9]/g, '').slice(-2) || '27';
+  const prefix = `${groupDigit}${cleanYear}`; // যেমন: "127"
+
+  const sameGroupYearRolls = (db.students || [])
+    .filter(s => s.roll && String(s.roll).length === 8 && String(s.roll).startsWith(prefix))
+    .map(s => {
+      const serialPart = parseInt(String(s.roll).slice(3), 10);
+      return isNaN(serialPart) ? 0 : serialPart;
+    })
+    .sort((a, b) => a - b);
+
+  let nextSerial = 1001; // ব্যাচ ০১ (01) এবং সিরিয়াল ০০১ (001) => 01001
+  if (sameGroupYearRolls.length > 0) {
+    const maxSerial = sameGroupYearRolls[sameGroupYearRolls.length - 1];
+    nextSerial = maxSerial + 1;
+  }
+
+  return `${prefix}${String(nextSerial).padStart(5, '0')}`;
+}
+
+// ১. স্টুডেন্ট রেজিস্ট্রেশন সাবমিট এন্ডপয়েন্ট
+app.post('/api/registration/submit', (req, res) => {
+  const { name, college, district, group, whatsapp, paymentMethod, paymentNumber, transactionId } = req.body;
+  if (!name || !college || !district || !group || !whatsapp || !paymentNumber || !transactionId) {
+    return res.status(400).json({ success: false, message: 'অনুগ্রহ করে সকল তথ্য সঠিকভাবে পূরণ করুন।' });
+  }
+
+  const cleanGroup = String(group).trim().toLowerCase();
+  const cleanTrx = String(transactionId).trim().toUpperCase();
+  const db = readDb();
+  if (!Array.isArray(db.students)) db.students = [];
+
+  // ইউনিক TrxID যাচাই
+  const exists = db.students.find(s => s.transactionId && s.transactionId.toUpperCase() === cleanTrx);
+  if (exists) {
+    return res.status(409).json({ success: false, message: `এই ট্রানজেকশন আইডি (${cleanTrx}) ইতিমধ্যে ব্যবহৃত হয়েছে।` });
+  }
+
+  const newStudent = {
+    id: `reg_${Date.now()}_${Math.floor(Math.random() * 1000)}`,
+    roll: '',
+    name: String(name).trim(),
+    college: String(college).trim(),
+    district: String(district).trim(),
+    group: cleanGroup,
+    whatsapp: String(whatsapp).trim(),
+    paymentMethod: paymentMethod || 'bKash',
+    paymentNumber: String(paymentNumber).trim(),
+    transactionId: cleanTrx,
+    status: 'pending',
+    registeredAt: new Date().toISOString()
+  };
+
+  db.students.push(newStudent);
+  writeDb(db);
+  return res.status(201).json({ success: true, message: 'আবেদন জমা হয়েছে! এডমিন অনুমোদনের পর হোয়াটসঅ্যাপে রোল পাবেন।' });
+});
+
+// ২. স্ট্যাটাস যাচাই
+app.get('/api/registration/check-status', (req, res) => {
+  const { query } = req.query;
+  const db = readDb();
+  const q = String(query || '').trim().toLowerCase();
+  const found = (db.students || []).find(s =>
+    (s.whatsapp && s.whatsapp.toLowerCase() === q) ||
+    (s.transactionId && s.transactionId.toLowerCase() === q) ||
+    (s.roll && s.roll.toLowerCase() === q)
+  );
+
+  if (!found) return res.status(404).json({ success: false, message: 'কোনো শিক্ষার্থী পাওয়া যায়নি।' });
+  return res.json({ success: true, student: found });
+});
+
+// ৩. প্রিভিউ ৮-ডিজিট রোল
+app.get('/api/admin/students/preview-roll', (req, res) => {
+  const { group, year } = req.query;
+  const db = readDb();
+  const roll = generate8DigitRoll(db, group || 'science', year || '27');
+  res.json({ success: true, roll });
+});
+
+// ৪. এডমিন অনুমোদন ও ৮-ডিজিট রোল বরাদ্দ
+app.put('/api/admin/students/:identifier/approve', (req, res) => {
+  const { identifier } = req.params;
+  const { customRoll } = req.body || {};
+  const db = readDb();
+  const student = (db.students || []).find(s => (s.id && s.id === identifier) || (s.roll && s.roll === identifier));
+  if (!student) return res.status(404).json({ success: false, message: 'শিক্ষার্থী পাওয়া যায়নি।' });
+
+  student.roll = customRoll ? String(customRoll).trim() : generate8DigitRoll(db, student.group, '27');
+  student.status = 'approved';
+  student.approvedAt = new Date().toISOString();
+  writeDb(db);
+
+  return res.json({ success: true, message: 'অনুমোদিত হয়েছে!', student });
+});
+
+// ৫. WhatsApp সেন্ড রেকর্ড
+app.post('/api/admin/students/:identifier/record-whatsapp-sent', (req, res) => {
+  const { identifier } = req.params;
+  const db = readDb();
+  const student = (db.students || []).find(s => (s.id && s.id === identifier) || (s.roll && s.roll === identifier));
+  if (student) {
+    student.whatsappSent = true;
+    student.whatsappSentAt = new Date().toISOString();
+    writeDb(db);
+  }
+  return res.json({ success: true });
+});
+
+// ৬. আবেদন বাতিল
+app.put('/api/admin/students/:identifier/reject', (req, res) => {
+  const { identifier } = req.params;
+  const { reason } = req.body || {};
+  const db = readDb();
+  const student = (db.students || []).find(s => (s.id && s.id === identifier) || (s.roll && s.roll === identifier));
+  if (!student) return res.status(404).json({ success: false, message: 'শিক্ষার্থী পাওয়া যায়নি।' });
+
+  student.status = 'rejected';
+  student.rejectReason = reason || 'ভুল তথ্য';
+  student.rejectedAt = new Date().toISOString();
+  writeDb(db);
+  return res.json({ success: true, message: 'আবেদন বাতিল করা হয়েছে।' });
+});
 // Serve static frontend files
 app.use(express.static(__dirname, { extensions: ['html'] }));
 
