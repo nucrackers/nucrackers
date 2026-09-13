@@ -1024,30 +1024,7 @@ app.put('/api/admin/exams/:id', (req, res) => {
     exam
   });
 });
-      // Refresh Exams in admin UI
-      await loadExams();
-      if (examSelect) {
-        examSelect.value = targetExamId;
-        currentSelectedExamId = targetExamId;
-        renderSelectedExamQuestions();
-      }
-      loadStats();
 
-      // Close modal after 1.8s
-      setTimeout(() => {
-        if (importModalEl) {
-          const bsModal = bootstrap.Modal.getInstance(importModalEl);
-          if (bsModal) bsModal.hide();
-        }
-      }, 1800);
-
-    } catch (err) {
-      showAlert(importAlert, `<i class="fa-solid fa-triangle-exclamation me-1"></i> ${err.message}`, 'danger');
-    } finally {
-      btnCommitBulkQuestions.disabled = false;
-      btnCommitBulkQuestions.innerHTML = '<i class="fa-solid fa-check-double me-1"></i> এই মডেল টেস্টে যুক্ত করুন';
-    }
-  });
   // Refresh All Button
   document.getElementById('refreshAllBtn')?.addEventListener('click', () => {
     loadAllAdminData();
