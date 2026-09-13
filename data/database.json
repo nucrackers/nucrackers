@@ -1093,6 +1093,16 @@
       "negativeMarking": 0,
       "questions": [],
       "createdAt": "2026-09-12T21:00:06.063Z"
+    },
+    {
+      "id": "exam_1789284109476",
+      "title": "Full model test",
+      "group": "science",
+      "duration": 30,
+      "passingMarks": 0,
+      "negativeMarking": 0,
+      "questions": [],
+      "createdAt": "2026-09-13T07:21:49.476Z"
     }
   ],
   "submissions": [
