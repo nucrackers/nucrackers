@@ -691,19 +691,6 @@
       "negativeMarking": 0,
       "questions": [
         {
-          "id": 18,
-          "question": "ইউরো মুদ্রাকে দাপ্তরিক মুদ্রা হিসেবে গ্রহণকারী ২০তম দেশ কোনটি?",
-          "options": [
-            "ক্রোয়েশিয়া",
-            "বুলগেরিয়া",
-            "রোমানিয়া",
-            "হাঙ্গেরি"
-          ],
-          "correctIndex": 0,
-          "correctAnswer": 0,
-          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
-        },
-        {
           "id": 19,
           "question": ". 'গ্লোবাল জেন্ডার গ্যাপ রিপোর্ট' (Global Gender Gap Report) প্রতিবছর প্রকাশ করে কোন সংস্থা?",
           "options": [
