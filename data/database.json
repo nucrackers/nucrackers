@@ -691,19 +691,6 @@
       "negativeMarking": 0,
       "questions": [
         {
-          "id": 1,
-          "question": "২০২৬ ফিফা বিশ্বকাপের যৌথ আয়োজক দেশ কয়টি?",
-          "options": [
-            "2",
-            "3",
-            "4",
-            "5"
-          ],
-          "correctIndex": 0,
-          "correctAnswer": 0,
-          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
-        },
-        {
           "id": 2,
           "question": "২০২৬ ফিফা বিশ্বকাপে মোট ম্যাচের সংখ্যা কতটি?",
           "options": [
