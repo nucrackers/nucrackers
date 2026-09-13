@@ -1035,7 +1035,28 @@ document.addEventListener('DOMContentLoaded', () => {
       .replace(/"/g, '&quot;')
       .replace(/'/g, '&#039;');
   }
+// ফোন নম্বর আন্তর্জাতিক ফরম্যাটে নেওয়া (8801...)
+function formatWhatsAppPhone(phone) {
+  if (!phone) return '';
+  let clean = String(phone).replace(/[^0-9]/g, '');
+  if (clean.startsWith('880')) return clean;
+  if (clean.startsWith('0')) return '88' + clean;
+  return clean;
+}
 
+// অফিশিয়াল হোয়াটসঅ্যাপ বার্তা তৈরি
+function buildOfficialWhatsAppMessage(student, roll) {
+  const groupName = student.group === 'arts' ? 'মানবিক (Arts)' : (student.group === 'commerce' ? 'ব্যবসায় শিক্ষা (Commerce)' : 'বিজ্ঞান (Science)');
+  const loginUrl = `${window.location.origin}/premium-login.html`;
+
+  return `অভিনন্দন ${student.name}! 🎉\nNU Crackers প্রিমিয়াম ব্যাচে আপনার ভর্তি নিশ্চিত ও অনুমোদিত হয়েছে।\n\n📋 আপনার ভর্তি বিবরণ:\n• নাম: ${student.name}\n• বিভাগ: ${groupName}\n• অফিসিয়াল ইউনিক রোল নম্বর: ${roll}\n\n🌐 লগইন পোর্টাল লিংক:\n${loginUrl}\n\nউপরে দেওয়া আপনার ৮-ডিজিট রোল নম্বরটি দিয়ে ওয়েবসাইটে লগইন করে এখনই সকল মডেল টেস্ট ও পরীক্ষায় অংশ নিতে পারবেন।\n\n— NU Crackers টিম`;
+}
+
+function getWhatsAppDirectUrl(phone, message) {
+  const formatted = formatWhatsAppPhone(phone);
+  if (!formatted) return null;
+  return `https://api.whatsapp.com/send?phone=${encodeURIComponent(formatted)}&text=${encodeURIComponent(message)}`;
+}
   // Initialize
   checkAuth();
 });
