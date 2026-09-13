@@ -691,19 +691,6 @@
       "negativeMarking": 0,
       "questions": [
         {
-          "id": 24,
-          "question": "বাংলাদেশের সংবিধান এ পর্যন্ত মোট কতবার সংশোধিত হয়েছে?",
-          "options": [
-            "১৫",
-            "১৬",
-            "১৭",
-            "১৮"
-          ],
-          "correctIndex": 0,
-          "correctAnswer": 0,
-          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
-        },
-        {
           "id": 25,
           "question": "রূপপুর পারমাণবিক বিদ্যুৎ কেন্দ্র কোন জেলায় অবস্থিত?",
           "options": [
