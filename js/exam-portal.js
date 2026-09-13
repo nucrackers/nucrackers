@@ -231,7 +231,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // 3. Start Live Exam Experience
+ // 3. Start Live Exam Experience
   async function openLiveExam(examId) {
     if (!currentStudent) {
       alert('পরীক্ষায় অংশগ্রহণ করার জন্য অনুগ্রহ করে প্রথমে আপনার ইউনিক রোল দিয়ে লগইন করুন।');
@@ -252,17 +252,54 @@ document.addEventListener('DOMContentLoaded', () => {
     bsModal.show();
 
     try {
-      const res = await fetch(`/api/exams/${examId}`);
+      const rollParam = currentStudent ? `?roll=${encodeURIComponent(currentStudent.roll)}` : '';
+      const res = await fetch(`/api/exams/${examId}${rollParam}`);
       const data = await res.json();
 
       if (!res.ok || !data.success) {
         throw new Error(data.message || 'প্রশ্ন লোড করা সম্ভব হয়নি');
       }
 
+      // Check if student has ALREADY submitted this exam
+      if (data.exam && data.exam.alreadySubmitted) {
+        const prev = data.exam.previousSubmission || {};
+        const scoreDisplay = prev.score !== undefined ? `${prev.score} / ${data.exam.totalMarks || 0}` : 'সম্পন্ন';
+        modalBody.innerHTML = `
+          <div class="text-center py-4">
+            <div class="rounded-circle bg-success bg-opacity-10 text-success d-inline-flex align-items-center justify-content-center mb-3" style="width:72px; height:72px; font-size:2rem;">
+              <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <h4 class="fw-bold text-dark mb-2">আপনি ইতিমধ্যে এই পরীক্ষায় অংশগ্রহণ করেছেন!</h4>
+            <p class="text-muted small max-w-md mx-auto mb-4">
+              আপনার পূর্ববর্তী পরীক্ষার স্কোর: <span class="badge bg-primary fs-6 px-3 py-1">${scoreDisplay}</span><br><br>
+              আপনি ইতিমধ্যে পরীক্ষাটি সম্পন্ন করেছেন। আপনার দেওয়া প্রতিটি প্রশ্নের <strong>সঠিক উত্তর ও বিস্তারিত ব্যাখ্যাসহ সমাধানপত্র</strong> দেখতে এবং <strong>PDF আকারে ডাউনলোড</strong> করতে নিচের বাটনে ক্লিক করুন।
+            </p>
+            <div class="d-flex flex-wrap justify-content-center gap-2">
+              <button type="button" class="btn btn-success rounded-pill px-4 py-2 fw-bold" id="liveModalReviewBtn">
+                <i class="fa-solid fa-file-pdf me-2"></i> সমাধানপত্র দেখুন ও PDF ডাউনলোড
+              </button>
+              <button type="button" class="btn btn-outline-primary rounded-pill px-4 py-2" id="liveModalLeaderboardBtn">
+                <i class="fa-solid fa-trophy me-1"></i> লিডারবোর্ড
+              </button>
+              <button type="button" class="btn btn-light rounded-pill px-3 py-2" data-bs-dismiss="modal">বন্ধ করুন</button>
+            </div>
+          </div>
+        `;
+        document.getElementById('liveModalReviewBtn')?.addEventListener('click', () => {
+          bsModal.hide();
+          setTimeout(() => openAnswerReview(examId), 350);
+        });
+        document.getElementById('liveModalLeaderboardBtn')?.addEventListener('click', () => {
+          bsModal.hide();
+          setTimeout(() => openLeaderboard(examId), 350);
+        });
+        return;
+      }
+
       activeExamData = data.exam;
       userAnswers = {};
       currentQuestionIndex = 0;
-      totalDurationSeconds = (activeExamData.durationMinutes || 15) * 60;
+      totalDurationSeconds = (Number(activeExamData.durationMinutes || activeExamData.duration || 15)) * 60;
       remainingSeconds = totalDurationSeconds;
 
       renderExamUI();
@@ -299,107 +336,103 @@ document.addEventListener('DOMContentLoaded', () => {
           <h5 class="fw-bold mb-0 text-dark">${escapeHtml(exam.title)}</h5>
           <div class="small text-muted">${escapeHtml(exam.subject)} • মোট প্রশ্ন: ${totalQ}টি • পূর্ণমান: ${exam.totalMarks}</div>
         </div>
-
         <div class="d-flex align-items-center gap-3 mt-2 mt-sm-0">
-          <div class="text-end">
-            <span class="badge bg-danger text-white rounded-pill px-3 py-2 fs-6 shadow-sm border border-white" id="timerBadge">
-              <i class="fa-regular fa-clock me-1 text-warning"></i> <span id="timerDigits">--:--</span>
-            </span>
+          <div id="timerBadge" class="badge bg-danger text-white rounded-pill px-3 py-2 fs-6 shadow-sm border border-white">
+            <i class="fa-regular fa-clock me-1"></i>
+            <span id="timerDigits">--:--</span>
           </div>
-          <button class="btn btn-outline-danger btn-sm rounded-pill" id="quitExamBtn" title="বাতিল করুন">
-            <i class="fa-solid fa-xmark"></i>
+          <button type="button" class="btn btn-outline-danger btn-sm rounded-pill px-3" id="quitExamBtn">
+            <i class="fa-solid fa-arrow-right-from-bracket me-1"></i> প্রস্থান
           </button>
         </div>
       </div>
 
-      <!-- Question Number Navigator -->
-      <div class="mb-4">
-        <div class="d-flex justify-content-between align-items-center mb-2">
-          <span class="small fw-semibold text-muted">প্রশ্ন তালিকা (${answeredCount}/${totalQ} উত্তর সম্পন্ন)</span>
-          <span class="badge bg-primary bg-opacity-10 text-primary small">প্রশ্ন ${currentQuestionIndex + 1} / ${totalQ}</span>
-        </div>
-        <div class="d-flex flex-wrap gap-2" id="questionNavPills">
-          ${questions.map((item, idx) => {
-            const isAnswered = userAnswers[item.id] !== undefined && userAnswers[item.id] !== -1;
-            const isCurrent = idx === currentQuestionIndex;
-            let cls = 'btn-outline-secondary';
-            if (isAnswered) cls = 'btn-success text-white';
-            if (isCurrent) cls = 'btn-primary text-white shadow-sm';
-            return `
-              <button type="button" class="btn btn-sm ${cls} rounded-circle px-0 q-nav-pill" style="width:34px; height:34px; font-size:0.85rem;" data-idx="${idx}">
-                ${idx + 1}
-              </button>
-            `;
-          }).join('')}
-        </div>
+      <!-- Progress Indicators -->
+      <div class="d-flex justify-content-between align-items-center mb-2 small text-muted">
+        <span>প্রশ্ন: <strong>${currentQuestionIndex + 1}</strong> / ${totalQ}</span>
+        <span>উত্তর দেওয়া হয়েছে: <strong class="text-primary">${answeredCount}</strong>টি</span>
+      </div>
+      <div class="progress mb-4" style="height: 6px;">
+        <div class="progress-bar bg-primary" role="progressbar" style="width: ${((currentQuestionIndex + 1) / totalQ) * 100}%;"></div>
       </div>
 
-      <!-- Current Question Card -->
-      <div class="card border-0 shadow-sm rounded-4 p-4 mb-4 bg-white border">
-        <div class="d-flex justify-content-between align-items-start mb-3">
-          <span class="badge bg-primary text-white rounded-pill px-3 py-1">প্রশ্ন ${currentQuestionIndex + 1}</span>
-          <button type="button" class="btn btn-link text-muted p-0 small text-decoration-none" id="clearChoiceBtn">
-            <i class="fa-solid fa-rotate-left me-1"></i> নির্বাচন বাতিল
-          </button>
-        </div>
+      <!-- Question Card -->
+      <div class="card border rounded-4 p-4 shadow-sm mb-4">
+        <h5 class="fw-bold text-dark lh-base mb-4">
+          <span class="text-primary me-2">#${currentQuestionIndex + 1}.</span>
+          ${escapeHtml(q.question)}
+        </h5>
 
-        <h5 class="fw-semibold text-dark mb-4 lh-base">${escapeHtml(q.question)}</h5>
-
-        <div class="options-container d-flex flex-column gap-2 mb-2">
-          ${q.options.map((opt, optIdx) => {
-            const isSelected = userAnswers[q.id] === optIdx;
-            const optLetter = ['ক', 'খ', 'গ', 'ঘ'][optIdx] || String.fromCharCode(65 + optIdx);
+        <!-- Options list -->
+        <div class="options-container d-flex flex-column gap-3">
+          ${(q.options || []).map((opt, idx) => {
+            const isChecked = userAnswers[q.id] === idx;
+            const optLetter = ['ক', 'খ', 'গ', 'ঘ'][idx] || idx + 1;
             return `
-              <label class="option-label p-3 rounded-3 border d-flex align-items-center gap-3 cursor-pointer ${isSelected ? 'bg-primary bg-opacity-10 border-primary fw-semibold' : 'bg-light bg-opacity-50'}" style="cursor: pointer; transition: all 0.2s ease;">
-                <input type="radio" name="opt_${q.id}" value="${optIdx}" class="form-check-input mt-0" ${isSelected ? 'checked' : ''} style="cursor: pointer;">
-                <span class="badge bg-white text-dark border rounded-circle d-flex align-items-center justify-content-center" style="width:28px; height:28px;">${optLetter}</span>
-                <span class="text-dark flex-grow-1">${escapeHtml(opt)}</span>
+              <label class="option-card p-3 border rounded-3 d-flex align-items-center gap-3 cursor-pointer ${isChecked ? 'border-primary bg-primary bg-opacity-10 shadow-sm fw-bold' : 'hover-bg-light'}">
+                <input type="radio" name="exam_option_${q.id}" value="${idx}" class="form-check-input mt-0" ${isChecked ? 'checked' : ''} style="cursor:pointer;">
+                <span class="badge ${isChecked ? 'bg-primary text-white' : 'bg-light text-dark border'} rounded-circle d-flex align-items-center justify-content-center" style="width:28px; height:28px;">
+                  ${optLetter}
+                </span>
+                <span class="text-dark">${escapeHtml(opt)}</span>
               </label>
             `;
           }).join('')}
         </div>
       </div>
 
-      <!-- Bottom Actions -->
-      <div class="d-flex justify-content-between align-items-center gap-2">
-        <button type="button" class="btn btn-outline-secondary rounded-pill px-4" id="prevQBtn" ${currentQuestionIndex === 0 ? 'disabled' : ''}>
-          <i class="fa-solid fa-chevron-left me-1"></i> পূর্ববর্তী
-        </button>
+      <!-- Navigation & Action Buttons -->
+      <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+        <div>
+          <button type="button" class="btn btn-outline-secondary rounded-pill px-4" id="prevQBtn" ${currentQuestionIndex === 0 ? 'disabled' : ''}>
+            <i class="fa-solid fa-arrow-left me-1"></i> পূর্ববর্তী
+          </button>
+        </div>
 
         <div class="d-flex gap-2">
           ${currentQuestionIndex < totalQ - 1 ? `
             <button type="button" class="btn btn-primary rounded-pill px-4" id="nextQBtn">
-              পরবর্তী <i class="fa-solid fa-chevron-right ms-1"></i>
+              পরবর্তী <i class="fa-solid fa-arrow-right ms-1"></i>
             </button>
           ` : ''}
 
-          <button type="button" class="btn btn-success rounded-pill px-4 fw-bold" id="submitExamBtn">
-            <i class="fa-solid fa-paper-plane me-1"></i> পরীক্ষা জমা দাও
+          <button type="button" class="btn btn-success rounded-pill px-4 fw-bold shadow-sm" id="submitExamBtn">
+            <i class="fa-solid fa-check-double me-1"></i> পরীক্ষা জমা দাও
           </button>
+        </div>
+      </div>
+
+      <!-- Quick Question Jump Pallet -->
+      <div class="mt-4 pt-3 border-top">
+        <div class="small text-muted mb-2">প্রশ্ন প্যালেট:</div>
+        <div class="d-flex flex-wrap gap-2">
+          ${questions.map((ques, idx) => {
+            const hasAns = userAnswers[ques.id] !== undefined && userAnswers[ques.id] !== -1;
+            const isCurr = idx === currentQuestionIndex;
+            let btnClass = 'btn-outline-secondary';
+            if (hasAns) btnClass = 'btn-success text-white';
+            if (isCurr) btnClass = 'btn-primary text-white border-2 border-dark';
+
+            return `
+              <button type="button" class="btn btn-sm ${btnClass} rounded-circle p-0 jump-q-btn" style="width:32px; height:32px; font-size:12px;" data-index="${idx}">
+                ${idx + 1}
+              </button>
+            `;
+          }).join('')}
         </div>
       </div>
     `;
 
-    // Hook events
-    document.querySelectorAll('.q-nav-pill').forEach(pill => {
-      pill.addEventListener('click', () => {
-        currentQuestionIndex = parseInt(pill.getAttribute('data-idx'));
+    // Bind Radio Clicks
+    const radioInputs = modalBody.querySelectorAll(`input[name="exam_option_${q.id}"]`);
+    radioInputs.forEach(radio => {
+      radio.addEventListener('change', (e) => {
+        userAnswers[q.id] = parseInt(e.target.value, 10);
         renderExamUI();
       });
     });
 
-    document.querySelectorAll(`input[name="opt_${q.id}"]`).forEach(input => {
-      input.addEventListener('change', () => {
-        userAnswers[q.id] = parseInt(input.value);
-        renderExamUI();
-      });
-    });
-
-    document.getElementById('clearChoiceBtn')?.addEventListener('click', () => {
-      delete userAnswers[q.id];
-      renderExamUI();
-    });
-
+    // Navigation Listeners
     document.getElementById('prevQBtn')?.addEventListener('click', () => {
       if (currentQuestionIndex > 0) {
         currentQuestionIndex--;
@@ -414,21 +447,32 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    document.getElementById('quitExamBtn')?.addEventListener('click', () => {
-      if (confirm('আপনি কি সত্যিই পরীক্ষা ত্যাগ করতে চান? আপনার উত্তর সংরক্ষিত হবে না।')) {
-        clearInterval(timerInterval);
-        const modalEl = document.getElementById('examLiveModal');
-        const modalInstance = bootstrap.Modal.getInstance(modalEl);
-        modalInstance.hide();
-      }
-    });
-
     document.getElementById('submitExamBtn')?.addEventListener('click', () => {
       confirmAndSubmit();
     });
+
+    document.getElementById('quitExamBtn')?.addEventListener('click', () => {
+      if (confirm('আপনি কি নিশ্চিত যে পরীক্ষা থেকে প্রস্থান করতে চান? আপনার প্রদত্ত উত্তর হারিয়ে যেতে পারে।')) {
+        clearInterval(timerInterval);
+        const modalEl = document.getElementById('examLiveModal');
+        const bsModal = bootstrap.Modal.getInstance(modalEl);
+        if (bsModal) bsModal.hide();
+      }
+    });
+
+    // Jump buttons
+    document.querySelectorAll('.jump-q-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const targetIdx = parseInt(btn.getAttribute('data-index'), 10);
+        if (!isNaN(targetIdx)) {
+          currentQuestionIndex = targetIdx;
+          renderExamUI();
+        }
+      });
+    });
   }
 
-  // Timer
+  // Countdown Timer
   function startCountdownTimer() {
     clearInterval(timerInterval);
 
@@ -436,18 +480,15 @@ document.addEventListener('DOMContentLoaded', () => {
       const timerDigits = document.getElementById('timerDigits');
       const timerBadge = document.getElementById('timerBadge');
       if (!timerDigits) return;
-      if (remainingSeconds <= 120) {
-        timerBadge.className = 'badge bg-danger text-white rounded-pill px-3 py-2 fs-6 shadow-sm border border-white animate__animated animate__pulse animate__infinite';
-      } else {
-        timerBadge.className = 'badge bg-danger text-white rounded-pill px-3 py-2 fs-6 shadow-sm border border-white';
-      }
 
       const m = Math.floor(remainingSeconds / 60);
       const s = remainingSeconds % 60;
       timerDigits.textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
 
       if (remainingSeconds <= 120) {
-        timerBadge.className = 'badge bg-danger rounded-pill px-3 py-2 fs-6 animate__animated animate__pulse animate__infinite';
+        timerBadge.className = 'badge bg-danger text-white rounded-pill px-3 py-2 fs-6 shadow-sm border border-white animate__animated animate__pulse animate__infinite';
+      } else {
+        timerBadge.className = 'badge bg-danger text-white rounded-pill px-3 py-2 fs-6 shadow-sm border border-white';
       }
 
       if (remainingSeconds <= 0) {
@@ -500,14 +541,43 @@ document.addEventListener('DOMContentLoaded', () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           roll: currentStudent.roll,
+          name: currentStudent.name,
+          studentName: currentStudent.name,
+          group: currentStudent.group,
           answers: userAnswers,
-          timeTakenSeconds: timeSpent
+          timeTakenSeconds: timeSpent,
+          timeSpent: timeSpent
         })
       });
 
       const data = await res.json();
 
       if (!res.ok || !data.success) {
+        if (data.alreadySubmitted) {
+          modalBody.innerHTML = `
+            <div class="text-center py-4">
+              <div class="rounded-circle bg-warning bg-opacity-10 text-warning d-inline-flex align-items-center justify-content-center mb-3" style="width:72px; height:72px; font-size:2rem;">
+                <i class="fa-solid fa-circle-check"></i>
+              </div>
+              <h4 class="fw-bold text-dark mb-2">আপনি ইতিমধ্যে এই পরীক্ষায় অংশগ্রহণ করেছেন!</h4>
+              <p class="text-muted small max-w-md mx-auto mb-4">
+                আপনার পূর্ববর্তী পরীক্ষাটি সংরক্ষিত রয়েছে। আপনার উত্তরপত্র, সঠিক উত্তর ও বিস্তারিত সমাধান দেখতে এবং PDF ডাউনলোড করতে নিচের বাটনে ক্লিক করুন।
+              </p>
+              <div class="d-flex flex-wrap justify-content-center gap-2">
+                <button type="button" class="btn btn-success rounded-pill px-4 py-2 fw-bold" id="submitAlreadyReviewBtn">
+                  <i class="fa-solid fa-file-pdf me-2"></i> সমাধানপত্র দেখুন ও PDF ডাউনলোড
+                </button>
+                <button type="button" class="btn btn-light rounded-pill px-3 py-2" data-bs-dismiss="modal">বন্ধ করুন</button>
+              </div>
+            </div>
+          `;
+          document.getElementById('submitAlreadyReviewBtn')?.addEventListener('click', () => {
+            const bsModal = bootstrap.Modal.getInstance(document.getElementById('examLiveModal'));
+            if (bsModal) bsModal.hide();
+            setTimeout(() => openAnswerReview(activeExamData.id), 350);
+          });
+          return;
+        }
         throw new Error(data.message || 'সাবমিট ব্যর্থ হয়েছে');
       }
 
@@ -540,71 +610,67 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
 
         <h3 class="fw-bold text-dark mb-1">${result.isPassed ? 'অভিনন্দন! পরীক্ষা সম্পন্ন হয়েছে' : 'পরীক্ষা সম্পন্ন হয়েছে'}</h3>
-        <p class="text-muted small mb-4">${escapeHtml(result.examTitle)}</p>
+        <p class="text-muted mb-4">${result.isPassed ? 'আপনি সাফল্যের সাথে পরীক্ষায় উত্তীর্ণ হয়েছেন।' : 'পরবর্তী পরীক্ষার জন্য আরো ভালো প্রস্তুতি নিন।'}</p>
 
-        <!-- Big Score Card -->
-        <div class="card border-0 bg-light p-4 rounded-4 max-w-md mx-auto mb-4 border">
-          <div class="row g-3 text-center">
-            <div class="col-4 border-end">
-              <span class="text-muted small">প্রাপ্ত নম্বর</span>
-              <h2 class="fw-bold text-primary mb-0">${result.score}</h2>
-              <span class="small text-muted">/ ${result.totalMarks}</span>
+        <!-- Score summary cards -->
+        <div class="row g-3 max-w-lg mx-auto mb-4">
+          <div class="col-4">
+            <div class="p-3 bg-light rounded-4 border">
+              <div class="text-muted small mb-1">প্রাপ্ত নম্বর</div>
+              <div class="fs-4 fw-bold text-primary">${result.score} <span class="fs-6 text-muted">/ ${result.totalMarks}</span></div>
             </div>
-            <div class="col-4 border-end">
-              <span class="text-muted small">লিডারবোর্ড স্থান</span>
-              <h2 class="fw-bold text-warning mb-0">#${result.rank}</h2>
-              <span class="small text-muted">মোট ${result.totalParticipants} জন</span>
+          </div>
+          <div class="col-4">
+            <div class="p-3 bg-light rounded-4 border">
+              <div class="text-muted small mb-1">সঠিক উত্তর</div>
+              <div class="fs-4 fw-bold text-success">${result.correctCount}টি</div>
             </div>
-            <div class="col-4">
-              <span class="text-muted small">সময় লেগেছে</span>
-              <h2 class="fw-bold text-dark mb-0">${min}m ${sec}s</h2>
-              <span class="small text-muted">ব্যবহৃত সময়</span>
+          </div>
+          <div class="col-4">
+            <div class="p-3 bg-light rounded-4 border">
+              <div class="text-muted small mb-1">ভুল উত্তর</div>
+              <div class="fs-4 fw-bold text-danger">${result.wrongCount}টি</div>
             </div>
           </div>
         </div>
 
-        <!-- Metric Pills -->
-        <div class="d-flex justify-content-center flex-wrap gap-2 mb-4">
-          <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 px-3 py-2 rounded-pill">
-            <i class="fa-solid fa-check me-1"></i> সঠিক: ${result.correctCount}টি
-          </span>
-          <span class="badge bg-danger bg-opacity-10 text-danger border border-danger border-opacity-25 px-3 py-2 rounded-pill">
-            <i class="fa-solid fa-xmark me-1"></i> ভুল: ${result.wrongCount}টি
-          </span>
-          <span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary border-opacity-25 px-3 py-2 rounded-pill">
-            <i class="fa-solid fa-minus me-1"></i> অনুত্তরিত: ${result.skippedCount}টি
-          </span>
+        <div class="d-flex flex-wrap justify-content-center gap-3 text-muted small mb-4">
+          <span><i class="fa-regular fa-clock me-1"></i> ব্যয়িত সময়: <strong>${min} মিনিট ${sec} সেকেন্ড</strong></span>
+          <span><i class="fa-solid fa-chart-pie me-1"></i> শতকরা হার: <strong>${percentage}%</strong></span>
+          <span><i class="fa-solid fa-circle-minus me-1"></i> অনুত্তরিত: <strong>${result.skippedCount || 0}টি</strong></span>
         </div>
 
-        <!-- Action Buttons -->
-        <div class="d-flex flex-wrap justify-content-center gap-2">
-          <button type="button" class="btn btn-success rounded-pill px-4" id="viewResultReviewBtn">
-            <i class="fa-solid fa-square-check me-1"></i> সঠিক উত্তর ও ব্যাখ্যা দেখুন
+        <!-- Action buttons -->
+        <div class="d-flex flex-wrap justify-content-center gap-3">
+          <button type="button" class="btn btn-success rounded-pill px-4 py-2" id="resultViewReviewBtn">
+            <i class="fa-solid fa-file-pdf me-2"></i> সমাধানপত্র দেখুন ও PDF ডাউনলোড
           </button>
-          <button type="button" class="btn btn-primary rounded-pill px-4" id="viewResultLeaderboardBtn">
-            <i class="fa-solid fa-trophy me-1"></i> লিডারবোর্ড দেখুন
+          <button type="button" class="btn btn-primary rounded-pill px-4 py-2" id="resultViewLeaderboardBtn">
+            <i class="fa-solid fa-trophy me-2"></i> লিডারবোর্ড দেখুন
           </button>
-          <button type="button" class="btn btn-outline-secondary rounded-pill px-4" data-bs-dismiss="modal">
+          <button type="button" class="btn btn-outline-secondary rounded-pill px-4 py-2" data-bs-dismiss="modal">
             বন্ধ করুন
           </button>
         </div>
       </div>
     `;
 
-    document.getElementById('viewResultReviewBtn')?.addEventListener('click', () => {
+    document.getElementById('resultViewReviewBtn')?.addEventListener('click', () => {
       const modalEl = document.getElementById('examLiveModal');
-      bootstrap.Modal.getInstance(modalEl).hide();
-      openAnswerReview(result.examId);
+      const bsModal = bootstrap.Modal.getInstance(modalEl);
+      if (bsModal) bsModal.hide();
+      setTimeout(() => openAnswerReview(activeExamData.id), 350);
     });
 
-    document.getElementById('viewResultLeaderboardBtn')?.addEventListener('click', () => {
+    document.getElementById('resultViewLeaderboardBtn')?.addEventListener('click', () => {
       const modalEl = document.getElementById('examLiveModal');
-      bootstrap.Modal.getInstance(modalEl).hide();
-      openLeaderboard(result.examId);
+      const bsModal = bootstrap.Modal.getInstance(modalEl);
+      if (bsModal) bsModal.hide();
+      setTimeout(() => openLeaderboard(activeExamData.id), 350);
     });
   }
 
-// 4. Open Leaderboard Modal
+  // 4. Open Leaderboard Modal
   async function openLeaderboard(examId) {
     const modalEl = document.getElementById('leaderboardModal');
     const bsModal = new bootstrap.Modal(modalEl);
@@ -782,7 +848,10 @@ document.addEventListener('DOMContentLoaded', () => {
               <h5 class="fw-bold mb-0 text-dark">${escapeHtml(examTitle || 'পরীক্ষার ফলাফল')}</h5>
               <div class="small text-muted">শিক্ষার্থী: ${escapeHtml(studentName)} (রোল: ${escapeHtml(studentRoll)})</div>
             </div>
-            <div class="d-flex gap-2">
+            <div class="d-flex align-items-center gap-2">
+              <button type="button" class="btn btn-outline-danger btn-sm rounded-pill px-3 py-1 fw-bold shadow-sm d-flex align-items-center gap-1" id="downloadReviewPdfBtn" title="সমাধানপত্র PDF আকারে ডাউনলোড বা প্রিন্ট করুন">
+                <i class="fa-solid fa-file-pdf text-danger"></i> PDF ডাউনলোড করুন
+              </button>
               <span class="badge bg-primary fs-6 rounded-pill px-3 py-2">নম্বর: ${summary.score} / ${summary.totalMarks}</span>
             </div>
           </div>
@@ -858,12 +927,217 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
       `;
 
+      // Attach PDF Download Event Listener
+      document.getElementById('downloadReviewPdfBtn')?.addEventListener('click', () => {
+        downloadSolveSheetPdf(examTitle, studentName, studentRoll, summary, questions);
+      });
+
     } catch (err) {
       body.innerHTML = `
         <div class="alert alert-danger my-3">
           <i class="fa-solid fa-triangle-exclamation me-1"></i> ${err.message}
         </div>
       `;
+    }
+  }
+
+  // 6. Generate & Print / Download Solve Sheet PDF
+  function downloadSolveSheetPdf(examTitle, studentName, studentRoll, summary, questions) {
+    const optLetters = ['ক', 'খ', 'গ', 'ঘ'];
+    const totalQ = questions.length;
+    const percentage = summary.totalMarks ? Math.round((summary.score / summary.totalMarks) * 100) : 0;
+    const printDate = new Date().toLocaleDateString('bn-BD', { year: 'numeric', month: 'long', day: 'numeric' });
+
+    const printHtml = `
+      <!DOCTYPE html>
+      <html lang="bn">
+      <head>
+        <meta charset="UTF-8">
+        <title>${escapeHtml(examTitle)} - সমাধানপত্র (${studentRoll})</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+        <style>
+          @page {
+            size: A4;
+            margin: 12mm 12mm 15mm 12mm;
+          }
+          body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans Bengali', Kalpurush, SolaimanLipi, sans-serif;
+            color: #111;
+            background: #fff;
+            padding: 12px;
+            font-size: 13.5px;
+            line-height: 1.5;
+          }
+          .header-box {
+            border-bottom: 2px solid #0d6efd;
+            padding-bottom: 10px;
+            margin-bottom: 14px;
+          }
+          .summary-card {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 10px 14px;
+            margin-bottom: 16px;
+          }
+          .q-card {
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 12px 14px;
+            margin-bottom: 12px;
+            page-break-inside: avoid;
+            background: #fff;
+          }
+          .q-card.is-correct { border-left: 5px solid #198754; }
+          .q-card.is-wrong { border-left: 5px solid #dc3545; }
+          .q-card.is-skipped { border-left: 5px solid #6c757d; }
+          .opt-row {
+            padding: 5px 10px;
+            margin-bottom: 4px;
+            border-radius: 6px;
+            border: 1px solid #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+          }
+          .opt-row.is-correct-opt {
+            background-color: #d1e7dd !important;
+            border-color: #badbcc !important;
+            color: #0f5132 !important;
+            font-weight: bold;
+          }
+          .opt-row.is-wrong-opt {
+            background-color: #f8d7da !important;
+            border-color: #f5c2c7 !important;
+            color: #842029 !important;
+            font-weight: bold;
+          }
+          .exp-box {
+            background-color: #f0f7ff;
+            border: 1px solid #b6d4fe;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-top: 8px;
+            font-size: 12.5px;
+          }
+          @media print {
+            .no-print { display: none !important; }
+            body { padding: 0; }
+          }
+        </style>
+      </head>
+      <body>
+        <div class="header-box d-flex justify-content-between align-items-center">
+          <div>
+            <h2 class="fw-bold text-primary mb-0" style="font-size: 1.6rem;">NU Crackers</h2>
+            <h5 class="fw-bold text-dark mb-0">${escapeHtml(examTitle)} — সম্পূর্ণ সমাধানপত্র</h5>
+            <div class="text-muted small">তারিখ: ${printDate}</div>
+          </div>
+          <div class="text-end">
+            <div class="fw-bold text-dark" style="font-size: 1.1rem;">${escapeHtml(studentName)}</div>
+            <div class="text-muted small">রোল: <strong>${escapeHtml(studentRoll)}</strong></div>
+            <div class="mt-1">
+              <span class="badge bg-primary fs-6 px-3 py-1">নম্বর: ${summary.score} / ${summary.totalMarks} (${percentage}%)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="summary-card d-flex flex-wrap justify-content-around text-center">
+          <div><strong>মোট প্রশ্ন:</strong> ${totalQ}টি</div>
+          <div class="text-success"><strong>সঠিক উত্তর:</strong> ${summary.correctCount}টি</div>
+          <div class="text-danger"><strong>ভুল উত্তর:</strong> ${summary.wrongCount}টি</div>
+          <div class="text-secondary"><strong>অনুত্তরিত:</strong> ${summary.skippedCount}টি</div>
+          <div><strong>অর্জিত শতাংশ:</strong> ${percentage}%</div>
+        </div>
+
+        <div class="questions-list">
+          ${questions.map((q, idx) => {
+            let statusText = '<span class="badge bg-success">সঠিক</span>';
+            let cardStatus = 'is-correct';
+            if (q.isSkipped) {
+              statusText = '<span class="badge bg-secondary">অনুত্তরিত</span>';
+              cardStatus = 'is-skipped';
+            } else if (!q.isCorrect) {
+              statusText = '<span class="badge bg-danger">ভুল</span>';
+              cardStatus = 'is-wrong';
+            }
+
+            return `
+              <div class="q-card ${cardStatus}">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <span class="fw-bold text-muted" style="font-size: 12px;">প্রশ্ন ${idx + 1}</span>
+                  ${statusText}
+                </div>
+                <h6 class="fw-bold text-dark mb-2">${escapeHtml(q.question)}</h6>
+                <div class="options-container">
+                  ${q.options.map((opt, optIdx) => {
+                    const isChosen = q.chosenIndex === optIdx;
+                    const isCorrectOpt = q.correctIndex === optIdx;
+                    let cls = 'opt-row';
+                    if (isCorrectOpt) cls += ' is-correct-opt';
+                    if (isChosen && !isCorrectOpt) cls += ' is-wrong-opt';
+
+                    return `
+                      <div class="${cls}">
+                        <div>
+                          <strong>(${optLetters[optIdx] || optIdx + 1})</strong> ${escapeHtml(opt)}
+                          ${isChosen ? '<span class="badge bg-dark ms-2" style="font-size:10px;">তোমার উত্তর</span>' : ''}
+                        </div>
+                        ${isCorrectOpt ? '<span class="text-success fw-bold" style="font-size:11px;">✓ সঠিক উত্তর</span>' : ''}
+                      </div>
+                    `;
+                  }).join('')}
+                </div>
+                ${q.explanation ? `
+                  <div class="exp-box">
+                    <strong>💡 সমাধান ও ব্যাখ্যা:</strong> ${escapeHtml(q.explanation)}
+                  </div>
+                ` : ''}
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </body>
+      </html>
+    `;
+
+    // Trigger printing via hidden iframe so browser Save as PDF works cleanly
+    const iframe = document.createElement('iframe');
+    iframe.style.position = 'fixed';
+    iframe.style.right = '0';
+    iframe.style.bottom = '0';
+    iframe.style.width = '0';
+    iframe.style.height = '0';
+    iframe.style.border = '0';
+    document.body.appendChild(iframe);
+
+    try {
+      const doc = iframe.contentWindow.document;
+      doc.open();
+      doc.write(printHtml);
+      doc.close();
+
+      iframe.contentWindow.focus();
+      setTimeout(() => {
+        try {
+          iframe.contentWindow.print();
+        } catch (printErr) {
+          const printWindow = window.open('', '_blank');
+          if (printWindow) {
+            printWindow.document.write(printHtml);
+            printWindow.document.close();
+            printWindow.focus();
+            printWindow.print();
+          }
+        }
+        setTimeout(() => {
+          if (document.body.contains(iframe)) {
+            document.body.removeChild(iframe);
+          }
+        }, 3000);
+      }, 500);
+    } catch (e) {
+      alert('PDF প্রিন্ট করতে সমস্যা হয়েছে। অনুগ্রহ করে ব্রাউজার সেটিংস চেক করুন।');
     }
   }
 
