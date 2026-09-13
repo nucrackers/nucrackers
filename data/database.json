@@ -2439,6 +2439,100 @@
           "explanation": "Dhaka Hobe"
         }
       ]
+    },
+    {
+      "id": "sub_1789294134300_ntn8j",
+      "examId": "arts-02",
+      "examTitle": "Arts GK & English Model Test",
+      "group": "arts",
+      "roll": "42202141",
+      "name": "Soumik Das Swacha",
+      "score": 0,
+      "totalMarks": 5,
+      "correctCount": 0,
+      "wrongCount": 1,
+      "skippedCount": 4,
+      "percentage": 0,
+      "isPassed": true,
+      "timeSpent": 4,
+      "submittedAt": "2026-09-13T10:08:54.300Z",
+      "detailedResults": [
+        {
+          "questionId": 1,
+          "question": "জাতিসংঘের সদর দপ্তর কোথায় অবস্থিত?",
+          "options": [
+            "জেনেভা",
+            "নিউইয়র্ক",
+            "লন্ডন",
+            "প্যারিস"
+          ],
+          "studentAnswer": 1,
+          "correctAnswer": null,
+          "isCorrect": false,
+          "isSkipped": false,
+          "explanation": "জাতিসংঘের প্রধান সদর দপ্তর মার্কিন যুক্তরাষ্ট্রের নিউইয়র্ক সিটিতে অবস্থিত।"
+        },
+        {
+          "questionId": 2,
+          "question": "The antonym of 'Optimistic' is—",
+          "options": [
+            "Hopeful",
+            "Pessimistic",
+            "Cheerful",
+            "Positive"
+          ],
+          "studentAnswer": null,
+          "correctAnswer": null,
+          "isCorrect": false,
+          "isSkipped": true,
+          "explanation": "Optimistic অর্থ আশাবাদী; এর বিপরীত শব্দ হলো Pessimistic (হতাশাবাদী)।"
+        },
+        {
+          "questionId": 3,
+          "question": "বাংলা বর্ণমালায় মাত্রাহীন বর্ণ কয়টি?",
+          "options": [
+            "৭টি",
+            "৮টি",
+            "১০টি",
+            "১২টি"
+          ],
+          "studentAnswer": null,
+          "correctAnswer": null,
+          "isCorrect": false,
+          "isSkipped": true,
+          "explanation": "বাংলা বর্ণমালায় মোট ১০টি মাত্রাহীন বর্ণ রয়েছে (স্বরবর্ণে ৪টি: এ, ঐ, ও, ঔ; ব্যঞ্জনবর্ণে ৬টি: ঙ, ঞ, ৎ, ং, ঃ, ঁ)।"
+        },
+        {
+          "questionId": 4,
+          "question": "Who wrote 'Hamlet'?",
+          "options": [
+            "Charles Dickens",
+            "William Shakespeare",
+            "John Milton",
+            "Wordsworth"
+          ],
+          "studentAnswer": null,
+          "correctAnswer": null,
+          "isCorrect": false,
+          "isSkipped": true,
+          "explanation": "বিখ্যাত ট্র্যাজেডি 'Hamlet' রচনা করেছেন মহাকবি উইলিয়াম শেক্সপিয়ার।"
+        },
+        {
+          "questionId": 5,
+          "question": "বাংলাদেশের সংবিধানে কয়টি অনুচ্ছেদ আছে?",
+          "options": [
+            "১৩৭টি",
+            "১৪২টি",
+            "১৫৩টি",
+            "১৬০টি"
+          ],
+          "studentAnswer": null,
+          "correctAnswer": null,
+          "isCorrect": false,
+          "isSkipped": true,
+          "explanation": "গণপ্রজাতন্ত্রী বাংলাদেশের সংবিধানে ১১টি ভাগ, ১৫৩টি অনুচ্ছেদ ও ৭টি তফসিল রয়েছে।"
+        }
+      ]
     }
   ]
 }
