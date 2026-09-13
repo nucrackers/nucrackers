@@ -993,38 +993,20 @@ document.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => {
         parsedPreviewContainer?.classList.add('d-none');
       }, 1000);
-
-      // 16b. Admin: Update exam details (Duration, Marks, etc.)
-app.put('/api/admin/exams/:id', (req, res) => {
-  const { id } = req.params;
-  const { durationMinutes, duration, title, subject, totalMarks, passMarks, negativeMark } = req.body;
-
-  const db = readDb();
-  const exam = (db.exams || []).find(e => e.id === id);
-
-  if (!exam) {
-    return res.status(404).json({ success: false, message: 'পরীক্ষা খুঁজে পাওয়া যায়নি।' });
-  }
-
-  const newDuration = Number(durationMinutes || duration || exam.durationMinutes || exam.duration || 15);
-  exam.durationMinutes = newDuration;
-  exam.duration = newDuration;
-
-  if (title) exam.title = String(title).trim();
-  if (subject) exam.subject = String(subject).trim();
-  if (passMarks !== undefined) exam.passMarks = Number(passMarks);
-  if (negativeMark !== undefined) exam.negativeMark = Number(negativeMark);
-  if (totalMarks !== undefined) exam.totalMarks = Number(totalMarks);
-
-  writeDb(db);
-
-  res.json({
-    success: true,
-    message: `পরীক্ষার সময় সফলভাবে ${newDuration} মিনিট আপডেট করা হয়েছে।`,
-    exam
+// Refresh Exams in admin UI
+      await loadExams();
+      if (examSelect) {
+        examSelect.value = targetExamId;
+        currentSelectedExamId = targetExamId;
+        renderSelectedExamQuestions();
+      }
+    } catch (err) {
+      showAlert(importAlert, `<i class="fa-solid fa-triangle-exclamation me-1"></i> ${err.message}`, 'danger');
+    } finally {
+      btnCommitBulkQuestions.disabled = false;
+      btnCommitBulkQuestions.innerHTML = '<i class="fa-solid fa-circle-check me-1"></i> নির্বাচিত মডেল টেস্টে প্রশ্নগুলো যুক্ত করুন';
+    }
   });
-});
-
   // Refresh All Button
   document.getElementById('refreshAllBtn')?.addEventListener('click', () => {
     loadAllAdminData();
