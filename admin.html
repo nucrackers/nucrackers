@@ -259,7 +259,66 @@
                 </div>
               </div>
             </div>
+<!-- শিক্ষার্থীর মোডাল: ৮-ডিজিট রোল বরাদ্দ ও সরাসরি WhatsApp প্রেরণ -->
+<div class="modal fade" id="approveStudentModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-4 border-0 shadow">
+      <div class="modal-header border-0 pb-0">
+        <h5 class="modal-title fw-bold text-success"><i class="fa-solid fa-user-check me-2"></i>ভর্তি অনুমোদন ও রোল বরাদ্দ</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body pt-2">
+        <div class="bg-light p-3 rounded-3 mb-3 border">
+          <h6 class="fw-bold mb-1" id="modalApproveName">-</h6>
+          <div class="small text-muted mb-2" id="modalApproveCollegeDistrict">-</div>
+          <div class="d-flex gap-2">
+            <span id="modalApproveGroupBadge" class="badge bg-primary">Science</span>
+            <span class="badge bg-light text-dark border"><i class="fa-brands fa-whatsapp text-success me-1"></i><span id="modalApproveWhatsapp">-</span></span>
+          </div>
+        </div>
 
+        <div class="mb-3">
+          <label class="form-label small fw-bold">বরাদ্দকৃত ৮-ডিজিট ইউনিক রোল নম্বর:</label>
+          <input type="text" class="form-control font-monospace fw-bold fs-5 text-primary" id="modalCustomRollInput" maxlength="8" required>
+        </div>
+
+        <!-- সরাসরি WhatsApp প্রেরণের অপশন -->
+        <div class="p-3 mb-3 rounded-3 bg-success bg-opacity-10 border border-success border-opacity-25">
+          <div class="form-check form-switch mb-2">
+            <input class="form-check-input" type="checkbox" role="switch" id="modalAutoOpenWhatsApp" checked>
+            <label class="form-check-label fw-bold text-success small" for="modalAutoOpenWhatsApp">
+              <i class="fa-brands fa-whatsapp me-1"></i>অনুমোদনের সাথে সাথে সরাসরি হোয়াটসঅ্যাপে ইউনিক রোল পাঠিয়ে দিন
+            </label>
+          </div>
+          <div class="border rounded bg-white p-2 small text-secondary font-monospace" id="modalWhatsAppMessagePreview"></div>
+        </div>
+
+        <div class="d-grid gap-2">
+          <button type="button" class="btn btn-success py-2 rounded-pill fw-bold" id="btnConfirmApproveStudent">
+            <i class="fa-brands fa-whatsapp me-2"></i>অনুমোদন করুন ও সরাসরি WhatsApp-এ পাঠান
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WhatsApp কনফার্মেশন ডিসপ্যাচ মোডাল -->
+<div class="modal fade" id="whatsappDispatchedModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-4 border-0 shadow text-center p-4">
+      <h4 class="fw-bold text-dark mb-1">হোয়াটসঅ্যাপে রোল পাঠানো হচ্ছে!</h4>
+      <div class="bg-light p-3 rounded-3 border my-3 text-start">
+        <div><strong>রোল নম্বর:</strong> <code class="fw-bold fs-5 text-primary" id="waModalAllocatedRoll">-</code></div>
+        <div><strong>WhatsApp:</strong> <span id="waModalTargetPhone">-</span></div>
+      </div>
+      <a id="waModalOpenDirectLink" href="#" target="_blank" class="btn btn-success btn-lg rounded-pill fw-bold mb-2">
+        <i class="fa-brands fa-whatsapp me-2"></i>হোয়াটসঅ্যাপে রোল পাঠান
+      </a>
+      <button type="button" class="btn btn-outline-secondary rounded-pill" id="waModalCopyMsgBtn">মেসেজ কপি করুন</button>
+    </div>
+  </div>
+</div>
             <!-- Right: Student Directory List -->
             <div class="col-lg-7">
               <div class="card card-custom p-4">
