@@ -604,7 +604,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 4. Open Leaderboard Modal
+// 4. Open Leaderboard Modal
   async function openLeaderboard(examId) {
     const modalEl = document.getElementById('leaderboardModal');
     const bsModal = new bootstrap.Modal(modalEl);
@@ -627,7 +627,7 @@ document.addEventListener('DOMContentLoaded', () => {
         throw new Error(data.message || 'লিডারবোর্ড লোড করা যায়নি');
       }
 
-     const list = data.leaderboard || [];
+      const list = data.leaderboard || [];
       const totalParticipants = data.totalParticipants ?? data.count ?? list.length;
       const examTitle = data.examTitle || 'মডেল টেস্ট লিডারবোর্ড';
 
@@ -688,6 +688,13 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
         `}
       `;
+
+    } catch (err) {
+      body.innerHTML = `
+        <div class="alert alert-danger my-3">
+          <i class="fa-solid fa-triangle-exclamation me-1"></i> ${err.message}
+        </div>
+      `;
     }
   }
 
@@ -712,7 +719,6 @@ document.addEventListener('DOMContentLoaded', () => {
     bsModal.show();
 
     try {
-      const res = await fetch(`/api/exams/${examId}/review?roll=${encodeURIComponent(currentStudent.roll)}`);
       const res = await fetch(`/api/exams/${examId}/review?roll=${encodeURIComponent(currentStudent.roll)}`);
       const data = await res.json();
 
@@ -767,22 +773,14 @@ document.addEventListener('DOMContentLoaded', () => {
       questions = questions || [];
       studentName = studentName || currentStudent.name;
       studentRoll = studentRoll || currentStudent.roll;
-      const data = await res.json();
-
-      if (!res.ok || !data.success) {
-        throw new Error(data.message || 'উত্তরপত্র লোড করা সম্ভব হয়নি');
-      }
-
-      const questions = data.questions || [];
-      const summary = data.summary;
 
       body.innerHTML = `
         <!-- Summary Header -->
         <div class="bg-light border rounded-4 p-3 mb-4">
           <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
             <div>
-              <h5 class="fw-bold mb-0 text-dark">${escapeHtml(data.examTitle)}</h5>
-              <div class="small text-muted">শিক্ষার্থী: ${escapeHtml(data.student.name)} (রোল: ${escapeHtml(data.student.roll)})</div>
+              <h5 class="fw-bold mb-0 text-dark">${escapeHtml(examTitle || 'পরীক্ষার ফলাফল')}</h5>
+              <div class="small text-muted">শিক্ষার্থী: ${escapeHtml(studentName)} (রোল: ${escapeHtml(studentRoll)})</div>
             </div>
             <div class="d-flex gap-2">
               <span class="badge bg-primary fs-6 rounded-pill px-3 py-2">নম্বর: ${summary.score} / ${summary.totalMarks}</span>
