@@ -627,12 +627,14 @@ document.addEventListener('DOMContentLoaded', () => {
         throw new Error(data.message || 'লিডারবোর্ড লোড করা যায়নি');
       }
 
-      const list = data.leaderboard || [];
+     const list = data.leaderboard || [];
+      const totalParticipants = data.totalParticipants ?? data.count ?? list.length;
+      const examTitle = data.examTitle || 'মডেল টেস্ট লিডারবোর্ড';
 
       body.innerHTML = `
         <div class="mb-4 text-center">
-          <h4 class="fw-bold text-dark mb-1"><i class="fa-solid fa-trophy text-warning me-2"></i>${escapeHtml(data.examTitle)}</h4>
-          <p class="text-muted small mb-0">মোট অংশগ্রহণকারী: <strong>${data.totalParticipants}</strong> জন শিক্ষার্থী</p>
+          <h4 class="fw-bold text-dark mb-1"><i class="fa-solid fa-trophy text-warning me-2"></i>${escapeHtml(examTitle)}</h4>
+          <p class="text-muted small mb-0">মোট অংশগ্রহণকারী: <strong>${totalParticipants}</strong> জন শিক্ষার্থী</p>
         </div>
 
         ${list.length === 0 ? `
@@ -657,21 +659,26 @@ document.addEventListener('DOMContentLoaded', () => {
                   if (s.rank === 2) rankBadge = `<span class="badge bg-secondary text-white rounded-pill px-2 py-1">২য়</span>`;
                   if (s.rank === 3) rankBadge = `<span class="badge bg-bronze text-white rounded-pill px-2 py-1" style="background:#cd7f32;">৩য়</span>`;
 
-                  const min = Math.floor(s.timeTakenSeconds / 60);
-                  const sec = s.timeTakenSeconds % 60;
+                  const timeSec = Number(s.timeTakenSeconds !== undefined ? s.timeTakenSeconds : (s.timeSpent !== undefined ? s.timeSpent : 0)) || 0;
+                  const min = Math.floor(timeSec / 60);
+                  const sec = timeSec % 60;
+
+                  const isCurrent = currentStudent ? String(s.roll).trim() === String(currentStudent.roll).trim() : false;
+                  const displayName = (isCurrent && currentStudent.name) ? currentStudent.name : (s.name && s.name !== s.roll ? s.name : `শিক্ষার্থী (${s.roll})`);
+                  const displayGroup = s.group || (isCurrent ? currentStudent.group : currentGroup);
 
                   return `
-                    <tr class="${s.isCurrentStudent ? 'table-primary fw-bold' : ''}">
+                    <tr class="${isCurrent ? 'table-primary fw-bold' : ''}">
                       <td>${rankBadge}</td>
                       <td>
                         <div class="d-flex align-items-center gap-2">
-                          <span>${escapeHtml(s.name)}</span>
-                          ${s.isCurrentStudent ? '<span class="badge bg-primary text-white rounded-pill px-2 py-0 small">তুমি</span>' : ''}
+                          <span>${escapeHtml(displayName)}</span>
+                          ${isCurrent ? '<span class="badge bg-primary text-white rounded-pill px-2 py-0 small">তুমি</span>' : ''}
                         </div>
                       </td>
                       <td><code>${escapeHtml(s.roll)}</code></td>
-                      <td><span class="text-uppercase small text-muted">${escapeHtml(s.group)}</span></td>
-                      <td class="text-center"><span class="fw-bold text-primary">${s.score}</span> <span class="small text-muted">/ ${s.totalMarks}</span></td>
+                      <td><span class="text-uppercase small text-muted">${escapeHtml(displayGroup)}</span></td>
+                      <td class="text-center"><span class="fw-bold text-primary">${s.score}</span> <span class="small text-muted">/ ${s.totalMarks || 0}</span></td>
                       <td class="text-center small text-muted">${min}m ${sec}s</td>
                     </tr>
                   `;
@@ -680,13 +687,6 @@ document.addEventListener('DOMContentLoaded', () => {
             </table>
           </div>
         `}
-      `;
-
-    } catch (err) {
-      body.innerHTML = `
-        <div class="alert alert-danger my-3">
-          <i class="fa-solid fa-triangle-exclamation me-1"></i> ${err.message}
-        </div>
       `;
     }
   }
@@ -713,6 +713,60 @@ document.addEventListener('DOMContentLoaded', () => {
 
     try {
       const res = await fetch(`/api/exams/${examId}/review?roll=${encodeURIComponent(currentStudent.roll)}`);
+      const res = await fetch(`/api/exams/${examId}/review?roll=${encodeURIComponent(currentStudent.roll)}`);
+      const data = await res.json();
+
+      if (!res.ok || !data.success) {
+        body.innerHTML = `
+          <div class="text-center py-4">
+            <div class="rounded-circle bg-warning bg-opacity-10 text-warning d-inline-flex align-items-center justify-content-center mb-3" style="width:64px; height:64px; font-size:1.8rem;">
+              <i class="fa-solid fa-file-circle-exclamation"></i>
+            </div>
+            <h5 class="fw-bold text-dark">উত্তরপত্র এখনো পাওয়া যায়নি</h5>
+            <p class="text-muted small max-w-md mx-auto mb-4">
+              আপনি সম্ভবত এখনো এই পরীক্ষাটিতে অংশগ্রহণ করেননি। অনুগ্রহ করে প্রথমে <strong>"পরীক্ষা শুরু করো"</strong> বাটনে ক্লিক করে পরীক্ষাটি সম্পন্ন করুন। পরীক্ষা জমা দেওয়ার সাথে সাথে এখানে প্রতিটি প্রশ্নের সঠিক উত্তর ও বিস্তারিত সমাধান দেখতে পাবেন।
+            </p>
+            <button type="button" class="btn btn-primary rounded-pill px-4" data-bs-dismiss="modal">বুঝেছি</button>
+          </div>
+        `;
+        return;
+      }
+
+      let examTitle = data.examTitle;
+      let studentName = data.student?.name;
+      let studentRoll = data.student?.roll;
+      let summary = data.summary;
+      let questions = data.questions;
+
+      if (!summary && data.submission) {
+        const sub = data.submission;
+        examTitle = examTitle || sub.examTitle;
+        studentRoll = studentRoll || sub.roll;
+        studentName = studentName || (currentStudent && String(currentStudent.roll).trim() === String(sub.roll).trim() ? currentStudent.name : (sub.name && sub.name !== sub.roll ? sub.name : currentStudent?.name || sub.roll));
+        summary = {
+          score: sub.score,
+          totalMarks: sub.totalMarks,
+          correctCount: sub.correctCount,
+          wrongCount: sub.wrongCount,
+          skippedCount: sub.skippedCount,
+          timeTakenSeconds: sub.timeSpent || sub.timeTakenSeconds || 0
+        };
+        questions = (sub.detailedResults || []).map(r => ({
+          id: r.questionId,
+          question: r.question,
+          options: r.options,
+          chosenIndex: r.studentAnswer,
+          correctIndex: r.correctAnswer,
+          isCorrect: r.isCorrect,
+          isSkipped: r.isSkipped,
+          explanation: r.explanation || 'কোনো ব্যাখ্যা দেওয়া নেই।'
+        }));
+      }
+
+      summary = summary || { score: 0, totalMarks: 0, correctCount: 0, wrongCount: 0, skippedCount: 0 };
+      questions = questions || [];
+      studentName = studentName || currentStudent.name;
+      studentRoll = studentRoll || currentStudent.roll;
       const data = await res.json();
 
       if (!res.ok || !data.success) {
