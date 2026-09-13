@@ -28,7 +28,7 @@
       "group": "science",
       "title": "Science Live Model Test 01",
       "subject": "Physics, Chemistry & Biology",
-      "durationMinutes": 15,
+      "durationMinutes": 25,
       "totalMarks": 12,
       "passMarks": 5,
       "negativeMark": 0.25,
@@ -168,7 +168,7 @@
           "explanation": "শূন্য মাধ্যমে আলোর বেগ প্রায় ৩ × ১০^৮ মিটার/সেকেন্ড বা ৩,০০,০০০ কিলোমিটার/সেকেন্ড।"
         }
       ],
-      "duration": 15
+      "duration": 25
     },
     {
       "id": "sci-02",
