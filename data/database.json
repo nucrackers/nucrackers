@@ -2424,7 +2424,7 @@
       "id": "exam_1789358697221",
       "title": "Premium Full Model Test- 10",
       "group": "arts",
-      "duration": 30,
+      "duration": 60,
       "passingMarks": 0,
       "negativeMarking": 0,
       "questions": [
@@ -3730,7 +3730,8 @@
         }
       ],
       "createdAt": "2026-09-14T04:04:57.221Z",
-      "totalMarks": 100
+      "totalMarks": 100,
+      "durationMinutes": 60
     }
   ],
   "submissions": [
