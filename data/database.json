@@ -2419,6 +2419,16 @@
       "negativeMarking": 0,
       "questions": [],
       "createdAt": "2026-09-13T07:21:49.476Z"
+    },
+    {
+      "id": "exam_1789358697221",
+      "title": "Premium Full Model Test- 10",
+      "group": "arts",
+      "duration": 30,
+      "passingMarks": 0,
+      "negativeMarking": 0,
+      "questions": [],
+      "createdAt": "2026-09-14T04:04:57.221Z"
     }
   ],
   "submissions": [
