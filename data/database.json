@@ -6679,6 +6679,100 @@
           "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
         }
       ]
+    },
+    {
+      "id": "sub_1789359068878_u0str",
+      "examId": "sci-02",
+      "examTitle": "Science Chemistry & Physics Sprint",
+      "group": "science",
+      "roll": "12701001",
+      "name": "uthso",
+      "score": 0,
+      "totalMarks": 5,
+      "correctCount": 0,
+      "wrongCount": 5,
+      "skippedCount": 0,
+      "percentage": 0,
+      "isPassed": true,
+      "timeSpent": 19,
+      "submittedAt": "2026-09-14T04:11:08.878Z",
+      "detailedResults": [
+        {
+          "questionId": 1,
+          "question": "কোন মৌলের পারমাণবিক সংখ্যা 11?",
+          "options": [
+            "ম্যাগনেসিয়াম",
+            "সোডিয়াম",
+            "অ্যালুমিনিয়াম",
+            "পটাশিয়াম"
+          ],
+          "studentAnswer": 1,
+          "correctAnswer": null,
+          "isCorrect": false,
+          "isSkipped": false,
+          "explanation": "সোডিয়ামের (Na) পারমাণবিক সংখ্যা হলো 11।"
+        },
+        {
+          "questionId": 2,
+          "question": "কাজের মাত্রা সমীকরণ কোনটি?",
+          "options": [
+            "MLT⁻¹",
+            "ML²T⁻²",
+            "MLT⁻²",
+            "ML²T⁻¹"
+          ],
+          "studentAnswer": 1,
+          "correctAnswer": null,
+          "isCorrect": false,
+          "isSkipped": false,
+          "explanation": "কাজ = বল × সরণ = [MLT⁻²] × [L] = [ML²T⁻²]।"
+        },
+        {
+          "questionId": 3,
+          "question": "ভিনেগারের মূল রাসায়নিক উপাদান কোনটি?",
+          "options": [
+            "মিথানয়িক এসিড",
+            "ইথানয়িক এসিড (এসিটিক এসিড)",
+            "সাইট্রিক এসিড",
+            "অক্সালিক এসিড"
+          ],
+          "studentAnswer": 1,
+          "correctAnswer": null,
+          "isCorrect": false,
+          "isSkipped": false,
+          "explanation": "ভিনেগার হলো ইথানয়িক এসিডের (CH₃COOH) 6% থেকে 10% জলীয় দ্রবণ।"
+        },
+        {
+          "questionId": 4,
+          "question": "পরম শূন্য তাপমাত্রা কত কেলভিন?",
+          "options": [
+            "0 K",
+            "273.15 K",
+            "-273.15 K",
+            "100 K"
+          ],
+          "studentAnswer": 2,
+          "correctAnswer": null,
+          "isCorrect": false,
+          "isSkipped": false,
+          "explanation": "পরম শূন্য তাপমাত্রা হলো 0 কেলভিন বা -273.15 ডিগ্রি সেলসিয়াস।"
+        },
+        {
+          "questionId": 5,
+          "question": "নিউক্লিয়াসের আবিষ্কারক কে?",
+          "options": [
+            "জে জে থমসন",
+            "আর্নেস্ট রাদারফোর্ড",
+            "নীলস বোর",
+            "জেমস চ্যাডউইক"
+          ],
+          "studentAnswer": 1,
+          "correctAnswer": null,
+          "isCorrect": false,
+          "isSkipped": false,
+          "explanation": "1911 সালে আর্নেস্ট রাদারফোর্ড আলফা কণা বিচ্ছুরণ পরীক্ষার মাধ্যমে পরমাণুর নিউক্লিয়াস আবিষ্কার করেন।"
+        }
+      ]
     }
   ]
 }
