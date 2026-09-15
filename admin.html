@@ -741,7 +741,28 @@ Answer: A"></textarea>
       <div>© 2026 NU Crackers. All Rights Reserved.</div>
     </div>
   </footer>
-
+<!-- Student Full Details Modal -->
+<div class="modal fade" id="studentDetailModal" tabindex="-1" aria-labelledby="studentDetailModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-4 border-0 shadow">
+      <div class="modal-header bg-primary text-white rounded-top-4">
+        <h5 class="modal-title fw-bold" id="studentDetailModalLabel">
+          <i class="fa-solid fa-id-card me-2"></i>শিক্ষার্থীর পূর্ণাঙ্গ তথ্য
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-4" id="studentModalBody">
+        <!-- Content will be injected via js/admin.js -->
+      </div>
+      <div class="modal-footer bg-light rounded-bottom-4">
+        <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">বন্ধ করুন</button>
+        <button type="button" class="btn btn-success rounded-pill px-4" id="modalWhatsAppBtn">
+          <i class="fa-brands fa-whatsapp me-1"></i> WhatsApp-এ রোল পাঠান
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script type="module" src="js/admin.js"></script>
 </body>
