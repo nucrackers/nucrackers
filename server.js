@@ -131,32 +131,57 @@ async function syncDatabaseToGitHub(data) {
   }
 }
 
-// 8-Digit Unique Roll Generator: [Unit Code 1 Digit] + [Year 2 Digits] + [Group 2 Digits] + [Serial 3 Digits]
+// 8-Digit Dynamic Roll Generator:
+// প্রতি ১০০ জন শিক্ষার্থী পূর্ণ হলে Unit Code স্বয়ংক্রিয়ভাবে বাড়বে (1 -> 2 -> 3...)
 function generate8DigitRoll(db, group, year = '27') {
   const cleanGroup = String(group || 'science').trim().toLowerCase();
-  const unitCode = '1';
   const yearCode = String(year).padStart(2, '0').slice(-2);
+  
+  // বিভাগ অনুযায়ী ২ ডিজিট গ্রুপ কোড
   let groupCode = '01';
   if (cleanGroup === 'humanities' || cleanGroup === 'arts') groupCode = '02';
   if (cleanGroup === 'business' || cleanGroup === 'commerce') groupCode = '03';
 
-  const prefix = `${unitCode}${yearCode}${groupCode}`;
-  const existingRolls = new Set(
+  // ওই গ্রুপের সকল বিদ্যমান বৈধ ৮-ডিজিটের রোলের তালিকা
+  const allGroupRolls = new Set(
     (db.students || [])
       .map(s => String(s.roll || '').trim())
-      .filter(r => r.startsWith(prefix) && r.length === 8)
+      .filter(r => r.length === 8 && r.slice(1, 5) === `${yearCode}${groupCode}`)
   );
 
-  let serial = 1;
+  // ১ নম্বর ইউনিট কোড থেকে শুরু করে প্রতি ১০০ জনে পরবর্তী ইউনিট কোড চেক করবে
+  let unitCodeNum = 1;
   let candidate = '';
-  do {
-    candidate = `${prefix}${String(serial).padStart(3, '0')}`;
-    serial++;
-  } while (existingRolls.has(candidate) && serial < 999);
+
+  while (unitCodeNum <= 9) {
+    const prefix = `${unitCodeNum}${yearCode}${groupCode}`;
+    
+    // ওই নির্দিষ্ট ইউনিটে (ব্যাচে) ১ থেকে ১০০ পর্যন্ত খালি সিরিয়াল খোঁজা
+    for (let serial = 1; serial <= 100; serial++) {
+      const serialStr = String(serial).padStart(3, '0');
+      const testRoll = `${prefix}${serialStr}`;
+
+      if (!allGroupRolls.has(testRoll)) {
+        candidate = testRoll;
+        break; // খালি রোল পাওয়া গেলে লুপ থেকে বের হবে
+      }
+    }
+
+    if (candidate) {
+      break; // রোল নির্ধারিত হয়ে গেলে রিটার্ন করবে
+    }
+
+    // ১০০ জন পূর্ণ হয়ে গেলে পরবর্তী ইউনিট কোডে চলে যাবে (১ -> ২ -> ৩...)
+    unitCodeNum++;
+  }
+
+  // ৯০০ জন পার হয়ে গেলে ব্যাকআপ হিসেবে ৯ নং ইউনিটের বাকি সিরিয়াল বরাদ্দ হবে
+  if (!candidate) {
+    candidate = `9${yearCode}${groupCode}999`;
+  }
 
   return candidate;
 }
-
 // ==========================================
 // API ROUTES
 // ==========================================
