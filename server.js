@@ -1095,6 +1095,65 @@ app.post('/api/admin/parse-google-form', async (req, res) => {
     res.status(500).json({ success: false, message: 'পার্সিংয়ে সমস্যা হয়েছে: ' + err.message });
   }
 });
+
+// WhatsApp-এ রোল পাঠানো হলে সেই স্ট্যাটাস রেকর্ড করার রাউট
+app.post('/api/admin/students/:identifier/record-whatsapp-sent', (req, res) => {
+  const { identifier } = req.params;
+  const db = readDb();
+
+  const cleanId = String(identifier).trim().toLowerCase();
+  const student = (db.students || []).find(
+    s => (s.id && String(s.id).trim().toLowerCase() === cleanId) ||
+         (s.roll && String(s.roll).trim().toLowerCase() === cleanId) ||
+         (s.transactionId && String(s.transactionId).trim().toLowerCase() === cleanId) ||
+         (s.whatsapp && String(s.whatsapp).trim().toLowerCase() === cleanId)
+  );
+
+  if (!student) {
+    return res.status(404).json({ success: false, message: 'শিক্ষার্থী পাওয়া যায়নি।' });
+  }
+
+  student.whatsappSent = true;
+  student.whatsappSentAt = new Date().toISOString();
+  writeDb(db);
+
+  return res.json({
+    success: true,
+    message: 'হোয়াটসঅ্যাপ মেসেজ রেকর্ড সফলভাবে আপডেট হয়েছে।',
+    student
+  });
+});
+
+// আবেদন বাতিলের রাউট
+app.put('/api/admin/students/:identifier/reject', (req, res) => {
+  const { identifier } = req.params;
+  const { reason } = req.body || {};
+  const db = readDb();
+
+  const cleanId = String(identifier).trim().toLowerCase();
+  const student = (db.students || []).find(
+    s => (s.id && String(s.id).trim().toLowerCase() === cleanId) ||
+         (s.roll && String(s.roll).trim().toLowerCase() === cleanId) ||
+         (s.transactionId && String(s.transactionId).trim().toLowerCase() === cleanId) ||
+         (s.whatsapp && String(s.whatsapp).trim().toLowerCase() === cleanId)
+  );
+
+  if (!student) {
+    return res.status(404).json({ success: false, message: 'শিক্ষার্থী পাওয়া যায়নি।' });
+  }
+
+  student.status = 'rejected';
+  student.rejectReason = reason || 'অসম্পূর্ণ বা ভুল তথ্য';
+  student.rejectedAt = new Date().toISOString();
+
+  writeDb(db);
+
+  return res.json({
+    success: true,
+    message: `শিক্ষার্থী "${student.name}" এর আবেদন বাতিল করা হয়েছে।`,
+    student
+  });
+});
 // 18c. Admin: Bulk add questions to exam
 app.post('/api/admin/exams/:id/bulk-questions', (req, res) => {
   const { id } = req.params;
