@@ -23,7 +23,7 @@
     },
     {
       "id": "reg_1789311324260_548",
-      "roll": "",
+      "roll": "12701002",
       "name": "sudipta",
       "college": "cgc",
       "district": "bhola",
@@ -32,8 +32,9 @@
       "paymentMethod": "bKash",
       "paymentNumber": "01614707006",
       "transactionId": "BLAHSDIYED",
-      "status": "pending",
-      "registeredAt": "2026-09-13T14:55:24.260Z"
+      "status": "approved",
+      "registeredAt": "2026-09-13T14:55:24.260Z",
+      "approvedAt": "2026-09-15T19:06:55.772Z"
     }
   ],
   "exams": [
