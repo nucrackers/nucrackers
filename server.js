@@ -1234,6 +1234,7 @@ app.get('/api/registration/check-status', (req, res) => {
   return res.json({ success: true, student: found });
 });
 
+
 // ৩. প্রিভিউ ৮-ডিজিট রোল
 app.get('/api/admin/students/preview-roll', (req, res) => {
   const { group, year } = req.query;
@@ -1257,6 +1258,59 @@ app.put('/api/admin/students/:identifier/approve', (req, res) => {
 
   return res.json({ success: true, message: 'অনুমোদিত হয়েছে!', student });
 });
+// 12.5. Admin: Approve student registration (Generates 8-Digit Unique Roll automatically)
+app.put('/api/admin/students/:identifier/approve', (req, res) => {
+  const { identifier } = req.params;
+  const { customRoll, year } = req.body || {};
+  const db = readDb();
+
+  const cleanId = String(identifier).trim().toLowerCase();
+  const student = (db.students || []).find(
+    s => (s.id && String(s.id).trim().toLowerCase() === cleanId) ||
+         (s.roll && String(s.roll).trim().toLowerCase() === cleanId) ||
+         (s.transactionId && String(s.transactionId).trim().toLowerCase() === cleanId) ||
+         (s.whatsapp && String(s.whatsapp).trim().toLowerCase() === cleanId)
+  );
+
+  if (!student) {
+    return res.status(404).json({ success: false, message: 'শিক্ষার্থী পাওয়া যায়নি।' });
+  }
+
+  // Determine final 8-digit unique roll
+  let finalRoll = '';
+  if (customRoll && String(customRoll).trim()) {
+    finalRoll = String(customRoll).trim();
+  } else if (student.roll && String(student.roll).trim().length === 8) {
+    finalRoll = String(student.roll).trim();
+  } else {
+    finalRoll = generate8DigitRoll(db, student.group || 'science', year || '27');
+  }
+
+  // Check if roll is already assigned to someone else
+  const duplicate = (db.students || []).find(
+    s => s !== student && s.roll && String(s.roll).trim().toLowerCase() === finalRoll.toLowerCase()
+  );
+
+  if (duplicate) {
+    return res.status(409).json({
+      success: false,
+      message: `রোল "${finalRoll}" ইতিমধ্যে শিক্ষার্থী "${duplicate.name}" (${(duplicate.group || '').toUpperCase()}) এর জন্য বরাদ্দ আছে। অন্য একটি রোল দিন।`
+    });
+  }
+
+  student.id = student.id || `std_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
+  student.roll = String(finalRoll).trim();
+  student.status = 'approved';
+  student.approvedAt = new Date().toISOString();
+
+  writeDb(db);
+
+  return res.json({
+    success: true,
+    message: `শিক্ষার্থী "${student.name}" কে সফলভাবে অনুমোদন (Approve) করা হয়েছে! বরাদ্দকৃত ইউনিক রোল নম্বর: ${finalRoll}`,
+    student
+  });
+});
 
 // ৫. WhatsApp সেন্ড রেকর্ড
 app.post('/api/admin/students/:identifier/record-whatsapp-sent', (req, res) => {
@@ -1271,6 +1325,72 @@ app.post('/api/admin/students/:identifier/record-whatsapp-sent', (req, res) => {
   return res.json({ success: true });
 });
 
+// 11.6. Admin: Sync/Import multiple students safely
+app.post('/api/admin/students/sync', (req, res) => {
+  const { students } = req.body;
+  if (!Array.isArray(students)) {
+    return res.status(400).json({ success: false, message: 'শিক্ষার্থীদের তালিকা সঠিক নয়।' });
+  }
+
+  const db = readDb();
+  if (!Array.isArray(db.students)) db.students = [];
+
+  // Update or merge the persistent student list without losing any student fields
+  const existingKeys = new Set();
+  db.students.forEach(s => {
+    if (s.id) existingKeys.add(String(s.id).trim().toLowerCase());
+    if (s.roll) existingKeys.add(String(s.roll).trim().toLowerCase());
+    if (s.transactionId) existingKeys.add(String(s.transactionId).trim().toUpperCase());
+  });
+
+  let addedCount = 0;
+
+  students.forEach(s => {
+    if (!s || !s.name) return;
+    const cleanId = s.id ? String(s.id).trim().toLowerCase() : '';
+    const cleanRoll = s.roll ? String(s.roll).trim().toLowerCase() : '';
+    const cleanTrx = s.transactionId ? String(s.transactionId).trim().toUpperCase() : '';
+
+    const alreadyExists = (cleanId && existingKeys.has(cleanId)) ||
+                          (cleanRoll && existingKeys.has(cleanRoll)) ||
+                          (cleanTrx && existingKeys.has(cleanTrx));
+
+    if (!alreadyExists) {
+      const mergedStudent = {
+        id: s.id || `std_${Date.now()}_${Math.floor(Math.random() * 10000)}`,
+        roll: s.roll ? String(s.roll).trim() : '',
+        name: String(s.name).trim(),
+        college: s.college ? String(s.college).trim() : '',
+        district: s.district ? String(s.district).trim() : '',
+        group: String(s.group || 'science').trim().toLowerCase(),
+        whatsapp: s.whatsapp ? String(s.whatsapp).trim() : '',
+        paymentMethod: s.paymentMethod ? String(s.paymentMethod).trim() : 'bKash',
+        paymentNumber: s.paymentNumber ? String(s.paymentNumber).trim() : '',
+        transactionId: s.transactionId ? String(s.transactionId).trim().toUpperCase() : '',
+        status: s.status || (s.roll ? 'approved' : 'pending'),
+        registeredAt: s.registeredAt || new Date().toISOString(),
+        approvedAt: s.approvedAt || (s.status === 'approved' ? new Date().toISOString() : undefined),
+        whatsappSent: !!s.whatsappSent,
+        whatsappSentAt: s.whatsappSentAt || undefined
+      };
+
+      db.students.push(mergedStudent);
+      if (mergedStudent.id) existingKeys.add(mergedStudent.id.toLowerCase());
+      if (mergedStudent.roll) existingKeys.add(mergedStudent.roll.toLowerCase());
+      if (mergedStudent.transactionId) existingKeys.add(mergedStudent.transactionId.toUpperCase());
+      addedCount++;
+    }
+  });
+
+  writeDb(db);
+
+  return res.json({
+    success: true,
+    message: `${addedCount} জন নতুন শিক্ষার্থী সফলভাবে সংরক্ষিত হয়েছে।`,
+    totalStudents: db.students.length,
+    students: db.students
+  });
+});
 // ৬. আবেদন বাতিল
 app.put('/api/admin/students/:identifier/reject', (req, res) => {
   const { identifier } = req.params;
