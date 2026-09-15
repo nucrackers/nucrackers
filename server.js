@@ -61,7 +61,7 @@ function writeDb(data) {
   }
 }
 
-// GitHub Auto-Persistence Integration (Optional via GITHUB_TOKEN)
+// GitHub Auto-Persistence Integration
 let isSyncingToGitHub = false;
 let pendingGitHubSync = false;
 
@@ -193,14 +193,24 @@ app.post('/api/auth/login', (req, res) => {
     });
   }
 
+  // Determine Target Exam Page based on student's group
+  const stdGroup = String(student.group || 'science').toLowerCase().trim();
+  let targetPage = 'science-exams.html';
+  if (stdGroup === 'arts' || stdGroup === 'humanities') {
+    targetPage = 'arts-exams.html';
+  } else if (stdGroup === 'commerce' || stdGroup === 'business') {
+    targetPage = 'commerce-exams.html';
+  }
+
   res.json({
     success: true,
     message: 'লগইন সফল হয়েছে!',
+    targetPage: targetPage,
     student: {
       id: student.id || student.roll,
       roll: student.roll,
       name: student.name,
-      group: student.group,
+      group: stdGroup,
       college: student.college || '',
       district: student.district || '',
       whatsapp: student.whatsapp || '',
@@ -486,7 +496,7 @@ app.post('/api/exams/:id/submit', (req, res) => {
   res.json({ success: true, submission });
 });
 
-// Explicit JSON 404 for unhandled API endpoints so it NEVER returns HTML
+// Explicit JSON 404 for unhandled API endpoints
 app.all('/api/*', (req, res) => {
   res.status(404).json({
     success: false,
@@ -497,7 +507,7 @@ app.all('/api/*', (req, res) => {
 // Serve static frontend files
 app.use(express.static(__dirname, { extensions: ['html'] }));
 
-// Fallback to index.html ONLY for frontend page navigation
+// Fallback to index.html ONLY for page navigation
 app.get('*', (req, res) => {
   if (req.path.startsWith('/api/')) {
     return res.status(404).json({ success: false, message: 'API Route not found' });
