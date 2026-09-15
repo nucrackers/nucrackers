@@ -451,6 +451,49 @@ app.get('/api/exams/:id/review', (req, res) => {
   res.json({ success: true, submission: sub });
 });
 
+// 12.5. Admin: Approve student registration
+app.all([
+  '/api/admin/students/:identifier/approve',
+  '/api/students/:identifier/approve',
+  '/api/registration/:identifier/approve',
+  '/api/students/approve',
+  '/api/admin/students/approve'
+], (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  const identifier = req.params.identifier || req.body.identifier || req.body.id || req.body.roll || req.body.transactionId;
+  const { customRoll, year } = req.body || {};
+  const db = readDb();
+
+  if (!identifier) {
+    return res.status(400).json({ success: false, message: 'শিক্ষার্থীর আইডেন্টিফায়ার প্রদান করা হয়নি।' });
+  }
+
+  const cleanId = String(identifier).trim().toLowerCase();
+  const student = (db.students || []).find(
+    s => (s.id && String(s.id).trim().toLowerCase() === cleanId) ||
+         (s.roll && String(s.roll).trim().toLowerCase() === cleanId) ||
+         (s.transactionId && String(s.transactionId).trim().toLowerCase() === cleanId) ||
+         (s.whatsapp && String(s.whatsapp).trim().toLowerCase() === cleanId)
+  );
+
+  if (!student) {
+    return res.status(404).json({ success: false, message: 'শিক্ষার্থী পাওয়া যায়নি।' });
+  }
+
+  // Generate or assign 8-digit unique roll
+  let finalRoll = customRoll ? String(customRoll).trim() : (student.roll && String(student.roll).trim().length === 8 ? String(student.roll).trim() : generate8DigitRoll(db, student.group || 'science', year || '27'));
+
+  student.roll = String(finalRoll).trim();
+  student.status = 'approved';
+  student.approvedAt = new Date().toISOString();
+  writeDb(db);
+
+  return res.json({
+    success: true,
+    message: `শিক্ষার্থী "${student.name}" কে সফলভাবে অনুমোদন করা হয়েছে! রোল: ${student.roll}`,
+    student
+  });
+});
 // 5. Admin Endpoints
 const ADMIN_PASSWORDS = ['Nucrackers#.com', 'nucrackers#.com', 'admin123'];
 
