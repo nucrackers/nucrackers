@@ -8123,27 +8123,40 @@
       ]
     },
     {
-      "id": "sub-1789544000072-528",
+      "id": "sub-1789544128345-785",
       "examId": "free-sci-1789535786712",
       "isFree": true,
-      "roll": "FREE-0072",
+      "roll": "FREE-8345",
       "name": "Sudipta",
       "college": "National university",
       "group": "science",
-      "score": 2.75,
+      "score": 12,
       "totalMarks": 100,
       "passMarks": 40,
-      "correctCount": 3,
-      "wrongCount": 1,
-      "skippedCount": 96,
-      "timeTakenSeconds": 20,
+      "correctCount": 13,
+      "wrongCount": 4,
+      "skippedCount": 83,
+      "timeTakenSeconds": 75,
       "answers": {
         "1": 1,
-        "2": 1,
+        "2": 2,
         "3": 1,
-        "4": 3
+        "4": 3,
+        "5": 3,
+        "6": 2,
+        "7": 1,
+        "8": 0,
+        "9": 1,
+        "10": 1,
+        "11": 2,
+        "12": 0,
+        "13": 0,
+        "14": 1,
+        "15": 1,
+        "16": 1,
+        "17": 1
       },
-      "submittedAt": "2026-09-16T07:33:20.072Z"
+      "submittedAt": "2026-09-16T07:35:28.345Z"
     }
   ]
 }
