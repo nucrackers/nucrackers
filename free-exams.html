@@ -1,919 +1,655 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="bn">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <meta name="description"
-        content="NU Crackers Free Batch - Science, Arts and Commerce Model Tests">
-
-    <title>Free Batch Model Tests | NU Crackers</title>
-
-    <link rel="icon" href="images/nu crackers logo.jpg">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ফ্রি ব্যাচ মডেল টেস্ট • NU Crackers</title>
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-        rel="stylesheet">
-
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-        rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Base Styles -->
     <link rel="stylesheet" href="css/style.css">
 
     <style>
-        .group-card {
-            border: 0;
-            border-radius: 24px;
-            padding: 35px 25px;
-            background: white;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
-            transition: 0.3s ease;
-            height: 100%;
-            text-align: center;
-        }
-
-        .group-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.14);
-        }
-
-        .group-icon {
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 20px;
-            font-size: 38px;
-            background: #eef4ff;
-            color: #2563eb;
-        }
-
-        .group-icon.science-icon { background: #eef4ff; color: #2563eb; }
-        .group-icon.arts-icon { background: #fff7ed; color: #ea580c; }
-        .group-icon.commerce-icon { background: #ecfdf5; color: #059669; }
-
-        .group-card h3 {
-            font-weight: 700;
-            margin-bottom: 12px;
-        }
-
-        .group-card p {
-            color: #6b7280;
-            min-height: 50px;
-        }
-
-        .group-btn {
-            border-radius: 50px;
-            padding: 12px 25px;
-            font-weight: 600;
-            width: 100%;
-        }
-
-        .free-title {
-            max-width: 750px;
-            margin: auto;
-        }
-
-        /* Free Exam Cards & Tabs */
-        .filter-pill-btn {
-            border-radius: 50px;
-            padding: 10px 24px;
-            font-weight: 600;
-            font-size: 0.95rem;
-            transition: all 0.25s ease;
-            border: 1px solid #d0d5dd;
-            background: #fff;
-            color: #344054;
-            cursor: pointer;
-        }
-
-        .filter-pill-btn:hover, .filter-pill-btn.active {
-            background: #102a56;
-            color: #fff;
-            border-color: #102a56;
-            box-shadow: 0 6px 18px rgba(16, 42, 86, 0.2);
-        }
-
-        .exam-free-card {
-            border: 0;
-            border-radius: 20px;
-            background: #fff;
-            box-shadow: 0 10px 30px rgba(16, 42, 86, 0.07);
-            padding: 26px;
-            transition: all 0.3s ease;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+        .free-hero {
+            background: linear-gradient(135deg, #0b1f3a 0%, #1a365d 60%, #0f4c81 100%);
             position: relative;
-            border-top: 4px solid #2563eb;
+            overflow: hidden;
+            border-radius: 0 0 2rem 2rem;
+            color: #fff;
         }
 
-        .exam-free-card:hover {
+        .free-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 80% 20%, rgba(251, 191, 36, 0.15) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .category-nav-card {
+            background: #ffffff;
+            border: 1px solid rgba(16, 42, 86, 0.08);
+            border-radius: 1.25rem;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .category-nav-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 16px 40px rgba(16, 42, 86, 0.12);
+            border-color: #102a56;
+            box-shadow: 0 12px 25px rgba(16, 42, 86, 0.1);
         }
 
-        .exam-free-card.science { border-top-color: #2563eb; }
-        .exam-free-card.arts { border-top-color: #ea580c; }
-        .exam-free-card.commerce { border-top-color: #059669; }
-
-        .tag-badge {
-            font-size: 0.75rem;
-            font-weight: 700;
-            padding: 5px 12px;
-            border-radius: 30px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+        .category-nav-card.active {
+            background: #102a56;
+            color: #ffffff !important;
+            border-color: #102a56;
+            box-shadow: 0 10px 20px rgba(16, 42, 86, 0.2);
         }
 
-        .gform-btn {
-            background: linear-gradient(135deg, #1a73e8, #0d58ba);
+        .category-nav-card.active .text-muted {
+            color: rgba(255, 255, 255, 0.8) !important;
+        }
+
+        .category-nav-card.active .cat-icon {
+            background: rgba(255, 255, 255, 0.2) !important;
             color: #fff !important;
-            border-radius: 50px;
-            padding: 12px 20px;
+        }
+
+        .exam-grid-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            transition: all 0.25s ease;
+            position: relative;
+        }
+
+        .exam-grid-card:hover {
+            border-color: #102a56;
+            box-shadow: 0 10px 25px rgba(16, 42, 86, 0.08);
+            transform: translateY(-4px);
+        }
+
+        .filter-pill-btn {
+            border-radius: 50rem;
+            padding: 0.6rem 1.6rem;
             font-weight: 600;
             font-size: 0.95rem;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+            border: 1px solid #e2e8f0;
+            background: #ffffff;
+            color: #475467;
             transition: all 0.2s ease;
-            text-decoration: none;
-            width: 100%;
-            border: none;
-            box-shadow: 0 6px 16px rgba(26, 115, 232, 0.25);
         }
 
-        .gform-btn:hover {
-            background: linear-gradient(135deg, #0d58ba, #083c82);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 22px rgba(26, 115, 232, 0.35);
+        .filter-pill-btn:hover {
+            background: #f8fafc;
+            color: #102a56;
+            border-color: #cbd5e1;
         }
 
-        .exam-meta-item {
+        .filter-pill-btn.active {
+            background: #102a56;
+            color: #ffffff;
+            border-color: #102a56;
+            box-shadow: 0 4px 12px rgba(16, 42, 86, 0.2);
+        }
+
+        .whatsapp-banner {
+            background: linear-gradient(135deg, #128c7e 0%, #075e54 100%);
+            border-radius: 1.5rem;
+            color: white;
+            box-shadow: 0 12px 30px rgba(18, 140, 126, 0.25);
+        }
+
+        .exam-spec-item {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 0.5rem;
             font-size: 0.85rem;
             color: #475467;
+        }
+
+        @keyframes pulseGlow {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.04); opacity: 0.88; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .pulse-badge {
+            animation: pulseGlow 2s infinite ease-in-out;
+        }
+
+        .free-exam-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 36px rgba(16, 42, 86, 0.12) !important;
+        }
+
+        .option-card:hover {
+            background: #f8fafc !important;
+            border-color: #cbd5e1 !important;
+        }
+
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #freeSolveSheetModal,
+            #freeSolveSheetModal .modal-dialog,
+            #freeSolveSheetModal .modal-content,
+            #freeSolveSheetModal .modal-body,
+            #solveSheetPrintableArea,
+            #solveSheetPrintableArea * {
+                visibility: visible !important;
+            }
+            #freeSolveSheetModal {
+                position: absolute !important;
+                left: 0 !important;
+                top: 0 !important;
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                background: #fff !important;
+            }
+            .modal-header, .modal-footer, .btn, .navbar, footer {
+                display: none !important;
+            }
+            .solve-question-card {
+                page-break-inside: avoid;
+                border: 1px solid #ccc !important;
+                margin-bottom: 20px !important;
+            }
         }
     </style>
 </head>
 
-<body>
-
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg sticky-top">
-
-        <div class="container">
-
-            <a class="navbar-brand d-flex align-items-center gap-2"
-                href="index.html">
-
-                <img src="images/nu crackers logo.jpg"
-                    alt="NU Crackers Logo">
-
-                <span>NU Crackers</span>
-
-            </a>
-
-            <button class="navbar-toggler"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#mainNav">
-
-                <span class="navbar-toggler-icon"></span>
-
-            </button>
-
-            <div class="collapse navbar-collapse" id="mainNav">
-
-                <ul class="navbar-nav ms-auto align-items-lg-center">
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.html">
-                            Home
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link active" href="courses.html">
-                            Our Courses
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="services.html">
-                            Services
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="about.html">
-                            About Us
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="contact.html">
-                            Contact
-                        </a>
-                    </li>
-
-                    <li class="nav-item ms-lg-2">
-                        <a href="premium-login.html" class="btn btn-brand btn-sm rounded-pill px-3">
-                            <i class="fa-solid fa-crown me-1"></i> Premium Login
-                        </a>
-                    </li>
-
-                </ul>
-
-            </div>
-        </div>
-
-    </nav>
-
-
-    <!-- Hero -->
-
-    <section class="page-hero">
-
-        <div class="container text-center">
-
-            <div class="free-title">
-
-                <span class="hero-badge">
-                    FREE BATCH • GOOGLE FORM EXAMS
-                </span>
-
-                <h1 class="mt-3">
-                    Choose Your Group
-                </h1>
-
-                <p class="mt-3">
-                    তোমার শিক্ষাগত Group নির্বাচন করো এবং কোনোপ্রকার রেজিস্ট্রেশন বা রোল নম্বর ছাড়াই সরাসরি Google Form-এ ফ্রি মডেল টেস্ট দাও।
-                </p>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- Groups -->
-
-    <section class="section">
-
-        <div class="container">
-
-            <div class="section-title text-center mb-5">
-
-                <span class="eyebrow">
-                    SELECT GROUP
-                </span>
-
-                <h2>
-                    কোন Group-এর পরীক্ষা দিতে চাও?
-                </h2>
-
-                <p class="text-muted">
-                    নিচের তোমার Group নির্বাচন করো অথবা সরাসরি পরীক্ষার তালিকায় যাও।
-                </p>
-
-            </div>
-
-
-            <div class="row g-4 mb-5">
-
-                <!-- Science Card -->
-                <div class="col-md-6 col-lg-4">
-                    <div class="group-card">
-                        <div class="group-icon science-icon">
-                            <i class="fa-solid fa-flask"></i>
-                        </div>
-                        <h3>Science Group</h3>
-                        <p>
-                            Chemistry, Physics, Biology, Higher Math এবং অন্যান্য বিষয়ভিত্তিক ফ্রি Model Test।
-                        </p>
-                        <a href="#free-exams-list" class="btn btn-primary group-btn filter-trigger-btn" data-group="science">
-                            ফ্রি পরীক্ষাগুলো দেখুন <i class="fa-solid fa-arrow-down ms-2"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Arts Card -->
-                <div class="col-md-6 col-lg-4">
-                    <div class="group-card">
-                        <div class="group-icon arts-icon">
-                            <i class="fa-solid fa-book-open"></i>
-                        </div>
-                        <h3>Arts Group</h3>
-                        <p>
-                            Bangla, English, General Knowledge এবং Arts Group-এর গুরুত্বপূর্ণ ফ্রি Model Test।
-                        </p>
-                        <a href="#free-exams-list" class="btn btn-warning text-white group-btn filter-trigger-btn" style="background:#ea580c; border:none;" data-group="arts">
-                            ফ্রি পরীক্ষাগুলো দেখুন <i class="fa-solid fa-arrow-down ms-2"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Commerce Card -->
-                <div class="col-md-6 col-lg-4">
-                    <div class="group-card">
-                        <div class="group-icon commerce-icon">
-                            <i class="fa-solid fa-chart-line"></i>
-                        </div>
-                        <h3>Commerce Group</h3>
-                        <p>
-                            Accounting, Management, Finance, Business Studies এবং অন্যান্য ফ্রি Model Test।
-                        </p>
-                        <a href="#free-exams-list" class="btn btn-success group-btn filter-trigger-btn" style="background:#059669; border:none;" data-group="commerce">
-                            ফ্রি পরীক্ষাগুলো দেখুন <i class="fa-solid fa-arrow-down ms-2"></i>
-                        </a>
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- FREE EXAMS SECTION (GOOGLE FORMS) -->
-            <div id="free-exams-list" class="pt-4">
-                
-                <div class="text-center mb-4">
-                    <span class="eyebrow text-primary fw-bold" style="letter-spacing:2px;">GOOGLE FORM FREE TESTS</span>
-                    <h2 class="fw-bold mt-2 text-dark">লাইভ ফ্রি মডেল টেস্ট সমূহ</h2>
-                    <p class="text-muted mx-auto" style="max-width: 680px;">
-                        কোনো লগইন বা রোল নম্বরের প্রয়োজন নেই! নিচের পছন্দের পরীক্ষা নির্বাচন করে সরাসরি Google Form-এ গিয়ে পরীক্ষা সম্পন্ন করতে পারবে।
-                    </p>
-
-                    <!-- Filter Buttons -->
-                    <div class="d-flex flex-wrap justify-content-center gap-2 mt-4">
-                        <button class="filter-pill-btn active" data-filter="all">
-                            <i class="fa-solid fa-layer-group me-1"></i> সকল গ্রুপ
-                        </button>
-                        <button class="filter-pill-btn" data-filter="science">
-                            <i class="fa-solid fa-flask me-1"></i> বিজ্ঞান (Science)
-                        </button>
-                        <button class="filter-pill-btn" data-filter="arts">
-                            <i class="fa-solid fa-book-open me-1"></i> মানবিক (Arts)
-                        </button>
-                        <button class="filter-pill-btn" data-filter="commerce">
-                            <i class="fa-solid fa-chart-line me-1"></i> ব্যবসায় শিক্ষা (Commerce)
-                        </button>
-                    </div>
-                </div>
-
-                <!-- EXAM CARDS GRID -->
-                <div class="row g-4 mt-2" id="examCardsContainer">
-
-                    <!-- ============================================== -->
-                    <!-- SCIENCE GROUP EXAMS (GOOGLE FORM) -->
-                    <!-- ============================================== -->
-
-                    <!-- Science Exam 1 -->
-                    <div class="col-md-6 col-lg-4 exam-card-item" data-group="science">
-                        <div class="exam-free-card science">
-                            <div>
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle tag-badge">বিজ্ঞান ইউনিট</span>
-                                    <span class="badge bg-success-subtle text-success tag-badge"><i class="fa-solid fa-check-circle me-1"></i>100% Free</span>
-                                </div>
-                                <h4 class="fw-bold text-dark mb-2 fs-5">রসায়ন ও পদার্থবিজ্ঞান স্পেশাল</h4>
-                                <p class="text-muted small mb-3">জাতীয় বিশ্ববিদ্যালয় ভর্তি পরীক্ষার বিজ্ঞান ইউনিটের রসায়ন ও পদার্থবিজ্ঞানের গুরুত্বপূর্ণ অধ্যায়ভিত্তিক প্রশ্ন।</p>
-                                
-                                <div class="bg-light p-3 rounded-3 mb-4">
-                                    <div class="row g-2">
-                                        <div class="col-6 exam-meta-item"><i class="fa-regular fa-circle-question text-primary"></i> <strong>৫০টি</strong> প্রশ্ন</div>
-                                        <div class="col-6 exam-meta-item"><i class="fa-regular fa-clock text-primary"></i> <strong>৩০</strong> মিনিট</div>
-                                        <div class="col-6 exam-meta-item"><i class="fa-solid fa-award text-primary"></i> পূর্ণমান: <strong>৫০</strong></div>
-                                        <div class="col-6 exam-meta-item"><i class="fa-solid fa-shield-halved text-success"></i> Google Form</div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div>
-                                <!-- 🔴 আপনার Science Google Form Link বসাতে পারেন: href="YOUR_GOOGLE_FORM_URL" -->
-                                <a href="https://forms.gle/gurGXJzvwxCoA7fY8" target="_blank" class="gform-btn">
-                                    <i class="fa-brands fa-google"></i> Google Form-এ পরীক্ষা দাও <i class="fa-solid fa-arrow-up-right-from-square ms-1"></i>
-                                </a>
-                                <div class="text-center mt-2 small text-muted">
-                                    <i class="fa-solid fa-lock-open me-1 text-success"></i>লগইন ছাড়া সরাসরি প্রবেশ
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Science Exam 2 -->
-                    <div class="col-md-6 col-lg-4 exam-card-item" data-group="science">
-                        <div class="exam-free-card science">
-                            <div>
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle tag-badge">বিজ্ঞান ইউনিট</span>
-                                    <span class="badge bg-success-subtle text-success tag-badge"><i class="fa-solid fa-check-circle me-1"></i>100% Free</span>
-                                </div>
-                                <h4 class="fw-bold text-dark mb-2 fs-5">উচ্চতর গণিত ও জীববিজ্ঞান স্পেশাল</h4>
-                                <p class="text-muted small mb-3">উচ্চতর গণিত এবং উদ্ভিদ ও প্রাণীবিজ্ঞানের স্ট্যান্ডার্ড সমন্বিত মডেল টেস্ট।</p>
-                                
-                                <div class="bg-light p-3 rounded-3 mb-4">
-                                    <div class="row g-2">
-                                        <div class="col-6 exam-meta-item"><i class="fa-regular fa-circle-question text-primary"></i> <strong>৫০টি</strong> প্রশ্ন</div>
-                                        <div class="col-6 exam-meta-item"><i class="fa-regular fa-clock text-primary"></i> <strong>৩০</strong> মিনিট</div>
-                                        <div class="col-6 exam-meta-item"><i class="fa-solid fa-award text-primary"></i> পূর্ণমান: <strong>৫০</strong></div>
-                                        <div class="col-6 exam-meta-item"><i class="fa-solid fa-shield-halved text-success"></i> Google Form</div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div>
-                                <a href="https://forms.gle/gurGXJzvwxCoA7fY8" target="_blank" class="gform-btn">
-                                    <i class="fa-brands fa-google"></i> Google Form-এ পরীক্ষা দাও <i class="fa-solid fa-arrow-up-right-from-square ms-1"></i>
-                                </a>
-                                <div class="text-center mt-2 small text-muted">
-                                    <i class="fa-solid fa-lock-open me-1 text-success"></i>লগইন ছাড়া সরাসরি প্রবেশ
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Science Exam 3 -->
-                    <div class="col-md-6 col-lg-4 exam-card-item" data-group="science">
-                        <div class="exam-free-card science">
-                            <div>
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle tag-badge">বিজ্ঞান ইউনিট</span>
-                                    <span class="badge bg-success-subtle text-success tag-badge"><i class="fa-solid fa-check-circle me-1"></i>100% Free</span>
-                                </div>
-                                <h4 class="fw-bold text-dark mb-2 fs-5">বিজ্ঞান ইউনিট পূর্ণাঙ্গ মডেল টেস্ট</h4>
-                                <p class="text-muted small mb-3">পদার্থ, রসায়ন, গণিত, জীববিজ্ঞান ও সাধারণ বিষয়গুলোর পূর্ণাঙ্গ ভর্তি পরীক্ষার আদলে তৈরি প্রশ্ন।</p>
-                                
-                                <div class="bg-light p-3 rounded-3 mb-4">
-                                    <div class="row g-2">
-                                        <div class="col-6 exam-meta-item"><i class="fa-regular fa-circle-question text-primary"></i> <strong>১০০টি</strong> প্রশ্ন</div>
-                                        <div class="col-6 exam-meta-item"><i class="fa-regular fa-clock text-primary"></i> <strong>৬০</strong> মিনিট</div>
-                                        <div class="col-6 exam-meta-item"><i class="fa-solid fa-award text-primary"></i> পূর্ণমান: <strong>১০০</strong></div>
-                                        <div class="col-6 exam-meta-item"><i class="fa-solid fa-shield-halved text-success"></i> Google Form</div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div>
-                                <a href="https://forms.gle/gurGXJzvwxCoA7fY8" target="_blank" class="gform-btn">
-                                    <i class="fa-brands fa-google"></i> Google Form-এ পরীক্ষা দাও <i class="fa-solid fa-arrow-up-right-from-square ms-1"></i>
-                                </a>
-                                <div class="text-center mt-2 small text-muted">
-                                    <i class="fa-solid fa-lock-open me-1 text-success"></i>লগইন ছাড়া সরাসরি প্রবেশ
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <!-- ============================================== -->
-                    <!-- ARTS GROUP EXAMS (GOOGLE FORM) -->
-                    <!-- ============================================== -->
-
-                    <!-- Arts Exam 1 -->
-                    <div class="col-md-6 col-lg-4 exam-card-item" data-group="arts">
-                        <div class="exam-free-card arts">
-                            <div>
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle tag-badge">মানবিক ইউনিট</span>
-                                    <span class="badge bg-success-subtle text-success tag-badge"><i class="fa-solid fa-check-circle me-1"></i>100% Free</span>
-                                </div>
-                                <h4 class="fw-bold text-dark mb-2 fs-5">বাংলা সাহিত্য ও ব্যাকরণ স্পেশাল</h4>
-                                <p class="text-muted small mb-3">এইচএসসি পাঠ্যবই ও জাতীয় বিশ্ববিদ্যালয় ভর্তি উপযোগী গুরুত্বপূর্ণ বাংলা প্রশ্নমালা।</p>
-                                
-                                <div class="bg-light p-3 rounded-3 mb-4">
-                                    <div class="row g-2">
-                                        <div class="col-6 exam-meta-item"><i class="fa-regular fa-circle-question text-warning"></i> <strong>৫০টি</strong> প্রশ্ন</div>
-                                        <div class="col-6 exam-meta-item"><i class="fa-regular fa-clock text-warning"></i> <strong>৩০</strong> মিনিট</div>
-                                        <div class="col-6 exam-meta-item"><i class="fa-solid fa-award text-warning"></i> পূর্ণমান: <strong>৫০</strong></div>
-                                        <div class="col-6 exam-meta-item"><i class="fa-solid fa-shield-halved text-success"></i> Google Form</div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div>
-                                <!-- 🔴 আপনার Arts Google Form Link বসাতে পারেন -->
-                                <a href="https://forms.gle/gurGXJzvwxCoA7fY8" target="_blank" class="gform-btn" style="background: linear-gradient(135deg, #ea580c, #c2410c);">
-                                    <i class="fa-brands fa-google"></i> Google Form-এ পরীক্ষা দাও <i class="fa-solid fa-arrow-up-right-from-square ms-1"></i>
-                                </a>
-                                <div class="text-center mt-2 small text-muted">
-                                    <i class="fa-solid fa-lock-open me-1 text-success"></i>লগইন ছাড়া সরাসরি প্রবেশ
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Arts Exam 2 -->
-                    <div class="col-md-6 col-lg-4 exam-card-item" data-group="arts">
-                        <div class="exam-free-card arts">
-                            <div>
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle tag-badge">মানবিক ইউনিট</span>
-                                    <span class="badge bg-success-subtle text-success tag-badge"><i class="fa-solid fa-check-circle me-1"></i>100% Free</span>
-                                </div>
-                                <h4 class="fw-bold text-dark mb-2 fs-5">ইংরেজি গ্রামার ও ভোকাবুলারি টেস্ট</h4>
-                                <p class="text-muted small mb-3">ভর্তি পরীক্ষায় আসার উপযোগী Parts of Speech, Tense, Preposition, Synonym/Antonym ইত্যাদি।</p>
-                                
-                                <div class="bg-light p-3 rounded-3 mb-4">
-                                    <div class="row g-2">
-                                        <div class="col-6 exam-meta-item"><i class="fa-regular fa-circle-question text-warning"></i> <strong>৫০টি</strong> প্রশ্ন</div>
-                                        <div class="col-6 exam-meta-item"><i class="fa-regular fa-clock text-warning"></i> <strong>৩০</strong> মিনিট</div>
-                                        <div class="col-6 exam-meta-item"><i class="fa-solid fa-award text-warning"></i> পূর্ণমান: <strong>৫০</strong></div>
-                                        <div class="col-6 exam-meta-item"><i class="fa-solid fa-shield-halved text-success"></i> Google Form</div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div>
-                                <a href="https://forms.gle/gurGXJzvwxCoA7fY8" target="_blank" class="gform-btn" style="background: linear-gradient(135deg, #ea580c, #c2410c);">
-                                    <i class="fa-brands fa-google"></i> Google Form-এ পরীক্ষা দাও <i class="fa-solid fa-arrow-up-right-from-square ms-1"></i>
-                                </a>
-                                <div class="text-center mt-2 small text-muted">
-                                    <i class="fa-solid fa-lock-open me-1 text-success"></i>লগইন ছাড়া সরাসরি প্রবেশ
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Arts Exam 3 -->
-                    <div class="col-md-6 col-lg-4 exam-card-item" data-group="arts">
-                        <div class="exam-free-card arts">
-                            <div>
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle tag-badge">মানবিক ইউনিট</span>
-                                    <span class="badge bg-success-subtle text-success tag-badge"><i class="fa-solid fa-check-circle me-1"></i>100% Free</span>
-                                </div>
-                                <h4 class="fw-bold text-dark mb-2 fs-5">সাধারণ জ্ঞান (বাংলাদেশ ও আন্তর্জাতিক)</h4>
-                                <p class="text-muted small mb-3">সাম্প্রতিক বিষয়াবলী, বাংলাদেশের ইতিহাস, সংবিধান, মুক্তিযুদ্ধ এবং আন্তর্জাতিক গুরুত্বপূর্ণ ঘটনাবলী।</p>
-                                
-                                <div class="bg-light p-3 rounded-3 mb-4">
-                                    <div class="row g-2">
-                                        <div class="col-6 exam-meta-item"><i class="fa-regular fa-circle-question text-warning"></i> <strong>৫০টি</strong> প্রশ্ন</div>
-                                        <div class="col-6 exam-meta-item"><i class="fa-regular fa-clock text-warning"></i> <strong>৩০</strong> মিনিট</div>
-                                        <div class="col-6 exam-meta-item"><i class="fa-solid fa-award text-warning"></i> পূর্ণমান: <strong>৫০</strong></div>
-                                        <div class="col-6 exam-meta-item"><i class="fa-solid fa-shield-halved text-success"></i> Google Form</div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div>
-                                <a href="https://forms.gle/gurGXJzvwxCoA7fY8" target="_blank" class="gform-btn" style="background: linear-gradient(135deg, #ea580c, #c2410c);">
-                                    <i class="fa-brands fa-google"></i> Google Form-এ পরীক্ষা দাও <i class="fa-solid fa-arrow-up-right-from-square ms-1"></i>
-                                </a>
-                                <div class="text-center mt-2 small text-muted">
-                                    <i class="fa-solid fa-lock-open me-1 text-success"></i>লগইন ছাড়া সরাসরি প্রবেশ
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <!-- ============================================== -->
-                    <!-- COMMERCE GROUP EXAMS (GOOGLE FORM) -->
-                    <!-- ============================================== -->
-
-                    <!-- Commerce Exam 1 -->
-                    <div class="col-md-6 col-lg-4 exam-card-item" data-group="commerce">
-                        <div class="exam-free-card commerce">
-                            <div>
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <span class="badge bg-success-subtle text-success border border-success-subtle tag-badge">ব্যবসায় শিক্ষা ইউনিট</span>
-                                    <span class="badge bg-success-subtle text-success tag-badge"><i class="fa-solid fa-check-circle me-1"></i>100% Free</span>
-                                </div>
-                                <h4 class="fw-bold text-dark mb-2 fs-5">হিসাববিজ্ঞান স্পেশাল মডেল টেস্ট</h4>
-                                <p class="text-muted small mb-3">হিসাববিজ্ঞান ১ম ও ২য় পত্রের গাণিতিক ও ধারণামূলক প্রশ্নাবলী সমন্বয়ে তৈরি টেস্ট।</p>
-                                
-                                <div class="bg-light p-3 rounded-3 mb-4">
-                                    <div class="row g-2">
-                                        <div class="col-6 exam-meta-item"><i class="fa-regular fa-circle-question text-success"></i> <strong>৫০টি</strong> প্রশ্ন</div>
-                                        <div class="col-6 exam-meta-item"><i class="fa-regular fa-clock text-success"></i> <strong>৩০</strong> মিনিট</div>
-                                        <div class="col-6 exam-meta-item"><i class="fa-solid fa-award text-success"></i> পূর্ণমান: <strong>৫০</strong></div>
-                                        <div class="col-6 exam-meta-item"><i class="fa-solid fa-shield-halved text-success"></i> Google Form</div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div>
-                                <!-- 🔴 আপনার Commerce Google Form Link বসাতে পারেন -->
-                                <a href="https://forms.gle/gurGXJzvwxCoA7fY8" target="_blank" class="gform-btn" style="background: linear-gradient(135deg, #059669, #047857);">
-                                    <i class="fa-brands fa-google"></i> Google Form-এ পরীক্ষা দাও <i class="fa-solid fa-arrow-up-right-from-square ms-1"></i>
-                                </a>
-                                <div class="text-center mt-2 small text-muted">
-                                    <i class="fa-solid fa-lock-open me-1 text-success"></i>লগইন ছাড়া সরাসরি প্রবেশ
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Commerce Exam 2 -->
-                    <div class="col-md-6 col-lg-4 exam-card-item" data-group="commerce">
-                        <div class="exam-free-card commerce">
-                            <div>
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <span class="badge bg-success-subtle text-success border border-success-subtle tag-badge">ব্যবসায় শিক্ষা ইউনিট</span>
-                                    <span class="badge bg-success-subtle text-success tag-badge"><i class="fa-solid fa-check-circle me-1"></i>100% Free</span>
-                                </div>
-                                <h4 class="fw-bold text-dark mb-2 fs-5">ব্যবসায় সংগঠন ও ব্যবস্থাপনা</h4>
-                                <p class="text-muted small mb-3">একমালিকানা, অংশীদারি, যৌথ মূলধনী ও ব্যবস্থাপনার নীতিমালার উপর ফোকাসড টেস্ট।</p>
-                                
-                                <div class="bg-light p-3 rounded-3 mb-4">
-                                    <div class="row g-2">
-                                        <div class="col-6 exam-meta-item"><i class="fa-regular fa-circle-question text-success"></i> <strong>৫০টি</strong> প্রশ্ন</div>
-                                        <div class="col-6 exam-meta-item"><i class="fa-regular fa-clock text-success"></i> <strong>৩০</strong> মিনিট</div>
-                                        <div class="col-6 exam-meta-item"><i class="fa-solid fa-award text-success"></i> পূর্ণমান: <strong>৫০</strong></div>
-                                        <div class="col-6 exam-meta-item"><i class="fa-solid fa-shield-halved text-success"></i> Google Form</div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div>
-                                <a href="https://forms.gle/gurGXJzvwxCoA7fY8" target="_blank" class="gform-btn" style="background: linear-gradient(135deg, #059669, #047857);">
-                                    <i class="fa-brands fa-google"></i> Google Form-এ পরীক্ষা দাও <i class="fa-solid fa-arrow-up-right-from-square ms-1"></i>
-                                </a>
-                                <div class="text-center mt-2 small text-muted">
-                                    <i class="fa-solid fa-lock-open me-1 text-success"></i>লগইন ছাড়া সরাসরি প্রবেশ
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Commerce Exam 3 -->
-                    <div class="col-md-6 col-lg-4 exam-card-item" data-group="commerce">
-                        <div class="exam-free-card commerce">
-                            <div>
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <span class="badge bg-success-subtle text-success border border-success-subtle tag-badge">ব্যবসায় শিক্ষা ইউনিট</span>
-                                    <span class="badge bg-success-subtle text-success tag-badge"><i class="fa-solid fa-check-circle me-1"></i>100% Free</span>
-                                </div>
-                                <h4 class="fw-bold text-dark mb-2 fs-5">ফিন্যান্স, ব্যাংকিং ও বীমা / বিপণন</h4>
-                                <p class="text-muted small mb-3">অর্থায়নের উৎস, ব্যাংকিং কাঠামো ও বিপণন কার্যাবলীর উপর গুরুত্বপূর্ণ প্রশ্নমালা।</p>
-                                
-                                <div class="bg-light p-3 rounded-3 mb-4">
-                                    <div class="row g-2">
-                                        <div class="col-6 exam-meta-item"><i class="fa-regular fa-circle-question text-success"></i> <strong>৫০টি</strong> প্রশ্ন</div>
-                                        <div class="col-6 exam-meta-item"><i class="fa-regular fa-clock text-success"></i> <strong>৩০</strong> মিনিট</div>
-                                        <div class="col-6 exam-meta-item"><i class="fa-solid fa-award text-success"></i> পূর্ণমান: <strong>৫০</strong></div>
-                                        <div class="col-6 exam-meta-item"><i class="fa-solid fa-shield-halved text-success"></i> Google Form</div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div>
-                                <a href="https://forms.gle/gurGXJzvwxCoA7fY8" target="_blank" class="gform-btn" style="background: linear-gradient(135deg, #059669, #047857);">
-                                    <i class="fa-brands fa-google"></i> Google Form-এ পরীক্ষা দাও <i class="fa-solid fa-arrow-up-right-from-square ms-1"></i>
-                                </a>
-                                <div class="text-center mt-2 small text-muted">
-                                    <i class="fa-solid fa-lock-open me-1 text-success"></i>লগইন ছাড়া সরাসরি প্রবেশ
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-                <!-- CALLOUT FOR PREMIUM BATCH -->
-                <div class="card border-0 rounded-4 shadow-sm p-4 p-md-5 mt-5 text-center text-md-start" style="background: linear-gradient(135deg, #071b3a 0%, #123b73 60%, #0d6efd 100%); color: #fff;">
-                    <div class="row align-items-center g-4">
-                        <div class="col-md-8">
-                            <span class="badge bg-warning text-dark px-3 py-2 rounded-pill fw-bold mb-2">
-                                <i class="fa-solid fa-crown me-1"></i> প্রিমিয়াম লাইভ এক্সাম ফিচার
-                            </span>
-                            <h3 class="fw-bold mb-2">লাইভ টাইমার, নেগেটিভ মার্কিং ও মেরিট লিস্ট চান?</h3>
-                            <p class="mb-0 text-white-50">
-                                আমাদের প্রিমিয়াম পোর্টালে রয়েছে লাইভ টাইমারসহ অনলাইন এক্সাম, তাৎক্ষণিক রেজাল্ট, প্রতিটা প্রশ্নের সঠিক ব্যাখ্যা ও অল-বাংলাদেশ মেরিট লিডারবোর্ড।
-                            </p>
-                        </div>
-                        <div class="col-md-4 text-md-end">
-                            <a href="premium-login.html" class="btn btn-warning btn-lg rounded-pill px-4 fw-bold text-dark shadow">
-                                <i class="fa-solid fa-right-to-bracket me-2"></i>প্রিমিয়াম পোর্টাল
+<body class="bg-light">
+
+    <!-- NAVBAR -->
+    <header class="sticky-top bg-white border-bottom shadow-sm">
+        <nav class="navbar navbar-expand-lg navbar-light py-3">
+            <div class="container">
+                <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+                    <img src="images/logo.png" alt="NU Crackers Logo" class="brand-logo" onerror="this.onerror=null; this.src='https://placehold.co/48x48?text=NU';">
+                    <span class="fw-bold fs-4 text-primary tracking-tight font-heading">NU Crackers</span>
+                </a>
+                <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="mainNav">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center gap-lg-3 fw-semibold">
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active text-primary" href="free-exams.html">Free Batch</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html#courses">Our Courses</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html#services">Services</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html#contact">Contact</a>
+                        </li>
+                        <li class="nav-item ms-lg-2">
+                            <a class="btn btn-primary rounded-pill px-4 shadow-sm" href="portal.html">
+                                <i class="fa-solid fa-crown me-1"></i> Premium Login
                             </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- HERO BANNER -->
+    <section class="free-hero py-5 text-center">
+        <div class="container py-4 position-relative">
+            <div class="badge bg-warning text-dark px-3 py-2 rounded-pill fw-bold text-uppercase mb-3 shadow-sm">
+                <i class="fa-solid fa-gift me-1"></i> 100% Free NU Admission Model Tests
+            </div>
+            <h1 class="display-5 fw-bold mb-3 font-heading">ফ্রি ব্যাচ মডেল টেস্ট ২০২৬</h1>
+            <p class="lead mx-auto mb-4 text-light" style="max-width: 720px; opacity: 0.95;">
+                জাতীয় বিশ্ববিদ্যালয় ভর্তি পরীক্ষার সর্বোচ্চ প্রস্তুতির জন্য বিজ্ঞান, মানবিক ও ব্যবসায় শিক্ষা ইউনিটের লাইভ ওয়েবসাইট পরীক্ষা ও আর্কাইভ।
+            </p>
+            <div class="d-flex justify-content-center gap-3 flex-wrap">
+                <a href="#free-live-portal" class="btn btn-warning btn-lg rounded-pill px-4 fw-bold shadow">
+                    <i class="fa-solid fa-bolt me-2"></i>লাইভ পরীক্ষা ও লিডারবোর্ড
+                </a>
+                <a href="#whatsapp-support" class="btn btn-outline-light btn-lg rounded-pill px-4 fw-bold">
+                    <i class="fa-brands fa-whatsapp me-2"></i>ফ্রি গ্রুপে যুক্ত হোন
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- MAIN BODY -->
+    <main class="py-5">
+        <div class="container">
+
+            <!-- ============================================== -->
+            <!-- LIVE WEBSITE EXAM & LEADERBOARD PORTAL -->
+            <!-- ============================================== -->
+            <div id="free-live-portal" class="pt-2 mb-5">
+                <div class="card border-0 rounded-4 shadow-sm p-4 p-md-5 mb-4" style="background: linear-gradient(135deg, #0b1f3a, #1a365d); color: #fff;">
+                    <div class="row align-items-center g-4">
+                        <div class="col-lg-8">
+                            <span class="badge bg-danger rounded-pill px-3 py-2 fw-bold text-uppercase pulse-badge mb-2">
+                                <i class="fa-solid fa-bolt me-1"></i> লাইভ ওয়েবসাইট পরীক্ষা ও লিডারবোর্ড
+                            </span>
+                            <h2 class="fw-bold text-white mb-2">
+                                ফ্রি লাইভ মডেল টেস্ট ও ইনস্ট্যান্ট মেধাতালিকা
+                            </h2>
+                            <p class="text-white-50 mb-3" style="max-width: 650px;">
+                                প্রিমিয়াম ব্যাচের মতোই এখন ফ্রি ব্যাচেও সরাসরি ওয়েবসাইটে লাইভ পরীক্ষা দাও, রিয়েল-টাইম টাইমার ফেস করো, তাৎক্ষণিক লিডারবোর্ডে নিজের নাম ও কলেজ দেখো এবং সম্পূর্ণ সমাধানপত্র (Solve Sheet) PDF আকারে প্রিন্ট বা ডাউনলোড করো!
+                            </p>
+                            <!-- Student Profile Bar -->
+                            <div id="freeStudentProfileBar" class="d-inline-flex align-items-center flex-wrap gap-2 p-2 px-3 rounded-pill bg-white bg-opacity-10 border border-white border-opacity-25">
+                                <span class="small text-white">
+                                    <i class="fa-solid fa-circle-user text-warning me-1"></i> পরীক্ষার্থী:
+                                    <strong id="freeStudentNameDisplay" class="text-white">নাম লিখুন</strong>
+                                    <span id="freeStudentCollegeDisplay" class="text-white-50 ms-1"></span>
+                                </span>
+                                <button type="button" class="btn btn-sm btn-light rounded-pill px-3 py-0 fw-semibold" id="btnEditFreeProfile" style="font-size: 0.8rem; height: 26px;">
+                                    <i class="fa-solid fa-pen-to-square me-1"></i> নাম/কলেজ পরিবর্তন
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 text-lg-end">
+                            <div class="d-inline-flex flex-column gap-2 text-start p-3 rounded-3 bg-white bg-opacity-10 border border-white border-opacity-20" style="min-width: 240px;">
+                                <div class="d-flex align-items-center gap-2 text-white small">
+                                    <i class="fa-solid fa-clock text-warning"></i>
+                                    <span>কাউন্টডাউন টাইমার সিস্টেম</span>
+                                </div>
+                                <div class="d-flex align-items-center gap-2 text-white small">
+                                    <i class="fa-solid fa-ranking-star text-warning"></i>
+                                    <span>লাইভ মেধা তালিকা (Leaderboard)</span>
+                                </div>
+                                <div class="d-flex align-items-center gap-2 text-white small">
+                                    <i class="fa-solid fa-file-pdf text-warning"></i>
+                                    <span>ব্যাখ্যাসহ PDF সলভ শীট ডাউনলোড</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
+                <!-- Live Exam Filters -->
+                <div class="d-flex flex-wrap justify-content-center gap-2 mb-4">
+                    <button type="button" class="filter-pill-btn live-exam-filter-btn active" data-group="all">
+                        <i class="fa-solid fa-layer-group me-1"></i> সকল লাইভ পরীক্ষা
+                    </button>
+                    <button type="button" class="filter-pill-btn live-exam-filter-btn" data-group="science">
+                        <i class="fa-solid fa-flask me-1"></i> বিজ্ঞান (Science)
+                    </button>
+                    <button type="button" class="filter-pill-btn live-exam-filter-btn" data-group="arts">
+                        <i class="fa-solid fa-book-open me-1"></i> মানবিক (Arts)
+                    </button>
+                    <button type="button" class="filter-pill-btn live-exam-filter-btn" data-group="commerce">
+                        <i class="fa-solid fa-chart-line me-1"></i> ব্যবসায় শিক্ষা (Commerce)
+                    </button>
+                </div>
+
+                <!-- Live Exams Dynamic Grid -->
+                <div class="row g-4" id="freeLiveExamsGrid">
+                    <!-- Dynamic Live Exam cards rendered by js/free-exams-portal.js -->
+                </div>
             </div>
 
-        </div>
-
-    </section>
-
-
-    <!-- Footer -->
-
-    <footer>
-
-        <div class="container">
-
-            <div class="row g-4">
-
-                <div class="col-lg-4">
-
-                    <h5>NU Crackers</h5>
-
-                    <p class="mt-3">
-                        স্বপ্ন জয়ের বিশ্বস্থ সারথি —
-                        শিক্ষার্থীদের সঠিক দিকনির্দেশনা,
-                        মানসম্মত শিক্ষা উপকরণ ও নিয়মিত
-                        অনুশীলনের মাধ্যমে ভর্তি প্রস্তুতিতে
-                        এগিয়ে নেওয়াই আমাদের লক্ষ্য।
-                    </p>
-
-                </div>
-
-
-                <div class="col-md-4 col-lg-3">
-
-                    <h5>Contact</h5>
-
-                    <a class="footer-link"
-                        href="https://api.whatsapp.com/send?phone=8801410910547"
-                        target="_blank">
-
-                        <i class="fa-solid fa-phone me-2"></i>
-                        01410910547
-
-                    </a>
-
-
-                    <a class="footer-link"
-                        href="https://mail.google.com/mail/?view=cm&fs=1&to=nuadmissioncrackers@gmail.com"
-                        target="_blank">
-
-                        <i class="fa-solid fa-envelope me-2"></i>
-                        nuadmissioncrackers@gmail.com
-
-                    </a>
-
-
-                    <a class="footer-link"
-                        href="https://www.facebook.com/nucrackers06"
-                        target="_blank">
-
-                        <i class="fa-brands fa-facebook me-2"></i>
-                        NU Crackers Facebook Page
-
-                    </a>
-
-                </div>
-
-
-                <div class="col-md-4 col-lg-2">
-
-                    <h5>Quick Links</h5>
-
-                    <a class="footer-link" href="index.html">Home</a>
-
-                    <a class="footer-link" href="courses.html">
-                        Our Courses
-                    </a>
-
-                    <a class="footer-link" href="services.html">
-                        Services
-                    </a>
-
-                    <a class="footer-link" href="about.html">
-                        About Us
-                    </a>
-
-                    <a class="footer-link" href="contact.html">
-                        Contact
-                    </a>
-
-                </div>
-
-
-                <div class="col-md-4 col-lg-3">
-
-                    <h5>Follow Us</h5>
-
-                    <p>
-                        Admission preparation updates
-                        and educational content.
-                    </p>
-
-                    <div class="social">
-
-                        <a href="https://www.facebook.com/nucrackers06"
-                            target="_blank">
-
-                            <i class="fa-brands fa-facebook-f"></i>
-
-                        </a>
-
-                        <a href="https://youtube.com/@nucrackers"
-                            target="_blank">
-
-                            <i class="fa-brands fa-youtube"></i>
-
-                        </a>
-
-                        <a href="https://www.instagram.com/nuadmissioncrackers"
-                            target="_blank">
-
-                            <i class="fa-brands fa-instagram"></i>
-
-                        </a>
-
+            <!-- WHATSAPP BANNER -->
+            <div id="whatsapp-support" class="whatsapp-banner p-4 p-md-5 my-5 text-center text-md-start">
+                <div class="row align-items-center g-4">
+                    <div class="col-md-8">
+                        <div class="d-inline-flex align-items-center gap-2 bg-white bg-opacity-20 px-3 py-1 rounded-pill small fw-bold mb-3">
+                            <i class="fa-brands fa-whatsapp fs-5"></i> অফিসিয়াল ফ্রি স্টাডি গ্রুপ
+                        </div>
+                        <h3 class="fw-bold mb-2">প্রতিদিনের ফ্রি পরীক্ষার লিংক ও রুটিন পেতে গ্রুপে যুক্ত হও</h3>
+                        <p class="mb-0 text-white-50">হোয়াটসঅ্যাপ গ্রুপে ফ্রি মডেল টেস্টের লিংক, রেজাল্ট শিট এবং ভর্তি সহায়তার আপডেট নিয়মিত দেওয়া হয়।</p>
                     </div>
-
+                    <div class="col-md-4 text-md-end">
+                        <a href="https://chat.whatsapp.com/sample-free-nu-crackers" target="_blank" class="btn btn-light btn-lg rounded-pill px-4 fw-bold text-success shadow">
+                            <i class="fa-brands fa-whatsapp me-2 fs-5"></i> জয়েন ফ্রি গ্রুপ
+                        </a>
+                    </div>
                 </div>
-
-            </div>
-
-
-            <hr class="border-secondary my-4">
-
-
-            <div class="text-center small">
-
-                © <span class="current-year"></span>
-                NU Crackers. All Rights Reserved.
-
             </div>
 
         </div>
+    </main>
 
+    <!-- FOOTER -->
+    <footer class="bg-dark text-white pt-5 pb-4 border-top border-secondary border-opacity-25">
+        <div class="container text-center">
+            <p class="mb-0 text-white-50">© 2026 NU Crackers. জাতীয় বিশ্ববিদ্যালয় ভর্তি পরীক্ষার সেরা অনলাইন প্ল্যাটফর্ম।</p>
+        </div>
     </footer>
 
+    <!-- ============================================== -->
+    <!-- FREE LIVE EXAM SYSTEM MODALS -->
+    <!-- ============================================== -->
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
-    </script>
+    <!-- 1. Student Identity Modal (Name & College) -->
+    <div class="modal fade" id="freeStudentModal" tabindex="-1" aria-labelledby="freeStudentModalLabel" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4 border-0 shadow-lg">
+                <div class="modal-header border-0 bg-primary text-white p-4">
+                    <div>
+                        <h5 class="modal-title fw-bold" id="freeStudentModalLabel">
+                            <i class="fa-solid fa-id-card-clip me-2"></i>পরীক্ষার্থীর তথ্য
+                        </h5>
+                        <p class="small text-white-50 mb-0">পরীক্ষায় অংশ নিতে এবং লিডারবোর্ডে নিজের নাম দেখতে তথ্য প্রদান করো</p>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="freeStudentIdentityForm">
+                        <input type="hidden" id="freeHiddenTargetExamId" value="">
+                        <div class="mb-3">
+                            <label for="freeInputStudentName" class="form-label fw-bold text-dark">তোমার নাম (Full Name) *</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="fa-solid fa-user text-primary"></i></span>
+                                <input type="text" class="form-control" id="freeInputStudentName" placeholder="যেমন: তানভীর আহমেদ / সাদিয়া তাসনিম" required>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="freeInputStudentCollege" class="form-label fw-bold text-dark">কলেজের নাম (College Name) *</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="fa-solid fa-building-columns text-primary"></i></span>
+                                <input type="text" class="form-control" id="freeInputStudentCollege" placeholder="যেমন: ঢাকা কলেজ / রাজশাহী কলেজ" required>
+                            </div>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary rounded-pill py-2 fw-bold shadow-sm">
+                                <i class="fa-solid fa-circle-check me-1"></i> নিশ্চিত করো ও পরীক্ষা শুরু করো
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <script src="js/main.js"></script>
+    <!-- 2. Interactive Live Exam Modal -->
+    <div class="modal fade" id="freeLiveExamModal" tabindex="-1" aria-labelledby="liveExamModalTitle" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-fullscreen-md-down modal-xl modal-dialog-scrollable">
+            <div class="modal-content rounded-4 border-0 shadow-lg">
+                <!-- Exam Top Header -->
+                <div class="modal-header border-bottom py-3 px-4 bg-light d-flex flex-wrap justify-content-between align-items-center">
+                    <div>
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="badge bg-danger rounded-pill px-3 py-1 fw-bold pulse-badge"><i class="fa-solid fa-circle me-1" style="font-size: 8px;"></i> LIVE</span>
+                            <h5 class="modal-title fw-bold text-dark mb-0" id="liveExamModalTitle">লাইভ মডেল টেস্ট</h5>
+                        </div>
+                        <div class="text-muted small mt-1">
+                            <span id="liveExamModalSubject" class="fw-semibold text-primary">বিষয়</span> • 
+                            <span id="liveExamStudentBadge" class="text-secondary"></span>
+                        </div>
+                    </div>
 
-    <!-- FREE EXAM GROUP FILTER SCRIPT -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const filterBtns = document.querySelectorAll('.filter-pill-btn');
-            const examCards = document.querySelectorAll('.exam-card-item');
-            const triggerBtns = document.querySelectorAll('.filter-trigger-btn');
+                    <!-- Countdown Timer -->
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="border rounded-pill px-3 py-2 shadow-sm d-flex align-items-center gap-2" id="liveExamTimerBadge">
+                            <i class="fa-solid fa-stopwatch text-danger fs-5"></i>
+                            <span class="fw-bold font-monospace fs-5 text-danger" id="liveExamTimerDisplay">15:00</span>
+                        </div>
+                        <button type="button" class="btn btn-success rounded-pill px-4 fw-bold shadow-sm" id="liveExamBtnSubmit">
+                            <i class="fa-solid fa-paper-plane me-1"></i> সাবমিট করুন
+                        </button>
+                    </div>
+                </div>
 
-            function applyFilter(group) {
-                // Update button states
-                filterBtns.forEach(btn => {
-                    if (btn.getAttribute('data-filter') === group) {
-                        btn.classList.add('active');
-                    } else {
-                        btn.classList.remove('active');
-                    }
-                });
+                <!-- Exam Body -->
+                <div class="modal-body p-4 bg-light">
+                    <div class="row g-4">
+                        <!-- Left: Main Question Area -->
+                        <div class="col-lg-8">
+                            <div class="card border-0 rounded-4 shadow-sm p-4 bg-white h-100">
+                                <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-3">
+                                    <span class="badge bg-light text-primary border border-primary-subtle rounded-pill px-3 py-2 fw-bold" id="liveExamQuestionTracker">
+                                        প্রশ্ন ১ / ১০
+                                    </span>
+                                    <button type="button" class="btn btn-sm btn-link text-muted text-decoration-none" id="liveExamBtnClearAnswer">
+                                        <i class="fa-solid fa-eraser me-1"></i> উত্তর বাতিল
+                                    </button>
+                                </div>
 
-                // Show/hide cards
-                examCards.forEach(card => {
-                    const cardGroup = card.getAttribute('data-group');
-                    if (group === 'all' || cardGroup === group) {
-                        card.style.display = 'block';
-                    } else {
-                        card.style.display = 'none';
-                    }
-                });
-            }
+                                <!-- Question Text -->
+                                <h5 class="fw-bold text-dark mb-4" id="liveExamQuestionText" style="line-height: 1.6; font-size: 1.15rem;">
+                                    প্রশ্ন লোড হচ্ছে...
+                                </h5>
 
-            // Filter button click
-            filterBtns.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const group = btn.getAttribute('data-filter');
-                    applyFilter(group);
-                });
-            });
+                                <!-- Options Cards -->
+                                <div id="liveExamOptionsContainer" class="mb-4">
+                                    <!-- Options generated dynamically -->
+                                </div>
 
-            // Group card "View Exams" button click
-            triggerBtns.forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const targetGroup = btn.getAttribute('data-group');
-                    applyFilter(targetGroup);
-                    const targetElem = document.getElementById('free-exams-list');
-                    if (targetElem) {
-                        targetElem.scrollIntoView({ behavior: 'smooth' });
-                    }
-                });
-            });
+                                <!-- Nav Buttons -->
+                                <div class="d-flex justify-content-between align-items-center pt-3 border-top mt-auto">
+                                    <button type="button" class="btn btn-outline-secondary rounded-pill px-4" id="liveExamBtnPrev">
+                                        <i class="fa-solid fa-arrow-left me-1"></i> পূর্ববর্তী প্রশ্ন
+                                    </button>
+                                    <button type="button" class="btn btn-primary rounded-pill px-4" id="liveExamBtnNext">
+                                        পরবর্তী প্রশ্ন <i class="fa-solid fa-arrow-right ms-1"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
 
-            // Check URL hash on page load (e.g. #science, #arts, #commerce)
-            const hash = window.location.hash.toLowerCase().replace('#', '').replace('-exams', '');
-            if (['science', 'arts', 'commerce'].includes(hash)) {
-                applyFilter(hash);
-                setTimeout(() => {
-                    const targetElem = document.getElementById('free-exams-list');
-                    if (targetElem) {
-                        targetElem.scrollIntoView({ behavior: 'smooth' });
-                    }
-                }, 200);
-            }
-        });
-    </script>
-<script src="js/free-exams-portal.js"></script>
+                        <!-- Right: Question Palette / Navigator -->
+                        <div class="col-lg-4">
+                            <div class="card border-0 rounded-4 shadow-sm p-4 bg-white">
+                                <h6 class="fw-bold text-dark mb-3 d-flex align-items-center justify-content-between">
+                                    <span><i class="fa-solid fa-table-cells me-2 text-primary"></i>প্রশ্ন প্যালেট</span>
+                                    <span class="badge bg-light text-muted border small fw-normal">ক্লিক করে প্রশ্নে যান</span>
+                                </h6>
+
+                                <div class="d-flex flex-wrap gap-2 mb-4" id="liveExamPaletteContainer" style="max-height: 280px; overflow-y: auto;">
+                                    <!-- Palette buttons -->
+                                </div>
+
+                                <div class="border-top pt-3 small text-muted">
+                                    <div class="d-flex align-items-center gap-2 mb-1">
+                                        <span class="badge rounded-circle bg-success" style="width: 12px; height: 12px; padding: 0;"> </span>
+                                        <span>উত্তর দেওয়া হয়েছে</span>
+                                    </div>
+                                    <div class="d-flex align-items-center gap-2 mb-1">
+                                        <span class="badge rounded-circle bg-primary" style="width: 12px; height: 12px; padding: 0;"> </span>
+                                        <span>বর্তমান প্রশ্ন</span>
+                                    </div>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <span class="badge rounded-circle bg-secondary" style="width: 12px; height: 12px; padding: 0;"> </span>
+                                        <span>বাকি থাকা প্রশ্ন</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. Result & Instant Score Modal -->
+    <div class="modal fade" id="freeResultModal" tabindex="-1" aria-labelledby="freeResultModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content rounded-4 border-0 shadow-lg overflow-hidden">
+                <div class="modal-header border-0 bg-primary text-white p-4 text-center d-block position-relative">
+                    <span class="badge bg-warning text-dark px-3 py-2 rounded-pill fw-bold mb-2 shadow-sm" id="resRankBadge">
+                        মেধা স্থান: ১ তম
+                    </span>
+                    <h3 class="fw-bold text-white mb-1">🎉 পরীক্ষা সফলভাবে সম্পন্ন হয়েছে!</h3>
+                    <p class="text-white-50 small mb-0" id="resExamTitle">মডেল টেস্ট</p>
+                    <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4 bg-light">
+                    <!-- Student Info -->
+                    <div class="bg-white p-3 rounded-4 shadow-sm text-center mb-4 border">
+                        <h5 class="fw-bold text-dark mb-0" id="resStudentName">পরীক্ষার্থীর নাম</h5>
+                        <p class="text-muted small mb-0" id="resStudentCollege">কলেজ নাম</p>
+                        <div class="mt-2" id="resPassFailStatus">
+                            <!-- Status Badge -->
+                        </div>
+                    </div>
+
+                    <!-- Score Grid -->
+                    <div class="row g-3 mb-4 text-center">
+                        <div class="col-md-3 col-6">
+                            <div class="card p-3 rounded-4 border-0 shadow-sm bg-white">
+                                <div class="text-muted small">প্রাপ্ত নম্বর</div>
+                                <div class="fw-bold fs-3 text-primary" id="resScoreDisplay">0 / 0</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card p-3 rounded-4 border-0 shadow-sm bg-white">
+                                <div class="text-muted small">সঠিক উত্তর</div>
+                                <div class="fw-bold fs-3 text-success" id="resCorrectCount">0</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card p-3 rounded-4 border-0 shadow-sm bg-white">
+                                <div class="text-muted small">ভুল উত্তর</div>
+                                <div class="fw-bold fs-3 text-danger" id="resWrongCount">0</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card p-3 rounded-4 border-0 shadow-sm bg-white">
+                                <div class="text-muted small">ব্যয়িত সময়</div>
+                                <div class="fw-bold fs-5 text-dark mt-1" id="resTimeTaken">0 মি. 0 সে.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="d-flex flex-wrap justify-content-center gap-3">
+                        <button type="button" class="btn btn-warning rounded-pill px-4 py-2 fw-bold text-dark shadow-sm" id="resBtnViewLeaderboard">
+                            <i class="fa-solid fa-ranking-star me-2"></i>সম্পূর্ণ মেধাতালিকা দেখুন
+                        </button>
+                        <button type="button" class="btn btn-success rounded-pill px-4 py-2 fw-bold shadow-sm" id="resBtnViewSolveSheet">
+                            <i class="fa-solid fa-file-pdf me-2"></i>ব্যাখ্যাসহ সমাধানপত্র ও PDF ডাউনলোড
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. Realtime Leaderboard Modal -->
+    <div class="modal fade" id="freeLeaderboardModal" tabindex="-1" aria-labelledby="freeLeaderboardModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+            <div class="modal-content rounded-4 border-0 shadow-lg">
+                <div class="modal-header border-0 bg-dark text-white p-4">
+                    <div>
+                        <span class="badge bg-warning text-dark rounded-pill px-3 py-1 fw-bold mb-1"><i class="fa-solid fa-trophy me-1"></i> LEADERBOARD</span>
+                        <h5 class="modal-title fw-bold text-white" id="leaderboardExamTitle">লাইভ মেধাতালিকা</h5>
+                        <div class="text-white-50 small" id="leaderboardTotalCount">মোট পরীক্ষার্থী: ০ জন</div>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="text-center" style="width: 80px;">স্থান</th>
+                                    <th>পরীক্ষার্থীর নাম ও কলেজ</th>
+                                    <th class="text-center">প্রাপ্ত নম্বর</th>
+                                    <th class="text-center">সঠিক</th>
+                                    <th class="text-center">ভুল</th>
+                                    <th class="text-center">সময়</th>
+                                </tr>
+                            </thead>
+                            <tbody id="leaderboardTableBody">
+                                <!-- Leaderboard rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 p-3 bg-light d-flex justify-content-between">
+                    <span class="small text-muted"><i class="fa-solid fa-circle-info me-1"></i> নম্বর সমান হলে কম সময়ে সাবমিটকারী শিক্ষার্থী মেধা তালিকায় এগিয়ে থাকবে।</span>
+                    <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">বন্ধ করুন</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. Solve Sheet & PDF Printable Modal -->
+    <div class="modal fade" id="freeSolveSheetModal" tabindex="-1" aria-labelledby="freeSolveSheetModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content rounded-4 border-0 shadow-lg">
+                <div class="modal-header border-bottom py-3 px-4 bg-light d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="modal-title fw-bold text-dark mb-0" id="solveSheetExamTitle">মডেল টেস্ট সমাধানপত্র</h5>
+                        <p class="text-muted small mb-0">জাতীয় বিশ্ববিদ্যালয় ভর্তি প্রস্তুতি • ফ্রি লাইভ মডেল টেস্ট</p>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-primary rounded-pill px-3 fw-bold shadow-sm" id="btnPrintSolveSheet">
+                            <i class="fa-solid fa-print me-1"></i> PDF ডাউনলোড / প্রিন্ট করুন
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary rounded-pill px-3" data-bs-dismiss="modal">
+                            বন্ধ করুন
+                        </button>
+                    </div>
+                </div>
+
+                <div class="modal-body p-4 bg-light">
+                    <!-- Printable Container -->
+                    <div id="solveSheetPrintableArea">
+                        <div class="p-4 bg-white rounded-3 border mb-4 shadow-sm">
+                            <div class="row align-items-center">
+                                <div class="col-sm-8">
+                                    <h4 class="fw-bold text-primary mb-1">NU Crackers - জাতীয় বিশ্ববিদ্যালয় ভর্তি প্ল্যাটফর্ম</h4>
+                                    <h5 class="fw-bold text-dark mb-2" id="solveSheetHeaderExamTitle">অফিসিয়াল সলভ শীট ও ফলাফল বিবরণী</h5>
+                                    <div class="small text-muted">
+                                        পরীক্ষার্থী: <strong class="text-dark" id="solveSheetStudentName">নাম</strong> • 
+                                        কলেজ: <span id="solveSheetStudentCollege">কলেজ</span>
+                                    </div>
+                                    <div class="small text-muted mt-1">
+                                        পরীক্ষার তারিখ: <span id="solveSheetDate">তারিখ</span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 text-sm-end mt-3 mt-sm-0">
+                                    <div class="p-3 bg-light rounded-3 text-center d-inline-block border" style="min-width: 140px;">
+                                        <div class="text-muted small">মোট স্কোর</div>
+                                        <div class="fw-bold fs-3 text-success" id="solveSheetScore">0 / 0</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="solveSheetQuestionsContainer">
+                            <!-- Injected questions -->
+                        </div>
+
+                        <div class="text-center p-3 text-muted small mt-4 border-top">
+                            © NU Crackers • জাতীয় বিশ্ববিদ্যালয় মডেল টেস্ট ও ভর্তি সহায়তা
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Free Exams Portal System -->
+    <script src="js/free-exams-portal.js"></script>
 </body>
 
-</html>           
+</html>
