@@ -3763,6 +3763,22 @@
       "createdAt": "2026-09-14T04:04:57.221Z",
       "totalMarks": 100,
       "durationMinutes": 60
+    },
+    {
+      "id": "free-sci-1789535786712",
+      "group": "science",
+      "batch": "free",
+      "isFree": true,
+      "title": "Full model Test",
+      "subject": "All subject",
+      "durationMinutes": 60,
+      "duration": 60,
+      "totalMarks": 0,
+      "passMarks": 40,
+      "negativeMark": 0.25,
+      "status": "live",
+      "description": "",
+      "questions": []
     }
   ],
   "submissions": [
