@@ -6397,6 +6397,22 @@
           "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
         }
       ]
+    },
+    {
+      "id": "free-com-1789545840488",
+      "group": "commerce",
+      "batch": "free",
+      "isFree": true,
+      "title": "Full Model Test",
+      "subject": "All subject",
+      "durationMinutes": 60,
+      "duration": 60,
+      "totalMarks": 0,
+      "passMarks": 40,
+      "negativeMark": 0.25,
+      "status": "live",
+      "description": "",
+      "questions": []
     }
   ],
   "submissions": [
