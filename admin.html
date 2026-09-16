@@ -72,7 +72,8 @@
       </div>
     </div>
   </nav>
-<!-- 1. ADMIN AUTHENTICATION GATE (IF NOT LOGGED IN) -->
+
+  <!-- 1. ADMIN AUTHENTICATION GATE (IF NOT LOGGED IN) -->
   <section id="adminAuthSection" class="py-5">
     <div class="container py-5">
       <div class="row justify-content-center">
@@ -86,19 +87,19 @@
               <p class="text-muted small">ইউনিক রোল ও প্রশ্ন ব্যবস্থাপনার জন্য এডমিন পাসওয়ার্ড প্রদান করুন।</p>
             </div>
 
-<form id="adminLoginForm" onsubmit="event.preventDefault(); window.handleAdminLoginDirect(); return false;">
+            <form id="adminLoginForm">
               <div class="mb-3">
                 <label for="adminPassword" class="form-label fw-semibold small text-muted">এডমিন পাসওয়ার্ড</label>
                 <div class="input-group">
                   <span class="input-group-text bg-light border-end-0"><i class="fa-solid fa-key text-muted"></i></span>
                   <input type="password" class="form-control border-start-0 border-end-0 py-2" id="adminPassword" required autocomplete="current-password" placeholder="পাসওয়ার্ড লিখুন">
-                  <button class="btn btn-light border border-start-0" type="button" id="toggleAdminPassBtn" title="পাসওয়ার্ড দেখুন" onclick="const p=document.getElementById('adminPassword'); const ic=document.getElementById('toggleAdminPassIcon'); if(p.type==='password'){p.type='text'; ic.className='fa-regular fa-eye-slash';}else{p.type='password'; ic.className='fa-regular fa-eye';}">
+                  <button class="btn btn-light border border-start-0" type="button" id="toggleAdminPassBtn" title="পাসওয়ার্ড দেখুন">
                     <i class="fa-regular fa-eye" id="toggleAdminPassIcon"></i>
                   </button>
                 </div>
                 <div class="d-flex justify-content-between align-items-center mt-2">
-            
-                  <button type="button" class="btn btn-link btn-sm p-0 text-decoration-none" id="fillAdminPassBtn" onclick="document.getElementById('adminPassword').value='Nucrackers#.com'; document.getElementById('adminPassword').focus();">
+                  <span class="small text-muted">ডিফল্ট পাসওয়ার্ড: <code class="user-select-all fw-bold text-dark">Nucrackers#.com</code></span>
+                  <button type="button" class="btn btn-link btn-sm p-0 text-decoration-none" id="fillAdminPassBtn">
                     <i class="fa-regular fa-copy me-1"></i>স্বয়ংক্রিয় পূরণ
                   </button>
                 </div>
@@ -106,7 +107,7 @@
 
               <div id="adminLoginAlert" class="alert d-none"></div>
 
-              <button type="button" class="btn btn-primary w-100 rounded-pill py-2 fw-semibold mt-2" id="adminLoginSubmitBtn" onclick="window.handleAdminLoginDirect()">
+              <button type="submit" class="btn btn-primary w-100 rounded-pill py-2 fw-semibold mt-2" id="adminLoginSubmitBtn">
                 <i class="fa-solid fa-lock-open me-1"></i> এডমিন ড্যাশবোর্ডে প্রবেশ করুন
               </button>
             </form>
@@ -208,147 +209,68 @@
         <!-- ============================================== -->
         <div class="tab-pane fade show active" id="studentsPane" role="tabpanel">
 
-          <div class="row g-4">
-            <!-- Left: Add New Student Form -->
-            <div class="col-lg-5">
+          <div id="studentAlert" class="alert d-none mb-3"></div>
+
+          <!-- Sub Navigation Tabs for Student Management -->
+          <ul class="nav nav-pills mb-4 bg-white p-2 rounded-4 shadow-sm border" id="studentSubTabs" role="tablist">
+            <li class="nav-item flex-fill" role="presentation">
+              <button class="nav-link active w-100 rounded-pill fw-bold py-2 d-flex align-items-center justify-content-center gap-2" id="pendingSubTabBtn" data-bs-toggle="pill" data-bs-target="#pendingStudentsSubPane" type="button" role="tab">
+                <i class="fa-solid fa-hourglass-half text-warning"></i>
+                <span>পেন্ডিং আবেদনসমূহ (Pending Students)</span>
+                <span class="badge bg-warning text-dark rounded-pill px-2" id="pendingCountBadge">0 জন</span>
+              </button>
+            </li>
+            <li class="nav-item flex-fill" role="presentation">
+              <button class="nav-link w-100 rounded-pill fw-bold py-2 d-flex align-items-center justify-content-center gap-2" id="approvedSubTabBtn" data-bs-toggle="pill" data-bs-target="#approvedStudentsSubPane" type="button" role="tab">
+                <i class="fa-solid fa-circle-check text-success"></i>
+                <span>অনুমোদিত শিক্ষার্থী (Approved Students)</span>
+                <span class="badge bg-success rounded-pill px-2" id="approvedCountBadge">0 জন</span>
+              </button>
+            </li>
+            <li class="nav-item" role="presentation" style="min-width: 180px;">
+              <button class="nav-link w-100 rounded-pill fw-bold py-2 d-flex align-items-center justify-content-center gap-2" id="addStudentSubTabBtn" data-bs-toggle="pill" data-bs-target="#addStudentSubPane" type="button" role="tab">
+                <i class="fa-solid fa-user-plus text-primary"></i>
+                <span>ম্যানুয়াল এন্ট্রি</span>
+              </button>
+            </li>
+          </ul>
+
+          <div class="tab-content" id="studentSubTabContent">
+
+            <!-- ============================================== -->
+            <!-- SUB-PANE 1: PENDING STUDENTS (ভর্তি অপেক্ষমাণ) -->
+            <!-- ============================================== -->
+            <div class="tab-pane fade show active" id="pendingStudentsSubPane" role="tabpanel">
               <div class="card card-custom p-4">
-                <div class="d-flex align-items-center gap-2 mb-3">
-                  <div class="rounded-circle bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center" style="width:38px; height:38px;">
-                    <i class="fa-solid fa-user-plus"></i>
-                  </div>
+                <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-3">
                   <div>
-                    <h5 class="fw-bold text-dark mb-0">নতুন শিক্ষার্থী ও রোল যোগ</h5>
-                    <span class="text-muted small">রোল নম্বর সম্পূর্ণ ইউনিক হতে হবে</span>
+                    <h5 class="fw-bold text-dark mb-1 d-flex align-items-center gap-2">
+                      <i class="fa-solid fa-clock-rotate-left text-warning"></i>
+                      পেন্ডিং ভর্তি আবেদনসমূহ
+                    </h5>
+                    <div class="text-muted small">
+                      শিক্ষার্থীরা রেজিস্ট্রেশন ফরম জমা দিলে এখানে দৃশ্যমান হবে। তথ্য ও পেমেন্ট TrxID যাচাই করে <strong class="text-success">"Approve & রোল বরাদ্দ"</strong> করুন।
+                    </div>
+                  </div>
+                  <div class="d-flex align-items-center gap-2">
+                    <span class="badge bg-warning text-dark px-3 py-2 rounded-pill fs-6" id="pendingBannerBadge">০টি নতুন আবেদন</span>
+                    <button class="btn btn-sm btn-outline-secondary rounded-pill px-3" id="refreshPendingBtn">
+                      <i class="fa-solid fa-rotate-right me-1"></i>রিফ্রেশ
+                    </button>
                   </div>
                 </div>
 
-                <div id="studentAlert" class="alert d-none"></div>
-
-                <form id="addStudentForm">
-                  <div class="mb-3">
-                    <label for="newStudentName" class="form-label fw-semibold small text-muted">শিক্ষার্থীর পূর্ণ নাম *</label>
-                    <div class="input-group">
-                      <span class="input-group-text bg-light border-end-0"><i class="fa-solid fa-signature text-muted"></i></span>
-                      <input type="text" class="form-control border-start-0" id="newStudentName" placeholder="যেমন: সুদীপ্ত কর্মকার" required>
-                    </div>
-                  </div>
-
-                  <div class="mb-3">
-                    <label for="newStudentRoll" class="form-label fw-semibold small text-muted">
-                      ইউনিক রোল নম্বর (Unique Roll) *
-                    </label>
-                    <div class="input-group">
-                      <span class="input-group-text bg-light border-end-0"><i class="fa-solid fa-id-card text-muted"></i></span>
-                      <input type="text" class="form-control border-start-0" id="newStudentRoll" placeholder="যেমন: 104 বা 2026-SCI-01" required>
-                    </div>
-                    <div class="form-text small text-muted">
-                      <i class="fa-solid fa-circle-info text-primary me-1"></i> এই রোল দিয়ে শিক্ষার্থী সরাসরি তার পোর্টালে লগইন করবে।
-                    </div>
-                  </div>
-
-                  <div class="mb-4">
-                    <label for="newStudentGroup" class="form-label fw-semibold small text-muted">গ্রুপ বা বিভাগ নির্বাচন *</label>
-                    <select class="form-select" id="newStudentGroup" required>
-                      <option value="science">🔬 বিজ্ঞান ইউনিট (Science)</option>
-                      <option value="arts">🎨 মানবিক ইউনিট (Arts)</option>
-                      <option value="commerce">📊 ব্যবসায় শিক্ষা ইউনিট (Commerce)</option>
-                    </select>
-                  </div>
-
-                  <button type="submit" class="btn btn-primary w-100 rounded-pill py-2 fw-bold" id="addStudentSubmitBtn">
-                    <i class="fa-solid fa-user-plus me-1"></i> নতুন শিক্ষার্থী যুক্ত করুন
-                  </button>
-                </form>
-
-                <div class="alert alert-light border rounded-3 mt-4 small mb-0">
-                  <strong class="text-dark"><i class="fa-solid fa-shield-check text-success me-1"></i>ইউনিক রোল নিরাপত্তা:</strong>
-                  <p class="mb-0 text-muted mt-1">যদি পূর্বে ব্যবহৃত কোনো রোল নম্বর এন্ট্রি করার চেষ্টা করা হয়, সিস্টেম স্বয়ংক্রিয়ভাবে তা শনাক্ত করবে এবং ডুপ্লিকেট রোল গ্রহণ করবে না।</p>
-                </div>
-              </div>
-            </div>
-<!-- শিক্ষার্থীর মোডাল: ৮-ডিজিট রোল বরাদ্দ ও সরাসরি WhatsApp প্রেরণ -->
-<div class="modal fade" id="approveStudentModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content rounded-4 border-0 shadow">
-      <div class="modal-header border-0 pb-0">
-        <h5 class="modal-title fw-bold text-success"><i class="fa-solid fa-user-check me-2"></i>ভর্তি অনুমোদন ও রোল বরাদ্দ</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body pt-2">
-        <div class="bg-light p-3 rounded-3 mb-3 border">
-          <h6 class="fw-bold mb-1" id="modalApproveName">-</h6>
-          <div class="small text-muted mb-2" id="modalApproveCollegeDistrict">-</div>
-          <div class="d-flex gap-2">
-            <span id="modalApproveGroupBadge" class="badge bg-primary">Science</span>
-            <span class="badge bg-light text-dark border"><i class="fa-brands fa-whatsapp text-success me-1"></i><span id="modalApproveWhatsapp">-</span></span>
-          </div>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label small fw-bold">বরাদ্দকৃত ৮-ডিজিট ইউনিক রোল নম্বর:</label>
-          <input type="text" class="form-control font-monospace fw-bold fs-5 text-primary" id="modalCustomRollInput" maxlength="8" required>
-        </div>
-
-        <!-- সরাসরি WhatsApp প্রেরণের অপশন -->
-        <div class="p-3 mb-3 rounded-3 bg-success bg-opacity-10 border border-success border-opacity-25">
-          <div class="form-check form-switch mb-2">
-            <input class="form-check-input" type="checkbox" role="switch" id="modalAutoOpenWhatsApp" checked>
-            <label class="form-check-label fw-bold text-success small" for="modalAutoOpenWhatsApp">
-              <i class="fa-brands fa-whatsapp me-1"></i>অনুমোদনের সাথে সাথে সরাসরি হোয়াটসঅ্যাপে ইউনিক রোল পাঠিয়ে দিন
-            </label>
-          </div>
-          <div class="border rounded bg-white p-2 small text-secondary font-monospace" id="modalWhatsAppMessagePreview"></div>
-        </div>
-
-        <div class="d-grid gap-2">
-          <button type="button" class="btn btn-success py-2 rounded-pill fw-bold" id="btnConfirmApproveStudent">
-            <i class="fa-brands fa-whatsapp me-2"></i>অনুমোদন করুন ও সরাসরি WhatsApp-এ পাঠান
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- WhatsApp কনফার্মেশন ডিসপ্যাচ মোডাল -->
-<div class="modal fade" id="whatsappDispatchedModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content rounded-4 border-0 shadow text-center p-4">
-      <h4 class="fw-bold text-dark mb-1">হোয়াটসঅ্যাপে রোল পাঠানো হচ্ছে!</h4>
-      <div class="bg-light p-3 rounded-3 border my-3 text-start">
-        <div><strong>রোল নম্বর:</strong> <code class="fw-bold fs-5 text-primary" id="waModalAllocatedRoll">-</code></div>
-        <div><strong>WhatsApp:</strong> <span id="waModalTargetPhone">-</span></div>
-      </div>
-      <a id="waModalOpenDirectLink" href="#" target="_blank" class="btn btn-success btn-lg rounded-pill fw-bold mb-2">
-        <i class="fa-brands fa-whatsapp me-2"></i>হোয়াটসঅ্যাপে রোল পাঠান
-      </a>
-      <button type="button" class="btn btn-outline-secondary rounded-pill" id="waModalCopyMsgBtn">মেসেজ কপি করুন</button>
-    </div>
-  </div>
-</div>
-            <!-- Right: Student Directory List -->
-            <div class="col-lg-7">
-              <div class="card card-custom p-4">
-                <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
-                  <div>
-                    <h5 class="fw-bold text-dark mb-0">নিবন্ধিত প্রিমিয়াম শিক্ষার্থী তালিকা</h5>
-                    <span class="text-muted small">মোট শিক্ষার্থী: <strong id="studentCountBadge" class="text-primary">0 জন</strong></span>
-                  </div>
-                </div>
-
-                <!-- Search & Filter Controls -->
+                <!-- Search & Filter Controls for Pending -->
                 <div class="row g-2 mb-3">
-                  <div class="col-sm-7">
+                  <div class="col-md-8">
                     <div class="input-group input-group-sm">
                       <span class="input-group-text bg-light"><i class="fa-solid fa-magnifying-glass text-muted"></i></span>
-                      <input type="text" class="form-control" id="studentSearchInput" placeholder="নাম বা রোল দিয়ে খুঁজুন...">
+                      <input type="text" class="form-control" id="pendingSearchInput" placeholder="শিক্ষার্থীর নাম, কলেজ, জেলা, হোয়াটসঅ্যাপ নম্বর অথবা TrxID দিয়ে খুঁজুন...">
                     </div>
                   </div>
-                  <div class="col-sm-5">
-                    <select class="form-select form-select-sm" id="studentFilterGroup">
-                      <option value="all">সকল শিক্ষার্থী (All)</option>
-                      <option value="pending">⏳ পেন্ডিং আবেদন (Pending Approval)</option>
-                      <option value="approved">✓ অনুমোদিত শিক্ষার্থী (Approved)</option>
+                  <div class="col-md-4">
+                    <select class="form-select form-select-sm" id="pendingFilterGroup">
+                      <option value="all">সকল ইউনিট (All Groups)</option>
                       <option value="science">🔬 বিজ্ঞান (Science)</option>
                       <option value="arts">🎨 মানবিক (Arts)</option>
                       <option value="commerce">📊 ব্যবসায় শিক্ষা (Commerce)</option>
@@ -356,27 +278,178 @@
                   </div>
                 </div>
 
-                <!-- Student Table -->
-                <div class="table-responsive" style="max-height: 520px; overflow-y: auto;">
+                <!-- Pending Students Table -->
+                <div class="table-responsive" style="max-height: 560px; overflow-y: auto;">
                   <table class="table table-hover align-middle mb-0">
                     <thead class="table-light sticky-top">
                       <tr>
                         <th style="width: 40px;">#</th>
-                        <th>নাম</th>
-                        <th>ইউনিক রোল</th>
-                        <th>গ্রুপ</th>
-                        <th>স্ট্যাটাস</th>
-                        <th>তারিখ</th>
-                        <th class="text-end">অ্যাকশন</th>
+                        <th>শিক্ষার্থীর বিবরণ (Name, College, District)</th>
+                        <th>বিভাগ</th>
+                        <th>হোয়াটসঅ্যাপ</th>
+                        <th>পেমেন্ট মেথড ও TrxID</th>
+                        <th>আবেদনের সময়</th>
+                        <th class="text-end" style="min-width: 170px;">অ্যাকশন</th>
                       </tr>
                     </thead>
-                    <tbody id="studentTableBody">
-                      <!-- Dynamically injected by admin.js -->
+                    <tbody id="pendingStudentsTableBody">
+                      <!-- Populated via admin.js -->
                     </tbody>
                   </table>
                 </div>
               </div>
             </div>
+
+            <!-- ============================================== -->
+            <!-- SUB-PANE 2: APPROVED STUDENTS (অনুমোদিত শিক্ষার্থী) -->
+            <!-- ============================================== -->
+            <div class="tab-pane fade" id="approvedStudentsSubPane" role="tabpanel">
+              <div class="card card-custom p-4">
+                <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-3">
+                  <div>
+                    <h5 class="fw-bold text-dark mb-1 d-flex align-items-center gap-2">
+                      <i class="fa-solid fa-shield-halved text-success"></i>
+                      অনুমোদিত প্রিমিয়াম শিক্ষার্থী তালিকা (৮-ডিজিট ইউনিক রোল)
+                    </h5>
+                    <div class="text-muted small">
+                      ৮-ডিজিট রোল নিয়ম: <span class="badge bg-light text-dark border font-monospace">[গ্রুপ: 1/2/3][বছর: 27][ব্যাচ: 01][সিরিয়াল: 001]</span>
+                    </div>
+                  </div>
+                  <div class="d-flex flex-wrap gap-2">
+                    <button class="btn btn-sm btn-outline-primary rounded-pill px-3" id="exportBackupBtn" title="শিক্ষার্থীদের সম্পূর্ণ তালিকা ব্যাকআপ ডাউনলোড করুন">
+                      <i class="fa-solid fa-cloud-arrow-down me-1"></i> ব্যাকআপ
+                    </button>
+                    <button class="btn btn-sm btn-outline-success rounded-pill px-3" id="importBackupBtn" title="পূর্বে ডাউনলোড করা ব্যাকআপ থেকে রিস্টোর করুন">
+                      <i class="fa-solid fa-cloud-arrow-up me-1"></i> রিস্টোর
+                    </button>
+                    <input type="file" id="importBackupFileInput" accept=".json" class="d-none">
+                  </div>
+                </div>
+
+                <!-- Search & Filter Controls for Approved -->
+                <div class="row g-2 mb-3">
+                  <div class="col-md-7">
+                    <div class="input-group input-group-sm">
+                      <span class="input-group-text bg-light"><i class="fa-solid fa-magnifying-glass text-muted"></i></span>
+                      <input type="text" class="form-control" id="studentSearchInput" placeholder="রোল নম্বর, নাম, কলেজ, জেলা বা হোয়াটসঅ্যাপ দিয়ে খুঁজুন...">
+                    </div>
+                  </div>
+                  <div class="col-md-5">
+                    <select class="form-select form-select-sm" id="studentFilterGroup">
+                      <option value="all">সকল অনুমোদিত শিক্ষার্থী (All)</option>
+                      <option value="science">🔬 বিজ্ঞান (Science)</option>
+                      <option value="arts">🎨 মানবিক (Arts)</option>
+                      <option value="commerce">📊 ব্যবসায় শিক্ষা (Commerce)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Approved Students Table -->
+                <div class="table-responsive" style="max-height: 560px; overflow-y: auto;">
+                  <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light sticky-top">
+                      <tr>
+                        <th style="width: 40px;">#</th>
+                        <th>৮-ডিজিট ইউনিক রোল</th>
+                        <th>শিক্ষার্থীর নাম, কলেজ ও জেলা</th>
+                        <th>বিভাগ</th>
+                        <th>হোয়াটসঅ্যাপ</th>
+                        <th>পেমেন্ট বিবরণ (মেথড, প্রেরক, TrxID)</th>
+                        <th>অনুমোদনের তারিখ</th>
+                        <th class="text-end" style="min-width: 160px;">অ্যাকশন</th>
+                      </tr>
+                    </thead>
+                    <tbody id="studentTableBody">
+                      <!-- Populated via admin.js -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- ============================================== -->
+            <!-- SUB-PANE 3: MANUAL STUDENT ENTRY (ম্যানুয়াল এন্ট্রি) -->
+            <!-- ============================================== -->
+            <div class="tab-pane fade" id="addStudentSubPane" role="tabpanel">
+              <div class="row justify-content-center">
+                <div class="col-lg-8">
+                  <div class="card card-custom p-4">
+                    <div class="d-flex align-items-center gap-2 mb-3 pb-2 border-bottom">
+                      <div class="rounded-circle bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center" style="width:38px; height:38px;">
+                        <i class="fa-solid fa-user-plus"></i>
+                      </div>
+                      <div>
+                        <h5 class="fw-bold text-dark mb-0">নতুন শিক্ষার্থী ম্যানুয়াল এন্ট্রি</h5>
+                        <span class="text-muted small">অফলাইনে ভর্তি হওয়া শিক্ষার্থীকে সরাসরি ৮-ডিজিট রোল দিয়ে যুক্ত করুন</span>
+                      </div>
+                    </div>
+
+                    <form id="addStudentForm">
+                      <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                          <label for="newStudentName" class="form-label fw-semibold small text-muted">শিক্ষার্থীর পূর্ণ নাম *</label>
+                          <div class="input-group">
+                            <span class="input-group-text bg-light"><i class="fa-solid fa-signature text-muted"></i></span>
+                            <input type="text" class="form-control" id="newStudentName" placeholder="যেমন: আবরার সাকিব" required>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <label for="newStudentGroup" class="form-label fw-semibold small text-muted">গ্রুপ বা বিভাগ নির্বাচন *</label>
+                          <select class="form-select" id="newStudentGroup" required>
+                            <option value="science">🔬 বিজ্ঞান ইউনিট (Science)</option>
+                            <option value="arts">🎨 মানবিক ইউনিট (Arts)</option>
+                            <option value="commerce">📊 ব্যবসায় শিক্ষা ইউনিট (Commerce)</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                          <label for="newStudentCollege" class="form-label fw-semibold small text-muted">কলেজ (ঐচ্ছিক)</label>
+                          <input type="text" class="form-control" id="newStudentCollege" placeholder="যেমন: নটর ডেম কলেজ">
+                        </div>
+                        <div class="col-md-6">
+                          <label for="newStudentDistrict" class="form-label fw-semibold small text-muted">জেলা (ঐচ্ছিক)</label>
+                          <input type="text" class="form-control" id="newStudentDistrict" placeholder="যেমন: ঢাকা">
+                        </div>
+                      </div>
+
+                      <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                          <label for="newStudentWhatsapp" class="form-label fw-semibold small text-muted">হোয়াটসঅ্যাপ নম্বর (ঐচ্ছিক)</label>
+                          <input type="tel" class="form-control" id="newStudentWhatsapp" placeholder="01XXXXXXXXX">
+                        </div>
+                        <div class="col-md-6">
+                          <label for="newStudentRoll" class="form-label fw-semibold small text-muted">
+                            ৮-ডিজিট ইউনিক রোল (খালি রাখলে সিস্টেম স্বয়ংক্রিয়ভাবে তৈরি করবে)
+                          </label>
+                          <div class="input-group">
+                            <input type="text" class="form-control font-monospace fw-bold" id="newStudentRoll" placeholder="উদা: 12701001 (অথবা খালি রাখুন)">
+                            <button class="btn btn-outline-secondary" type="button" id="btnAutoGenerateRoll">
+                              <i class="fa-solid fa-wand-magic-sparkles me-1"></i>জেনারেট
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="d-grid mt-4">
+                        <button type="submit" class="btn btn-primary rounded-pill py-2 fw-bold" id="addStudentSubmitBtn">
+                          <i class="fa-solid fa-user-plus me-1"></i> শিক্ষার্থী যুক্ত করুন (সরাসরি Approved)
+                        </button>
+                      </div>
+                    </form>
+
+                    <div class="alert alert-light border rounded-3 mt-4 small mb-0">
+                      <strong class="text-dark"><i class="fa-solid fa-shield-check text-success me-1"></i>স্বয়ংক্রিয় ৮-ডিজিট ইউনিক রোল নিরাপত্তা:</strong>
+                      <p class="mb-0 text-muted mt-1">
+                        যদি রোল ফাঁকা রাখা হয়, বিজ্ঞান শিক্ষার্থীদের জন্য <code>127...</code>, মানবিকে <code>227...</code> ও ব্যবসায় শিক্ষায় <code>327...</code> ফরমেটে সিস্টেম পরবর্তী খালি রোল নম্বরটি প্রদান করবে।
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
 
@@ -397,15 +470,13 @@
                 </select>
                 <div id="selectedExamBadge" class="mt-2"></div>
               </div>
-              <div class="col-md-5 col-lg-4 text-md-end">
-                <div class="col-md-5 col-lg-4 text-md-end d-flex flex-wrap justify-content-md-end gap-2">
+              <div class="col-md-5 col-lg-4 text-md-end d-flex flex-wrap justify-content-md-end gap-2">
                 <button type="button" class="btn btn-success rounded-pill px-3 shadow-sm" data-bs-toggle="modal" data-bs-target="#googleFormImportModal">
                   <i class="fa-brands fa-google me-1"></i> Google Form ইমপোর্ট
                 </button>
                 <button type="button" class="btn btn-outline-primary rounded-pill px-3" data-bs-toggle="modal" data-bs-target="#createExamModal">
                   <i class="fa-solid fa-plus-circle me-1"></i> নতুন মডেল টেস্ট
                 </button>
-                </div>
               </div>
             </div>
           </div>
@@ -423,18 +494,20 @@
                     <span class="text-muted small">নির্বাচিত পরীক্ষায় প্রশ্ন ও ৪টি অপশন যোগ হবে</span>
                   </div>
                 </div>
-<div class="alert alert-info py-2 px-3 small d-flex align-items-center justify-content-between mb-3 rounded-3 border-0 bg-primary bg-opacity-10 text-primary">
+
+                <div class="alert alert-info py-2 px-3 small d-flex align-items-center justify-content-between mb-3 rounded-3 border-0 bg-primary bg-opacity-10 text-primary">
                   <div><i class="fa-brands fa-google me-1"></i> গুগল ফর্ম থেকে সব প্রশ্ন এক ক্লিকে আনুন</div>
                   <button type="button" class="btn btn-sm btn-primary rounded-pill px-3 py-0 fw-bold" data-bs-toggle="modal" data-bs-target="#googleFormImportModal" style="font-size: 0.75rem; height: 26px;">
                     ইমপোর্ট
                   </button>
-</div>
+                </div>
+
                 <div id="questionAlert" class="alert d-none"></div>
 
                 <form id="addQuestionForm">
                   <div class="mb-3">
                     <label for="qText" class="form-label fw-semibold small text-muted">প্রশ্নের বিবরণ (Question Text) *</label>
-                    <textarea class="form-control" id="qText" rows="3" placeholder="যেমন: পরমাণুর নিউক্লিয়াসে কোন কোন কণা উপস্থিত থাকে?" required></textarea>
+                    <textarea class="form-control" id="qText" rows="3" required></textarea>
                   </div>
 
                   <div class="mb-2">
@@ -442,22 +515,22 @@
                     
                     <div class="input-group input-group-sm mb-2">
                       <span class="input-group-text bg-light fw-bold text-primary" style="width: 42px;">ক</span>
-                      <input type="text" class="form-control" id="qOpt0" placeholder="প্রথম অপশন" required>
+                      <input type="text" class="form-control" id="qOpt0" required>
                     </div>
 
                     <div class="input-group input-group-sm mb-2">
                       <span class="input-group-text bg-light fw-bold text-primary" style="width: 42px;">খ</span>
-                      <input type="text" class="form-control" id="qOpt1" placeholder="দ্বিতীয় অপশন" required>
+                      <input type="text" class="form-control" id="qOpt1" required>
                     </div>
 
                     <div class="input-group input-group-sm mb-2">
                       <span class="input-group-text bg-light fw-bold text-primary" style="width: 42px;">গ</span>
-                      <input type="text" class="form-control" id="qOpt2" placeholder="তৃতীয় অপশন" required>
+                      <input type="text" class="form-control" id="qOpt2" required>
                     </div>
 
                     <div class="input-group input-group-sm mb-2">
                       <span class="input-group-text bg-light fw-bold text-primary" style="width: 42px;">ঘ</span>
-                      <input type="text" class="form-control" id="qOpt3" placeholder="চতুর্থ অপশন" required>
+                      <input type="text" class="form-control" id="qOpt3" required>
                     </div>
                   </div>
 
@@ -473,7 +546,7 @@
 
                   <div class="mb-4">
                     <label for="qExplanation" class="form-label fw-semibold small text-muted">সঠিক উত্তরের ব্যাখ্যা (Explanation)</label>
-                    <textarea class="form-control" id="qExplanation" rows="2" placeholder="কেন এই উত্তরটি সঠিক তার স্পষ্ট ব্যাখ্যা লিখুন..."></textarea>
+                    <textarea class="form-control" id="qExplanation" rows="2"></textarea>
                     <div class="form-text small text-muted">শিক্ষার্থীরা পরীক্ষা শেষে সমাধান পেজে এই ব্যাখ্যা দেখতে পাবে।</div>
                   </div>
 
@@ -553,7 +626,7 @@
           <div id="createExamAlert" class="alert d-none"></div>
 
           <form id="createExamForm">
-          <div class="row g-2 mb-3">
+            <div class="row g-2 mb-3">
               <div class="col-md-6">
                 <label for="newExamBatch" class="form-label fw-semibold small text-muted">পরীক্ষার ব্যাচ ধরন *</label>
                 <select class="form-select fw-semibold text-primary" id="newExamBatch" required>
@@ -613,7 +686,8 @@
       </div>
     </div>
   </div>
-<!-- GOOGLE FORM / DRIVE IMPORT MODAL -->
+
+  <!-- GOOGLE FORM / DRIVE IMPORT MODAL -->
   <div class="modal fade" id="googleFormImportModal" tabindex="-1" aria-labelledby="googleFormImportModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-scrollable">
       <div class="modal-content border-0 shadow-lg rounded-4">
@@ -748,7 +822,353 @@ Answer: A"></textarea>
         </div>
       </div>
     </div>
+  </div>
+
+  <!-- MODAL: APPROVE STUDENT & 8-DIGIT ROLL ALLOCATION -->
+  <div class="modal fade" id="approveStudentModal" tabindex="-1" aria-labelledby="approveStudentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content rounded-4 border-0 shadow">
+        <div class="modal-header bg-success bg-opacity-10 border-bottom">
+          <h5 class="modal-title fw-bold text-success" id="approveStudentModalLabel">
+            <i class="fa-solid fa-user-check me-2"></i>ভর্তি আবেদন অনুমোদন ও রোল নম্বর প্রদান
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-4">
+          <!-- Student Details Preview -->
+          <div class="bg-light p-3 rounded-3 mb-3 border">
+            <div class="d-flex justify-content-between py-1 border-bottom">
+              <span class="text-muted small">শিক্ষার্থীর নাম:</span>
+              <span class="fw-bold text-dark" id="modalApproveName">-</span>
+            </div>
+            <div class="d-flex justify-content-between py-1 border-bottom">
+              <span class="text-muted small">কলেজ ও জেলা:</span>
+              <span class="fw-semibold text-dark" id="modalApproveCollegeDistrict">-</span>
+            </div>
+            <div class="d-flex justify-content-between py-1 border-bottom">
+              <span class="text-muted small">বিভাগ / ইউনিট:</span>
+              <span class="badge px-2 py-1" id="modalApproveGroupBadge">-</span>
+            </div>
+            <div class="d-flex justify-content-between py-1 border-bottom">
+              <span class="text-muted small">হোয়াটসঅ্যাপ নম্বর:</span>
+              <span class="fw-semibold text-dark" id="modalApproveWhatsapp">-</span>
+            </div>
+            <div class="d-flex justify-content-between py-1 border-bottom">
+              <span class="text-muted small">পেমেন্ট মেথড ও প্রেরক:</span>
+              <span class="fw-semibold text-dark" id="modalApprovePayment">-</span>
+            </div>
+            <div class="d-flex justify-content-between py-1">
+              <span class="text-muted small">TrxID:</span>
+              <code class="fw-bold text-primary fs-6" id="modalApproveTrxId">-</code>
+            </div>
+          </div>
+
+          <!-- Roll Formula & Generated Roll Box -->
+          <div class="p-3 mb-3 rounded-3 bg-primary bg-opacity-10 border border-primary border-opacity-25">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <span class="fw-bold text-primary small">
+                <i class="fa-solid fa-wand-magic-sparkles me-1"></i>স্বয়ংক্রিয় ৮-ডিজিট ইউনিক রোল:
+              </span>
+              <span class="badge bg-primary rounded-pill">Auto Formula</span>
+            </div>
+            <div class="text-center py-2">
+              <span class="display-6 fw-bold font-monospace text-primary tracking-wide" id="modalCalculatedRollDisplay">--------</span>
+            </div>
+            <div class="small text-muted text-center" id="modalRollFormulaBreakdown">
+              [গ্রুপ কোড: ১] + [বছর: ২৭] + [ব্যাচ: ০১] + [সিরিয়াল: ০০০১]
+            </div>
+          </div>
+
+          <!-- Editable Roll Option if Admin wants to tweak -->
+          <div class="mb-3">
+            <label for="modalCustomRollInput" class="form-label small fw-semibold text-muted">
+              বরাদ্দকৃত রোল নম্বর (প্রয়োজনে পরিবর্তন করতে পারেন) *
+            </label>
+            <input type="text" class="form-control font-monospace fw-bold text-primary fs-6" id="modalCustomRollInput" maxlength="8" required>
+          </div>
+
+          <!-- Direct WhatsApp Sending Options -->
+          <div class="p-3 mb-3 rounded-3 bg-success bg-opacity-10 border border-success border-opacity-25">
+            <div class="form-check form-switch mb-2">
+              <input class="form-check-input" type="checkbox" role="switch" id="modalAutoOpenWhatsApp" checked>
+              <label class="form-check-label fw-bold text-success small" for="modalAutoOpenWhatsApp">
+                <i class="fa-brands fa-whatsapp me-1 fs-6 align-middle"></i>অনুমোদনের সাথে সাথে সরাসরি হোয়াটসঅ্যাপে ইউনিক রোল পাঠিয়ে দিন
+              </label>
+            </div>
+            <div class="small text-muted mb-2">
+              নিশ্চিত করলে স্বয়ংক্রিয়ভাবে শিক্ষার্থীর WhatsApp (<span id="modalApproveWaNumberText" class="fw-bold text-dark">-</span>)-এ কনফার্মেশন বার্তা ও ইউনিক রোল নম্বরসহ চ্যাট উইন্ডো ওপেন হবে।
+            </div>
+            <div class="border rounded bg-white p-2 small text-secondary font-monospace" id="modalWhatsAppMessagePreview" style="max-height: 100px; overflow-y: auto; font-size: 0.8rem; line-height: 1.4;">
+              <!-- WhatsApp Message preview injected here -->
+            </div>
+          </div>
+
+          <div id="approveModalAlert" class="alert d-none mb-3"></div>
+
+          <div class="d-grid gap-2">
+            <button type="button" class="btn btn-success py-2 rounded-pill fw-bold shadow-sm" id="btnConfirmApproveStudent">
+              <i class="fa-brands fa-whatsapp me-2 fs-5 align-middle"></i>অনুমোদন করুন ও সরাসরি WhatsApp-এ পাঠান
+            </button>
+            <button type="button" class="btn btn-outline-secondary rounded-pill" data-bs-dismiss="modal">
+              বাতিল
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: WHATSAPP DISPATCH CONFIRMATION -->
+  <div class="modal fade" id="whatsappDispatchedModal" tabindex="-1" aria-labelledby="whatsappDispatchedModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content rounded-4 border-0 shadow text-center p-4">
+        <div class="mb-3">
+          <div class="d-inline-flex align-items-center justify-content-center bg-success bg-opacity-10 text-success rounded-circle" style="width: 72px; height: 72px;">
+            <i class="fa-brands fa-whatsapp display-5"></i>
+          </div>
+        </div>
+        <h4 class="fw-bold text-dark mb-1">হোয়াটসঅ্যাপে রোল পাঠানো হচ্ছে!</h4>
+        <p class="text-muted small mb-3">
+          শিক্ষার্থী <strong id="waModalStudentName" class="text-dark">নাম</strong>-এর ভর্তি অনুমোদিত হয়েছে।
+        </p>
+
+        <div class="bg-light p-3 rounded-3 border mb-3 text-start">
+          <div class="d-flex justify-content-between mb-1">
+            <span class="text-muted small">বরাদ্দকৃত ৮-ডিজিট রোল:</span>
+            <code class="fw-bold fs-5 text-primary" id="waModalAllocatedRoll">--------</code>
+          </div>
+          <div class="d-flex justify-content-between">
+            <span class="text-muted small">হোয়াটসঅ্যাপ নম্বর:</span>
+            <span class="fw-semibold text-dark" id="waModalTargetPhone">-</span>
+          </div>
+        </div>
+
+        <div class="d-grid gap-2 mb-2">
+          <a id="waModalOpenDirectLink" href="#" target="_blank" class="btn btn-success btn-lg rounded-pill fw-bold shadow">
+            <i class="fa-brands fa-whatsapp me-2"></i>হোয়াটসঅ্যাপে রোল পাঠান (Open WhatsApp)
+          </a>
+          <button type="button" class="btn btn-outline-secondary rounded-pill py-2" id="waModalCopyMsgBtn">
+            <i class="fa-regular fa-copy me-1"></i>মেসেজ টেক্সট কপি করুন
+          </button>
+        </div>
+        <button type="button" class="btn btn-link text-muted small p-0 mt-2" data-bs-dismiss="modal">
+          উইন্ডো বন্ধ করুন
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: REJECT STUDENT APPLICATION -->
+  <div class="modal fade" id="rejectStudentModal" tabindex="-1" aria-labelledby="rejectStudentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content rounded-4 border-0 shadow">
+        <div class="modal-header bg-danger bg-opacity-10 border-bottom">
+          <h5 class="modal-title fw-bold text-danger" id="rejectStudentModalLabel">
+            <i class="fa-solid fa-triangle-exclamation me-2"></i>আবেদন বাতিল নিশ্চিতকরণ
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-4">
+          <p class="text-dark mb-2">
+            আপনি কি নিশ্চিত যে <strong id="modalRejectStudentName">শিক্ষার্থী</strong>-এর আবেদনটি বাতিল করতে চান?
+          </p>
+          <div class="mb-3">
+            <label for="modalRejectReason" class="form-label small fw-semibold text-muted">বাতিলের কারণ (ঐচ্ছিক):</label>
+            <input type="text" class="form-control" id="modalRejectReason" placeholder="যেমন: পেমেন্ট পাওয়া যায়নি বা ভুল TrxID">
+          </div>
+          <div class="d-flex justify-content-end gap-2">
+            <button type="button" class="btn btn-outline-secondary rounded-pill px-3" data-bs-dismiss="modal">না, ফেরত যান</button>
+            <button type="button" class="btn btn-danger rounded-pill px-4 fw-bold" id="btnConfirmRejectStudent">
+              <i class="fa-solid fa-trash-can me-1"></i>হ্যাঁ, বাতিল করুন
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: EDIT APPROVED STUDENT -->
+  <div class="modal fade" id="editStudentModal" tabindex="-1" aria-labelledby="editStudentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content rounded-4 border-0 shadow">
+        <div class="modal-header border-bottom">
+          <h5 class="modal-title fw-bold text-dark" id="editStudentModalLabel">
+            <i class="fa-solid fa-user-pen text-primary me-2"></i>শিক্ষার্থীর তথ্য সংশোধন
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-4">
+          <form id="editStudentForm">
+            <input type="hidden" id="editStudentIdOrRoll">
+            <div class="mb-3">
+              <label for="editStudentName" class="form-label small fw-semibold text-muted">শিক্ষার্থীর নাম *</label>
+              <input type="text" class="form-control" id="editStudentName" required>
+            </div>
+            <div class="row g-2 mb-3">
+              <div class="col-6">
+                <label for="editStudentRoll" class="form-label small fw-semibold text-muted">রোল নম্বর *</label>
+                <input type="text" class="form-control font-monospace fw-bold" id="editStudentRoll" required>
               </div>
+              <div class="col-6">
+                <label for="editStudentGroup" class="form-label small fw-semibold text-muted">বিভাগ *</label>
+                <select class="form-select" id="editStudentGroup" required>
+                  <option value="science">Science</option>
+                  <option value="arts">Arts</option>
+                  <option value="commerce">Commerce</option>
+                </select>
+              </div>
+            </div>
+            <div class="row g-2 mb-3">
+              <div class="col-6">
+                <label for="editStudentCollege" class="form-label small fw-semibold text-muted">কলেজ</label>
+                <input type="text" class="form-control" id="editStudentCollege">
+              </div>
+              <div class="col-6">
+                <label for="editStudentDistrict" class="form-label small fw-semibold text-muted">জেলা</label>
+                <input type="text" class="form-control" id="editStudentDistrict">
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="editStudentWhatsapp" class="form-label small fw-semibold text-muted">হোয়াটসঅ্যাপ নম্বর</label>
+              <input type="tel" class="form-control" id="editStudentWhatsapp">
+            </div>
+            <div class="d-grid mt-4">
+              <button type="submit" class="btn btn-primary rounded-pill py-2 fw-bold" id="btnSaveStudentEdit">
+                <i class="fa-solid fa-floppy-disk me-1"></i> পরিবর্তন সংরক্ষণ করুন
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: VIEW FULL STUDENT DETAILS (শিক্ষার্থীর সকল তথ্যের পূর্ণাঙ্গ বিবরণী) -->
+  <div class="modal fade" id="viewStudentDetailsModal" tabindex="-1" aria-labelledby="viewStudentDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content rounded-4 border-0 shadow">
+        <div class="modal-header bg-light border-bottom px-4 py-3">
+          <div class="d-flex align-items-center gap-2">
+            <i class="fa-solid fa-id-card text-primary fs-5"></i>
+            <h5 class="modal-title fw-bold text-dark mb-0" id="viewStudentDetailsModalLabel">শিক্ষার্থীর পূর্ণাঙ্গ তথ্য বিবরণী</h5>
+          </div>
+          <div class="d-flex align-items-center gap-2">
+            <span id="modalDetailStatusBadge" class="badge bg-warning text-dark px-2 py-1 rounded-pill">পেন্ডিং</span>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+        </div>
+        <div class="modal-body p-4">
+          <!-- Main Profile Header Card -->
+          <div class="card border-0 bg-primary bg-opacity-10 rounded-3 p-3 mb-4">
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+              <div>
+                <h4 class="fw-bold text-dark mb-1" id="modalDetailName">-</h4>
+                <div class="d-flex flex-wrap align-items-center gap-2 text-muted small">
+                  <span id="modalDetailGroupBadge" class="badge bg-primary px-2 py-1 rounded-pill">Science</span>
+                  <span>•</span>
+                  <span><i class="fa-solid fa-building-columns text-secondary me-1"></i><span id="modalDetailCollegeText">-</span></span>
+                  <span>•</span>
+                  <span><i class="fa-solid fa-location-dot text-secondary me-1"></i><span id="modalDetailDistrictText">-</span></span>
+                </div>
+              </div>
+              <div class="text-end" id="modalDetailRollContainer">
+                <div class="small text-muted mb-1">অফিসিয়াল ইউনিক রোল</div>
+                <div class="d-flex align-items-center gap-2">
+                  <code class="fs-4 fw-bold text-primary font-monospace" id="modalDetailRoll">-</code>
+                  <button type="button" class="btn btn-sm btn-outline-primary rounded-circle p-1" id="modalDetailCopyRollBtn" title="রোল কপি করুন" style="width:28px; height:28px; line-height:1;">
+                    <i class="fa-regular fa-copy"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Detailed Information Grid -->
+          <div class="row g-3">
+            <!-- 1. ব্যক্তিগত ও একাডেমিক তথ্য -->
+            <div class="col-md-6">
+              <div class="border rounded-3 p-3 h-100 bg-white shadow-sm">
+                <h6 class="fw-bold text-dark mb-3 pb-2 border-bottom d-flex align-items-center gap-2">
+                  <i class="fa-solid fa-user-graduate text-primary"></i>একাডেমিক ও যোগাযোগ তথ্য
+                </h6>
+                <div class="mb-2 pb-2 border-bottom d-flex justify-content-between">
+                  <span class="text-muted small">পূর্ণ নাম:</span>
+                  <span class="fw-semibold text-dark small" id="modalDetailFullName">-</span>
+                </div>
+                <div class="mb-2 pb-2 border-bottom d-flex justify-content-between">
+                  <span class="text-muted small">ভর্তি বিভাগ / ইউনিট:</span>
+                  <span class="fw-semibold text-dark small" id="modalDetailGroupFullName">-</span>
+                </div>
+                <div class="mb-2 pb-2 border-bottom d-flex justify-content-between">
+                  <span class="text-muted small">কলেজ:</span>
+                  <span class="fw-semibold text-dark small text-end" id="modalDetailCollegeFull">-</span>
+                </div>
+                <div class="mb-2 pb-2 border-bottom d-flex justify-content-between">
+                  <span class="text-muted small">জেলা:</span>
+                  <span class="fw-semibold text-dark small" id="modalDetailDistrictFull">-</span>
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                  <span class="text-muted small">হোয়াটসঅ্যাপ নম্বর:</span>
+                  <div class="d-flex align-items-center gap-1">
+                    <code class="fw-bold text-success fs-6" id="modalDetailWhatsapp">-</code>
+                    <a href="#" target="_blank" id="modalDetailWaLink" class="btn btn-sm btn-outline-success rounded-pill px-2 py-0 text-decoration-none small ms-1" title="সরাসরি WhatsApp চ্যাট ওপেন করুন">
+                      <i class="fa-brands fa-whatsapp"></i> চ্যাট
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 2. পেমেন্ট ও ট্রানজেকশন তথ্য -->
+            <div class="col-md-6">
+              <div class="border rounded-3 p-3 h-100 bg-white shadow-sm">
+                <h6 class="fw-bold text-dark mb-3 pb-2 border-bottom d-flex align-items-center gap-2">
+                  <i class="fa-solid fa-credit-card text-success"></i>পেমেন্ট ও ভেরিফিকেশন তথ্য
+                </h6>
+                <div class="mb-2 pb-2 border-bottom d-flex justify-content-between align-items-center">
+                  <span class="text-muted small">পেমেন্ট মেথড:</span>
+                  <span class="badge bg-danger rounded-pill px-2 py-1" id="modalDetailPaymentMethod">bKash</span>
+                </div>
+                <div class="mb-2 pb-2 border-bottom d-flex justify-content-between align-items-center">
+                  <span class="text-muted small">প্রেরক নম্বর (Sender):</span>
+                  <div class="d-flex align-items-center gap-1">
+                    <span class="fw-bold font-monospace text-dark" id="modalDetailPaymentNumber">-</span>
+                    <button type="button" class="btn btn-link p-0 text-muted" id="modalDetailCopySenderBtn" title="নম্বর কপি করুন">
+                      <i class="fa-regular fa-copy small"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="mb-2 pb-2 border-bottom d-flex justify-content-between align-items-center">
+                  <span class="text-muted small">ট্রানজেকশন আইডি (TrxID):</span>
+                  <div class="d-flex align-items-center gap-1">
+                    <code class="fw-bold text-primary fs-6 font-monospace" id="modalDetailTrxId">-</code>
+                    <button type="button" class="btn btn-link p-0 text-muted" id="modalDetailCopyTrxBtn" title="TrxID কপি করুন">
+                      <i class="fa-regular fa-copy small"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="mb-2 pb-2 border-bottom d-flex justify-content-between">
+                  <span class="text-muted small">আবেদনের সময়:</span>
+                  <span class="text-muted small" id="modalDetailRegisteredAt">-</span>
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                  <span class="text-muted small">WhatsApp-এ রোল পাঠানো:</span>
+                  <span id="modalDetailWaSentBadge" class="badge bg-secondary rounded-pill px-2 py-1">পাঠানো হয়নি</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer bg-light px-4 py-3 d-flex justify-content-between">
+          <button type="button" class="btn btn-outline-secondary rounded-pill px-3" data-bs-dismiss="modal">বন্ধ করুন</button>
+          <div class="d-flex gap-2" id="modalDetailActionButtons">
+            <!-- Dynamically populated buttons (Approve, WhatsApp send, Edit) -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- FOOTER -->
   <footer class="py-4 mt-5 bg-white border-top">
     <div class="container text-center text-muted small">
@@ -758,91 +1178,7 @@ Answer: A"></textarea>
       <div>© 2026 NU Crackers. All Rights Reserved.</div>
     </div>
   </footer>
-<!-- Student Full Details Modal -->
-<div class="modal fade" id="studentDetailModal" tabindex="-1" aria-labelledby="studentDetailModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content rounded-4 border-0 shadow">
-      <div class="modal-header bg-primary text-white rounded-top-4">
-        <h5 class="modal-title fw-bold" id="studentDetailModalLabel">
-          <i class="fa-solid fa-id-card me-2"></i>শিক্ষার্থীর পূর্ণাঙ্গ তথ্য
-        </h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body p-4" id="studentModalBody">
-        <!-- Content will be injected via js/admin.js -->
-      </div>
-      <div class="modal-footer bg-light rounded-bottom-4">
-        <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">বন্ধ করুন</button>
-        <button type="button" class="btn btn-success rounded-pill px-4" id="modalWhatsAppBtn">
-          <i class="fa-brands fa-whatsapp me-1"></i> WhatsApp-এ রোল পাঠান
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-  <script>
-    // Direct Global Login Handler (কোনো ডিপেন্ডেন্সি বা ক্যাশ ইস্যু ছাড়াই তাৎক্ষণিক লগইন)
-    window.handleAdminLoginDirect = async function() {
-      const passInput = document.getElementById('adminPassword');
-      const alertBox = document.getElementById('adminLoginAlert');
-      const submitBtn = document.getElementById('adminLoginSubmitBtn');
-      const password = passInput ? passInput.value.trim().replace(/^["']|["']$/g, '') : '';
 
-      if (!password) {
-        alertBox.className = 'alert alert-danger py-2 px-3 small rounded-3 mt-3';
-        alertBox.innerHTML = '<i class="fa-solid fa-circle-exclamation me-1"></i> অনুগ্রহ করে পাসওয়ার্ড লিখুন।';
-        alertBox.classList.remove('d-none');
-        return;
-      }
-
-      submitBtn.disabled = true;
-      submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> যাচাই হচ্ছে...';
-
-      try {
-        const res = await fetch('/api/admin/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ password })
-        });
-        const data = await res.json();
-
-        if (!res.ok || !data.success) {
-          throw new Error(data.message || 'ভুল এডমিন পাসওয়ার্ড!');
-        }
-
-        // Save token permanently
-        localStorage.setItem('nu_admin_token', data.token);
-        sessionStorage.setItem('nu_admin_token', data.token);
-
-        // Show Dashboard Immediately
-        document.getElementById('adminAuthSection').classList.add('d-none');
-        document.getElementById('adminDashboardSection').classList.remove('d-none');
-        if (typeof loadAllAdminData === 'function') {
-          loadAllAdminData();
-        } else {
-          location.reload();
-        }
-      } catch (err) {
-        alertBox.className = 'alert alert-danger py-2 px-3 small rounded-3 mt-3';
-        alertBox.innerHTML = `<i class="fa-solid fa-circle-exclamation me-1"></i> ${err.message}`;
-        alertBox.classList.remove('d-none');
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = '<i class="fa-solid fa-lock-open me-1"></i> এডমিন ড্যাশবোর্ডে প্রবেশ করুন';
-      }
-    };
-
-    // Auto login check on page load
-    (function() {
-      const token = localStorage.getItem('nu_admin_token') || sessionStorage.getItem('nu_admin_token');
-      if (token) {
-        const authSec = document.getElementById('adminAuthSection');
-        const dashSec = document.getElementById('adminDashboardSection');
-        if (authSec) authSec.classList.add('d-none');
-        if (dashSec) dashSec.classList.remove('d-none');
-      }
-    })();
-  </script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="js/admin.js"></script>
 </body>
