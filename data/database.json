@@ -10812,6 +10812,31 @@
         "2": 1
       },
       "submittedAt": "2026-09-16T08:19:38.243Z"
+    },
+    {
+      "id": "sub-1789546866250-674",
+      "examId": "free-art-1789544460635",
+      "isFree": true,
+      "roll": "FREE-6250",
+      "name": "Sudipta",
+      "college": "National university",
+      "group": "arts",
+      "score": 4.75,
+      "totalMarks": 100,
+      "passMarks": 40,
+      "correctCount": 5,
+      "wrongCount": 1,
+      "skippedCount": 94,
+      "timeTakenSeconds": 40,
+      "answers": {
+        "1": 2,
+        "2": 3,
+        "3": 1,
+        "4": 0,
+        "5": 3,
+        "6": 0
+      },
+      "submittedAt": "2026-09-16T08:21:06.250Z"
     }
   ]
 }
