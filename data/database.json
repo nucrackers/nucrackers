@@ -5080,6 +5080,22 @@
           "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
         }
       ]
+    },
+    {
+      "id": "free-art-1789544460635",
+      "group": "arts",
+      "batch": "free",
+      "isFree": true,
+      "title": "Full model Test",
+      "subject": "All subject",
+      "durationMinutes": 60,
+      "duration": 60,
+      "totalMarks": 0,
+      "passMarks": 40,
+      "negativeMark": 0.25,
+      "status": "live",
+      "description": "",
+      "questions": []
     }
   ],
   "submissions": [
