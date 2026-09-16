@@ -53,7 +53,7 @@
     },
     {
       "id": "reg_1789526606716_872",
-      "roll": "",
+      "roll": "12702001",
       "name": "Tepon soumik",
       "college": "NDC",
       "district": "Noakhali",
@@ -62,8 +62,9 @@
       "paymentMethod": "bKash",
       "paymentNumber": "01521710102",
       "transactionId": "MADARBOARD2",
-      "status": "pending",
-      "registeredAt": "2026-09-16T02:43:26.716Z"
+      "status": "approved",
+      "registeredAt": "2026-09-16T02:43:26.716Z",
+      "approvedAt": "2026-09-16T02:44:32.594Z"
     }
   ],
   "exams": [
