@@ -65,23 +65,6 @@
       "status": "approved",
       "registeredAt": "2026-09-16T02:43:26.716Z",
       "approvedAt": "2026-09-16T02:44:32.594Z"
-    },
-    {
-      "id": "reg_1789580442624_698",
-      "roll": "22701001",
-      "name": "Depto",
-      "college": "Gcs",
-      "district": "Borguna",
-      "group": "arts",
-      "whatsapp": "01611137194",
-      "paymentMethod": "bKash",
-      "paymentNumber": "01611137194",
-      "transactionId": "MADARBOAGG",
-      "status": "approved",
-      "registeredAt": "2026-09-16T17:40:42.624Z",
-      "approvedAt": "2026-09-16T17:42:21.784Z",
-      "whatsappSent": true,
-      "whatsappSentAt": "2026-09-16T17:42:22.346Z"
     }
   ],
   "exams": [
