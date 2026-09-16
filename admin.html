@@ -546,13 +546,23 @@
           <div id="createExamAlert" class="alert d-none"></div>
 
           <form id="createExamForm">
-            <div class="mb-3">
-              <label for="newExamGroup" class="form-label fw-semibold small text-muted">গ্রুপ বা বিভাগ *</label>
-              <select class="form-select" id="newExamGroup" required>
-                <option value="science">🔬 বিজ্ঞান ইউনিট (Science)</option>
-                <option value="arts">🎨 মানবিক ইউনিট (Arts)</option>
-                <option value="commerce">📊 ব্যবসায় শিক্ষা (Commerce)</option>
-              </select>
+          <div class="row g-2 mb-3">
+              <div class="col-md-6">
+                <label for="newExamBatch" class="form-label fw-semibold small text-muted">পরীক্ষার ব্যাচ ধরন *</label>
+                <select class="form-select fw-semibold text-primary" id="newExamBatch" required>
+                  <option value="premium">💎 প্রিমিয়াম ব্যাচ (Premium Batch)</option>
+                  <option value="free">🎁 ফ্রি ব্যাচ (Free Batch - লাইভ পরীক্ষা + লিডারবোর্ড)</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label for="newExamGroup" class="form-label fw-semibold small text-muted">গ্রুপ বা বিভাগ *</label>
+                <select class="form-select" id="newExamGroup" required>
+                  <option value="science">🔬 বিজ্ঞান ইউনিট (Science)</option>
+                  <option value="arts">🎨 মানবিক ইউনিট (Arts)</option>
+                  <option value="commerce">📊 ব্যবসায় শিক্ষা (Commerce)</option>
+                  <option value="all">🌐 সকল গ্রুপ (All Units)</option>
+                </select>
+              </div>
             </div>
 
             <div class="mb-3">
