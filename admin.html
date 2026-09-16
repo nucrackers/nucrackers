@@ -72,9 +72,8 @@
       </div>
     </div>
   </nav>
-
-  <!-- 1. ADMIN AUTHENTICATION GATE (IF NOT LOGGED IN) -->
-  <section id="adminAuthSection" class="py-5 d-none">
+<!-- 1. ADMIN AUTHENTICATION GATE (IF NOT LOGGED IN) -->
+  <section id="adminAuthSection" class="py-5">
     <div class="container py-5">
       <div class="row justify-content-center">
         <div class="col-md-6 col-lg-5">
@@ -92,14 +91,22 @@
                 <label for="adminPassword" class="form-label fw-semibold small text-muted">এডমিন পাসওয়ার্ড</label>
                 <div class="input-group">
                   <span class="input-group-text bg-light border-end-0"><i class="fa-solid fa-key text-muted"></i></span>
-                  <input type="password" class="form-control border-start-0 py-2" id="adminPassword" placeholder="এডমিন পাসওয়ার্ড লিখুন" required>
+                  <input type="password" class="form-control border-start-0 border-end-0 py-2" id="adminPassword" required autocomplete="current-password" placeholder="পাসওয়ার্ড লিখুন">
+                  <button class="btn btn-light border border-start-0" type="button" id="toggleAdminPassBtn" title="পাসওয়ার্ড দেখুন">
+                    <i class="fa-regular fa-eye" id="toggleAdminPassIcon"></i>
+                  </button>
                 </div>
-                <div class="form-text small text-muted">সুরক্ষিত এডমিন পাসওয়ার্ড দিয়ে লগইন করুন।</div>
+                <div class="d-flex justify-content-between align-items-center mt-2">
+                  <span class="small text-muted">ডিফল্ট পাসওয়ার্ড: <code class="user-select-all fw-bold text-dark">Nucrackers#.com</code></span>
+                  <button type="button" class="btn btn-link btn-sm p-0 text-decoration-none" id="fillAdminPassBtn">
+                    <i class="fa-regular fa-copy me-1"></i>স্বয়ংক্রিয় পূরণ
+                  </button>
+                </div>
               </div>
 
               <div id="adminLoginAlert" class="alert d-none"></div>
 
-              <button type="submit" class="btn btn-primary w-100 rounded-pill py-2 fw-semibold" id="adminLoginSubmitBtn">
+              <button type="submit" class="btn btn-primary w-100 rounded-pill py-2 fw-semibold mt-2" id="adminLoginSubmitBtn">
                 <i class="fa-solid fa-lock-open me-1"></i> এডমিন ড্যাশবোর্ডে প্রবেশ করুন
               </button>
             </form>
@@ -773,7 +780,9 @@ Answer: A"></textarea>
     </div>
   </div>
 </div>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script type="module" src="js/admin.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>
 </body>
 </html>
