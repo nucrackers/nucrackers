@@ -3773,12 +3773,1313 @@
       "subject": "All subject",
       "durationMinutes": 60,
       "duration": 60,
-      "totalMarks": 0,
+      "totalMarks": 100,
       "passMarks": 40,
       "negativeMark": 0.25,
       "status": "live",
       "description": "",
-      "questions": []
+      "questions": [
+        {
+          "id": 1,
+          "question": "নিচের কোন বানানটি শুদ্ধ?",
+          "options": [
+            "মুহুর্ত",
+            "মুহূর্ত",
+            "মুহুুর্ত",
+            "মুহূূত"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 2,
+          "question": "কোন বানানটি শুদ্ধ?",
+          "options": [
+            "শান্তনা",
+            "সান্তনা",
+            "সান্ত্বনা",
+            "সান্তরনা"
+          ],
+          "correctIndex": 2,
+          "correctAnswer": 2,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 3,
+          "question": "হাত, চামার'— এগুলো কোন শ্রেণির শব্দ?",
+          "options": [
+            "তৎসম",
+            "তদ্ভব",
+            "দেশি",
+            "বিদেশি"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 4,
+          "question": "নিচের কোনটি দেশি শব্দের উদাহরণ?",
+          "options": [
+            "কুচ্ছিত",
+            "কেষ্ট",
+            "কদম",
+            "কুলা"
+          ],
+          "correctIndex": 3,
+          "correctAnswer": 3,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 5,
+          "question": "আনারস' এবং 'চাবি' শব্দ দুটি বাংলা ভাষা গ্রহণ করেছে কোন ভাষা থেকে?",
+          "options": [
+            "ওলন্দাজ",
+            "ফরাসি",
+            "তুর্কি",
+            "পর্তুগিজ"
+          ],
+          "correctIndex": 3,
+          "correctAnswer": 3,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 6,
+          "question": "পদ্ধতি' শব্দের সঠিক সন্ধি বিচ্ছেদ কোনটি?",
+          "options": [
+            "পদ + হতি",
+            "পথ্‌ + হতি",
+            "পদ্‌ + হতি",
+            "পত্‌ + হতি"
+          ],
+          "correctIndex": 2,
+          "correctAnswer": 2,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 7,
+          "question": "গবাক্ষ' শব্দের সঠিক সন্ধি বিচ্ছেদ কোনটি?",
+          "options": [
+            "গ + অক্ষ",
+            "গো + অক্ষ",
+            "গব + অক্ষ",
+            "গো + আক্ষ"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 8,
+          "question": "উপকথা' শব্দটি কোন সমাস?",
+          "options": [
+            "অব্যয়ীভাব",
+            "উপপদ তৎপুরুষ",
+            "প্রাদি সমাস",
+            "বহুব্রীহি"
+          ],
+          "correctIndex": 0,
+          "correctAnswer": 0,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 9,
+          "question": "স্মৃতিসৌধ' কোন সমাস?",
+          "options": [
+            "কর্মধারয়",
+            "মধ্যপদলোপী কর্মধারয়",
+            "ষষ্ঠী তৎপুরুষ",
+            "উপমিত কর্মধারয়"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 10,
+          "question": "ডাক্তার ডাকো'— এখানে 'ডাক্তার' কোন কারকে কোন বিভক্তি?",
+          "options": [
+            "কর্তায় শূন্য",
+            "কর্মে শূন্য",
+            "করণে শূন্য",
+            "অপাদানে শূন্য"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 11,
+          "question": "টাকায় টাকা হয়'— 'টাকায়' কোন কারক?",
+          "options": [
+            "অপাদানে শূন্য",
+            "অপাদানে ৭মী",
+            "কর্মে ৭মী",
+            "করণে ৭মী"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 12,
+          "question": "কর্তব্য' শব্দের প্রকৃতি ও প্রত্যয় কোনটি?",
+          "options": [
+            "কৃ + তব্য",
+            "কর + তব্য",
+            "কৃ + অনীয়",
+            "কূ + তব্য"
+          ],
+          "correctIndex": 0,
+          "correctAnswer": 0,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 13,
+          "question": "বিলাসী' গল্পটি প্রথম কোন পত্রিকায় প্রকাশিত হয়?",
+          "options": [
+            "ভারতী",
+            "সবুজপত্র",
+            "প্রবাসী",
+            "সওগাত"
+          ],
+          "correctIndex": 0,
+          "correctAnswer": 0,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 14,
+          "question": "মাইকেল মধুসূদন দত্তের 'মেঘনাদবধ কাব্য' কত সালে প্রকাশিত হয়?",
+          "options": [
+            "১৮৬০",
+            "১৮৬১",
+            "১৮৬২",
+            "১৮৬৫"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 15,
+          "question": "বাংলা সাহিত্যের প্রথম সার্থক উপন্যাস কোনটি?",
+          "options": [
+            "দুর্গেশনন্দিনী",
+            "আলালের ঘরের দুলাল",
+            "ফুলমণি ও করুণার বিবরণ",
+            "কপালকুণ্ডলা"
+          ],
+          "correctIndex": 0,
+          "correctAnswer": 0,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 16,
+          "question": "মঙ্গলকাব্য' যুগের প্রধান দুটি ধারা কী কী?",
+          "options": [
+            "মনসামঙ��গল ও চণ্ডীমঙ্গল",
+            "অন্নদামঙ্গল ও সারদামঙ্গল",
+            "পদ্মাপুরাণ ও কৃষ্ণমঙ্গল",
+            "ধর্মমঙ্গল ও কালিকাভাষ্য"
+          ],
+          "correctIndex": 0,
+          "correctAnswer": 0,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 17,
+          "question": "একাত্তরের দিনগুলি' গ্রন্থের রচয়িতা কে?",
+          "options": [
+            "সেলিনা হোসেন",
+            "সুফিয়া কামাল",
+            "জাহানারা ইমাম",
+            "নীলিমা ইব্রাহিম"
+          ],
+          "correctIndex": 2,
+          "correctAnswer": 2,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 18,
+          "question": "নিরামিষ' কোন সমাসের উদাহরণ?",
+          "options": [
+            "প্রাদি সমাস",
+            "অব্যয়ীভাব সমাস",
+            "নঞ তৎপুরুষ",
+            "বহুব্রীহি সমাস"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 19,
+          "question": "'যা দীপ্তি পাচ্ছে'— এক কথায় কী হবে?",
+          "options": [
+            "দেদীপ্যমান",
+            "দীপ্যমান",
+            "জাজ্বল্যমান",
+            "আলোকিত"
+          ],
+          "correctIndex": 0,
+          "correctAnswer": 0,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 20,
+          "question": "নিচের কোনটি নিত্য স্ত্রীবাচক শব্দ?",
+          "options": [
+            "সধবা",
+            "ধাত্রী",
+            "নেত্রী",
+            "বাঘিনী"
+          ],
+          "correctIndex": 0,
+          "correctAnswer": 0,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 21,
+          "question": "Choose the correct sentence.",
+          "options": [
+            "A. He don't like coffee.",
+            "B. He doesn't likes coffee.",
+            "C. He doesn't like coffee.",
+            "D. He not like coffee."
+          ],
+          "correctIndex": 2,
+          "correctAnswer": 2,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 22,
+          "question": "Choose the correct preposition.\nShe is good _____ Mathematics.",
+          "options": [
+            "A. in",
+            "B. at",
+            "C. on",
+            "D. for"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 23,
+          "question": "He is _____ honest man.",
+          "options": [
+            "A. a",
+            "B. an",
+            "C. the",
+            "D. no article"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 24,
+          "question": "Choose the correct tense.\nBy the time we reached the station, the train _____.",
+          "options": [
+            "A. leaves",
+            "B. left",
+            "C. had left",
+            "D. has left"
+          ],
+          "correctIndex": 2,
+          "correctAnswer": 2,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 25,
+          "question": "Choose the synonym of \"Abundant.\"",
+          "options": [
+            "A. Scarce",
+            "B. Plenty",
+            "C. Limited",
+            "D. Rare"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 26,
+          "question": "Choose the antonym of \"Generous.\"",
+          "options": [
+            "A. Kind",
+            "B. Honest",
+            "C. Selfish",
+            "D. Polite"
+          ],
+          "correctIndex": 2,
+          "correctAnswer": 2,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 27,
+          "question": "Fill in the blank.\nIf I _____ rich, I would help the poor.",
+          "options": [
+            "A. am",
+            "B. was",
+            "C. were",
+            "D. have been"
+          ],
+          "correctIndex": 2,
+          "correctAnswer": 2,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 28,
+          "question": "Identify the correct passive form.\nThey have completed the project.",
+          "options": [
+            "A. The project completed.",
+            "B. The project has completed.",
+            "C. The project has been completed.",
+            "D. The project was completed."
+          ],
+          "correctIndex": 2,
+          "correctAnswer": 2,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 29,
+          "question": "Choose the correct narration.\nHe said, \"I am busy.\"",
+          "options": [
+            "A. He said that he is busy.",
+            "B. He said that he was busy.",
+            "C. He says that he was busy.",
+            "D. He told he was busy."
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 30,
+          "question": "Choose the correctly spelled word.",
+          "options": [
+            "A. Accomodation",
+            "B. Acommodation",
+            "C. Accommodation",
+            "D. Accommadation"
+          ],
+          "correctIndex": 2,
+          "correctAnswer": 2,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 31,
+          "question": "Choose the correct connector.\nHe studied hard, _____ he failed.",
+          "options": [
+            "A. because",
+            "B. although",
+            "C. yet",
+            "D. so"
+          ],
+          "correctIndex": 2,
+          "correctAnswer": 2,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 32,
+          "question": "Choose the correct modal.\nYou _____ wear a helmet while riding a motorcycle.",
+          "options": [
+            "A. should",
+            "B. can",
+            "C. might",
+            "D. could"
+          ],
+          "correctIndex": 0,
+          "correctAnswer": 0,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 33,
+          "question": "Choose the correct phrasal verb.\nThe meeting has been _____ until next Monday.",
+          "options": [
+            "A. put off",
+            "B. put up",
+            "C. put on",
+            "D. put away"
+          ],
+          "correctIndex": 0,
+          "correctAnswer": 0,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 34,
+          "question": "Choose the correct tag question.\nLet's go for a walk, _____?",
+          "options": [
+            "A. shall we",
+            "B. will we",
+            "C. don't we",
+            "D. aren't we"
+          ],
+          "correctIndex": 0,
+          "correctAnswer": 0,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 35,
+          "question": "Choose the correct transformation.\nNo other city in Bangladesh is as large as Dhaka.",
+          "options": [
+            "A. Dhaka is larger than any city.",
+            "B. Dhaka is the largest city in Bangladesh.",
+            "C. Dhaka is one of the largest cities.",
+            "D. Dhaka is a large city."
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 36,
+          "question": "Choose the correct sentence.",
+          "options": [
+            "A. Neither the teacher nor the students was present.",
+            "B. Neither the teacher nor the students were present.",
+            "C. Neither the teacher nor the students is present.",
+            "D. Neither teacher nor students has present."
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 37,
+          "question": "Choose the correct idiom.\n\"Once in a blue moon\" means—",
+          "options": [
+            "A. Every day",
+            "B. Very often",
+            "C. Very rarely",
+            "D. At midnight"
+          ],
+          "correctIndex": 2,
+          "correctAnswer": 2,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 38,
+          "question": "Choose the correct sentence.",
+          "options": [
+            "A. Hardly had I reached the station when the train left.",
+            "B. Hardly I had reached the station when the train left.",
+            "C. Hardly had I reached the station than the train left.",
+            "D. Hardly I reached the station when the train had left."
+          ],
+          "correctIndex": 0,
+          "correctAnswer": 0,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 39,
+          "question": "Choose the correct sentence.",
+          "options": [
+            "A. Each of the boys have a book.",
+            "B. Each of the boys has a book.",
+            "C. Each of the boys are having a book.",
+            "D. Each boys has a book."
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 40,
+          "question": "Choose the correct completion.\nNo sooner had he entered the room _____ everyone stood up.",
+          "options": [
+            "A. than",
+            "B. when",
+            "C. then",
+            "D. while"
+          ],
+          "correctIndex": 0,
+          "correctAnswer": 0,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 41,
+          "question": "‘সুনীল অর্থনীতি’ মূলত যার সঙ্গে যুক্ত-",
+          "options": [
+            "জলবায়ু",
+            "কৃষি",
+            "ভূ-রাজনীতি",
+            "সমুদ্র"
+          ],
+          "correctIndex": 3,
+          "correctAnswer": 3,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 42,
+          "question": "পটুয়াখালী তাপবিদ্যুৎ কেন্দ্রের উৎপাদন ক্ষমতা কত মেগাওয়াট?",
+          "options": [
+            "১,২০০",
+            "১,২৬০",
+            "১,৩২০",
+            "১,৩৯০"
+          ],
+          "correctIndex": 2,
+          "correctAnswer": 2,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 43,
+          "question": "“আগরতলা ষড়যন্ত্র মামলা” আসামিদের মধ্যে প্রথম কাকে গুলি ক রে মেরে ফেলা হয়?",
+          "options": [
+            "আমজাদ খাঁ",
+            "সার্জেন্ট জহুরুল হক",
+            "মকবুল ভুঁইয়া",
+            "কৃষ্ণ দুর্গা"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 44,
+          "question": "রাত্রে নৌ চলাচলের সুবিধার জন্য বাংলাদেশের কোথায় পুরান��� বাতিঘর ছিল?",
+          "options": [
+            "মহেশখালি",
+            "সেন্ট মার্টিন",
+            "টেকনাফ",
+            "কুতুবদিয়া"
+          ],
+          "correctIndex": 3,
+          "correctAnswer": 3,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 45,
+          "question": "অবৈধ অভিবাসনের অন্যতম প্রধান পথ 'ডেরিয়েন গ্যাপ' (Darien Gap) কোনদুটি দেশের সীমান্তবর্তী?",
+          "options": [
+            "পর্তুগাল ও মরক্কো",
+            "ইতালি ও তিউনিসিয়া",
+            "পানামা ও কলম্বিয়া",
+            "সিরিয়া ও তুরস্ক"
+          ],
+          "correctIndex": 2,
+          "correctAnswer": 2,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 46,
+          "question": "বিশ্বের কোন দেশে প্রথম AI হাসপাতাল চালু হয়?",
+          "options": [
+            "চীন",
+            "ফ্রান্স",
+            "যুক্তরাষ্ট্র",
+            "রাশিয়া"
+          ],
+          "correctIndex": 0,
+          "correctAnswer": 0,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 47,
+          "question": "গম্ভীরা বাংলাদেশের কোন অঞ্চলের লোকসংগীত?",
+          "options": [
+            "চট্টগ্রাম",
+            "রাজশাহী",
+            "চাঁপাইনবাবগঞ্জ",
+            "জামালপুর"
+          ],
+          "correctIndex": 2,
+          "correctAnswer": 2,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 48,
+          "question": "কুমিল্লায় পল্লি উন্নয়ন ��কাডেমি প্রতিষ্ঠিত হয় কত সালে?",
+          "options": [
+            "১৯৫৯ সালে",
+            "১৯৫০ সালে",
+            "১৯৭২ সালে",
+            "১৯৭৫ সালে"
+          ],
+          "correctIndex": 0,
+          "correctAnswer": 0,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 49,
+          "question": "জাতীয় স্মৃতিসৌধের নকশা প্রণয়নকারী-",
+          "options": [
+            "কামরুল হাসান",
+            "মৃণাল হক",
+            "সৈয়দ মাইনুল হোসেন",
+            "রফিকুন নবী"
+          ],
+          "correctIndex": 2,
+          "correctAnswer": 2,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 50,
+          "question": "পাট উৎপাদনে বিশ্বের শীর্ষ দেশ কোনটি?",
+          "options": [
+            "ভারত",
+            "বাংলাদেশ",
+            "ইন্দোনেশিয়া",
+            "মালয়েশিয়া"
+          ],
+          "correctIndex": 0,
+          "correctAnswer": 0,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 51,
+          "question": "২০২৬ সালে কতজনকে স্বাধীনতা পুরস্কারের জন্য মনোনীত করা হয়েছে?",
+          "options": [
+            "১০ জন",
+            "১৫ জন",
+            "২০ জন",
+            "২১ জন"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 52,
+          "question": "সবচেয়ে বেশি কয়লার খনি রয়েছে কোন জেলায়?",
+          "options": [
+            "সিলেট",
+            "জয়পুরহাট",
+            "দিনাজপুর",
+            "রংপুর"
+          ],
+          "correctIndex": 2,
+          "correctAnswer": 2,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 53,
+          "question": "বর্তমানে বিশ্বের দ্বিতীয় বৃহত্তম অর্থনীতির দেশ কোনটি?",
+          "options": [
+            "যুক্তরাষ্ট্র",
+            "চীন",
+            "জাপান",
+            "জার্মানি"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 54,
+          "question": "D-8 (Developing Eight) এর বর্তমান সদস্য-",
+          "options": [
+            "৮টি",
+            "৯টি",
+            "১০টি",
+            "১১টি"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 55,
+          "question": "Asian University for Women (AUW) কোথায় অবস্থিত?",
+          "options": [
+            "ভারত",
+            "পাকিস্তান",
+            "বাংলাদেশ",
+            "শ্রীলংকা"
+          ],
+          "correctIndex": 2,
+          "correctAnswer": 2,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 56,
+          "question": "মুক্তিযুদ্ধ জাদুঘর কোথায় অবস্থিত?",
+          "options": [
+            "সেগুনবাগিচা",
+            "আগারগাঁও",
+            "গুলিস্তান",
+            "মিরপুর"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 57,
+          "question": "LEED বা সবুজ কারখানার সার্টিফিকেশন প্রদান করে কোন সংস্থা?",
+          "options": [
+            "EPA",
+            "USGBC",
+            "BGMEA",
+            "ISO"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 58,
+          "question": "মায়ানমারের সঙ্গে বাংলাদেশের সীমান্ত কত কি.মি.?",
+          "options": [
+            "২৫০ কি.মি.",
+            "২৫১ কি.মি",
+            "১৫১ কি.মি",
+            "271.কি.মি."
+          ],
+          "correctIndex": 3,
+          "correctAnswer": 3,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 59,
+          "question": "পার্বত্য চট্টগ্রাম বাংলাদেশের মোট আয়তনের কত অংশ?",
+          "options": [
+            "এক-চতুর্থাংশ",
+            "এক-পঞ্চমাংশ",
+            "এক-অষ্টমাংশ",
+            "এক-দশমাংশ"
+          ],
+          "correctIndex": 3,
+          "correctAnswer": 3,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 60,
+          "question": "ইউজিসি (ইউনিভার্সিটি গ্রান্টস কমিশন) কোন সালে প্রতিষ্ঠা করা হয়",
+          "options": [
+            "১৯৭২",
+            "১৯৮০",
+            "১৯৭৭",
+            "১৯৮৫"
+          ],
+          "correctIndex": 0,
+          "correctAnswer": 0,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 61,
+          "question": "পরম শূন্য তাপমাত্রায় বিশুদ্ধ অর্ধপরিবাহী কিসের ন্যায় আচরণ করে?",
+          "options": [
+            "ক) পরিবাহী",
+            "খ) অতিপরিবাহী",
+            "গ)অন্তরক",
+            "ঘ) অর্ধপরিবাহী"
+          ],
+          "correctIndex": 2,
+          "correctAnswer": 2,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 62,
+          "question": "একটি কার্নো ইঞ্জিন 327°C এবং 27°C তাপমাত্রার দুটি আধারের মধ্যে কাজ করে। এর দক্ষতা কত?",
+          "options": [
+            "ক) 50%",
+            "খ) 60%",
+            "গ) 40%",
+            "ঘ) 75%"
+          ],
+          "correctIndex": 0,
+          "correctAnswer": 0,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 63,
+          "question": "গ্যাসের গতিতত্ত্ব অনুসারে পরম শূন্য তাপমাত্রায় গ্যাসের অণুগুলোর বেগ কত?",
+          "options": [
+            "ক) অসীম",
+            "খ) আলোর বেগের সমান",
+            "গ) শূন্য",
+            "ঘ) অপরিবর্তিত থাকে"
+          ],
+          "correctIndex": 2,
+          "correctAnswer": 2,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 64,
+          "question": "একটি কণার অবস্থান ভেক্টর r = t²î + (t² + 1)ĵ + 2tk̂, যেখানে r মিটারে (m) এবং সময় t সেকেন্ডে (s) প্রকাশিত। কণাটির ত্বরণের মান কত ms⁻²?",
+          "options": [
+            "ক) 2",
+            "খ) 2√2",
+            "গ) 3√2",
+            "ঘ) 2√3"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 65,
+          "question": "P= î − ĵ − k̂ হলে, |P⃗| এর মান কত?",
+          "options": [
+            "ক) 3",
+            "খ) √3",
+            "গ) 1",
+            "ঘ) −1"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 66,
+          "question": "প্রবাহ বিবর্ধন গুণক α হলো—",
+          "options": [
+            "ক) IC / IE",
+            "খ) IC / IB",
+            "গ) IB / IE",
+            "ঘ) IB / IC"
+          ],
+          "correctIndex": 0,
+          "correctAnswer": 0,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 67,
+          "question": "বাইনারি সংখ্যা (10110101)₂ হতে (10011)₂ বিয়োগ করলে ফল হবে—",
+          "options": [
+            "ক)(10110010)₂",
+            "খ) (10100010)₂",
+            "গ) (10100101)₂",
+            "ঘ) (10100011)₂"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 68,
+          "question": "সুইচ হিসেবে ব্যবহার করা যায় নিচের কোনটি?",
+          "options": [
+            "ক) রোধক",
+            "খ) আবেশক",
+            "গ) ডায়োড",
+            "ঘ) ট্রানজিস্টর"
+          ],
+          "correctIndex": 3,
+          "correctAnswer": 3,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 69,
+          "question": "একটি বাড়িতে 60 W এর ৫টি এবং 40 W এর ৩টি বাতি দৈনিক ৫ ঘণ্টা করে ব্যবহৃত হয়। যদি এক ইউনিট বিদ্যুতের মূল্য ৪০ পয়সা হয়, তবে এক মাসে কত ব্যয় হবে?",
+          "options": [
+            "ক) ২৫ টাকা",
+            "খ) ২৫.২ টাকা",
+            "গ) ১২৫.২ টাকা",
+            "ঘ) ১২.৫২ টাকা"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 70,
+          "question": "একটি তড়িৎ দ্বিপোলের জন্য তড়িৎক্ষেত্র, দূরত্ব r এর সাথে কীভাবে পরিবর্তিত হয়?",
+          "options": [
+            "ক) r⁻¹",
+            "খ) r⁻²",
+            "গ) r⁻³",
+            "ঘ) r"
+          ],
+          "correctIndex": 2,
+          "correctAnswer": 2,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 71,
+          "question": "মৌলের যে কোনো উপশক্তি স্তরে ইলেকট্রন ধারণ ক্ষমতা নির্ণয়ের সূত্র কোনটি?",
+          "options": [
+            "2n^2",
+            "(2l + 1)",
+            "2(2l + 1)",
+            "2(l + 1)"
+          ],
+          "correctIndex": 2,
+          "correctAnswer": 2,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 72,
+          "question": "কোন অঞ্চলে H- বর্ণালির ব্র্যাকেট সিরিজের উদ্ভব ঘটে?",
+          "options": [
+            "দৃশ্যমান অঞ্চল",
+            "UV অঞ্চল",
+            "IR অঞ্চল",
+            "X-ray অঞ্চল"
+          ],
+          "correctIndex": 2,
+          "correctAnswer": 2,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 73,
+          "question": "d{xy} অরবিটালে কয়টি লোব (lobe) থাকে?",
+          "options": [
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "correctIndex": 3,
+          "correctAnswer": 3,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 74,
+          "question": "নিচের কোন্ অরবিটালের শক্তি সর্বনিম্ন হবে?",
+          "options": [
+            "3s",
+            "4p",
+            "4s",
+            "3d"
+          ],
+          "correctIndex": 0,
+          "correctAnswer": 0,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 75,
+          "question": "হেবার পদ্ধতিতে NH_3 উৎপাদনে কোন প্রভাবকটি ব্যবহৃত হয়?",
+          "options": [
+            "Mo",
+            "Fe",
+            "Ni",
+            "Cr"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 76,
+          "question": "নিচের কোনটি অধিক তীব্র বা, শক্তিশালী এসিড?",
+          "options": [
+            "HNO_3",
+            "H_3PO_4",
+            "HClO_4",
+            "H_2SO_4"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 77,
+          "question": "H_3PO_2 এর ক্ষারকত্ব কত?",
+          "options": [
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "correctIndex": 0,
+          "correctAnswer": 0,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 78,
+          "question": "কোন্ নিয়ামক দ্বারা বি���্রিয়ার সাম্যধ্রুবক ও বিক্রিয়ার হার ধ্রুবক উভয়েই প্রভাবিত হয়?",
+          "options": [
+            "প্রভাবক",
+            "তাপমাত্রা",
+            "চাপমাত্রা",
+            "সব কয়টি"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 79,
+          "question": "রক্তের বাইকার্বনেট বাফারের pH মান 7.4 হলে ঐ বাফারে বাইকার্বনেট ও কার্বনিক এসিডের অনুপাত কত?",
+          "options": [
+            "1 : 25",
+            "20 : 1",
+            "2 : 5",
+            "25:1"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 80,
+          "question": "মানব দেহের রক্তে কোন বাফারটি pH নিয়ন্ত্রণ করে না?",
+          "options": [
+            "ফসফেট বাফার",
+            "বাইকার্বনেট বাফার",
+            "এসিটেট বাফার",
+            "প্রোটিন বাফার"
+          ],
+          "correctIndex": 2,
+          "correctAnswer": 2,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 81,
+          "question": "A, B, C ম্যাট্রিক্স গুলির মাত্রা যথাক্রমে 4 × 5, 5 × 4, 4 × 2 হলে (Aᵀ + B)C এর মাত্রা হবে-",
+          "options": [
+            "4 × 5",
+            "5 × 4",
+            "5 × 2",
+            "4 × 2"
+          ],
+          "correctIndex": 3,
+          "correctAnswer": 3,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 82,
+          "question": "| 10  13  16 |\n| 11  14  17 |\n| 12  15  18 |\nনির্ণায়কের মান কত?",
+          "options": [
+            "0",
+            "1",
+            "10",
+            "5"
+          ],
+          "correctIndex": 0,
+          "correctAnswer": 0,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 83,
+          "question": "3x − 4y + 5 = 0 এবং 3x − 4y + 15 = 0 কোন বর্গের দুইটি বাহুর সমীকরণ হলে বর্গটির ক্ষেত্রফল কত বর্গ একক?",
+          "options": [
+            "5",
+            "25",
+            "2",
+            "4"
+          ],
+          "correctIndex": 3,
+          "correctAnswer": 3,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 84,
+          "question": "একটি বিন্দুর কার্তেসীয় স্থানাংক (4,a) ও পোলার স্থানাংক (5,b) হলে বিন্দু থেকে x অক্ষের উপর লম্বের দৈঘ্য কত?",
+          "options": [
+            "5",
+            "3",
+            "4",
+            "4/3"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 85,
+          "question": "3x + 2y = 17 রেখার উপর লম্ব এবং (1, 1) বিন্দুগামী রেখা কোনটি?",
+          "options": [
+            "2x − 3y = −1",
+            "3x = 2y + 1",
+            "2x + 3y = 1",
+            "3x + 2y = 1"
+          ],
+          "correctIndex": 0,
+          "correctAnswer": 0,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 86,
+          "question": "y = -5x + 9 রেখার সাথে লম্ব রেখার ঢাল কোনটি?",
+          "options": [
+            "-5",
+            "5",
+            "1/5",
+            "- 1/5"
+          ],
+          "correctIndex": 2,
+          "correctAnswer": 2,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 87,
+          "question": "একজন লোক স্রোতের বেগের √2 গুণ বেগে স্রোতের সহিত কত কোণে সাঁতার দিলে নদীটি সোজাসুজি পার হতে পারবে?",
+          "options": [
+            "135°",
+            "120°",
+            "90°",
+            "45°"
+          ],
+          "correctIndex": 0,
+          "correctAnswer": 0,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 88,
+          "question": "137. P, Q এবং R এই তিনটি একতলীয় বল কোনো বিন্দুতে ক্রিয়ারত থেকে সাম্যাবস্থার সৃষ্টি করেছে। P বলের সাথে লম্বের দিকে বলগুলির লম্বাংশের বীজগাণিতিক যোগফল কত হবে?",
+          "options": [
+            "0",
+            "P",
+            "Q",
+            "R"
+          ],
+          "correctIndex": 0,
+          "correctAnswer": 0,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 89,
+          "question": "যদি 3x² + 5y² = 15 একটি উপবৃত্তের সমীকরণ হয়, তাহলে উৎকেন্দ্রিকতা নিচের কোনটি?",
+          "options": [
+            "√(3/5)",
+            "√(2/5)",
+            "1/5",
+            "2/5"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 90,
+          "question": "x = 4t³ + 3t² + 6t + 5 হলে 10s পর ত্বরণ কত?",
+          "options": [
+            "ক) 246 ms⁻²",
+            "খ) 30 ms⁻²",
+            "গ) 120 ms⁻²",
+            "ঘ) 240 ms⁻²"
+          ],
+          "correctIndex": 0,
+          "correctAnswer": 0,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 91,
+          "question": "নিচের কোনট��� Serene (Ser) অ্যামিনো এসিডকে চিহ্নিত করে?",
+          "options": [
+            "UCC",
+            "AAA",
+            "CUU",
+            "UAG"
+          ],
+          "correctIndex": 0,
+          "correctAnswer": 0,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 92,
+          "question": "কোনো জীবকোষে প্রাপ্ত রাইবোজোমের একটি উপ-একক 40S হলে, অপরটি কত?",
+          "options": [
+            "30S",
+            "50S",
+            "60S",
+            "70S"
+          ],
+          "correctIndex": 2,
+          "correctAnswer": 2,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 93,
+          "question": "কোষের অন্তস্থ pH রক্ষা করে কোনটি?",
+          "options": [
+            "মাইটোকন্ড্রিয়া",
+            "কোষগহ্বর",
+            "রাইবোজোম",
+            "নিউক্লিয়াস"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 94,
+          "question": "কোন উদ্ভিদে দুই ধরনের ক্লোরোপ্লাস্ট পাওয়া যায়?",
+          "options": [
+            "ধান",
+            "পাট",
+            "আখ",
+            "কলা"
+          ],
+          "correctIndex": 2,
+          "correctAnswer": 2,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 95,
+          "question": "অক্সিডেটিভ ফসফোরাইলেশন কোথায় ঘটে?",
+          "options": [
+            "সাইট্রোপ্লাজম",
+            "রাইবোজোম",
+            "মাইট্রোকন্ড্রিয়া",
+            "ক্লোরপ্লাস্ট"
+          ],
+          "correctIndex": 2,
+          "correctAnswer": 2,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 96,
+          "question": "মায়োসিসের প্রফেজ-১ এর প্যাকাইটন উপদশায় দৃশ্যমান 'X' আকৃতির অংশকে কী বলে?",
+          "options": [
+            "ক্রসিংওভার",
+            "সি��্যাপসিস",
+            "টেট্রাড",
+            "কায়াজমা"
+          ],
+          "correctIndex": 3,
+          "correctAnswer": 3,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 97,
+          "question": "কোষ বিভাজন কে আবিষ্কার করেন?",
+          "options": [
+            "বোভেরি",
+            "ফ্লেমিং",
+            "স্ট্রাসবার্জার",
+            "শাইখার"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 98,
+          "question": "ক্রোমোজোমাল নৃত্য দেখা যায় কোন দশায়?",
+          "options": [
+            "মেটাফেজ",
+            "প্রোমেটাফেজ",
+            "প্রফেজ",
+            "অ্যানাফেজ"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 99,
+          "question": "নিচের কোনটি DNA ভাইরাস?",
+          "options": [
+            "রেবিস",
+            "ইনফুয়েঞ্জা",
+            "ভাক্সিনিয়া",
+            "ইবোলা"
+          ],
+          "correctIndex": 2,
+          "correctAnswer": 2,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 100,
+          "question": "মানবদেহ আক্রমণকারী ম্যালেরিয়া জীবাণুর প্রথম দশাটির নাম কী?",
+          "options": [
+            "মেরোজয়েট",
+            "ট্রফোজয়েট",
+            "ক্রিপ্টোজয়েট",
+            "স্পোরোজয়েট"
+          ],
+          "correctIndex": 3,
+          "correctAnswer": 3,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        }
+      ]
     }
   ],
   "submissions": [
