@@ -63,16 +63,16 @@ document.addEventListener('DOMContentLoaded', () => {
     window.open(url, '_blank');
   }
 
-  // 1. Authentication Check
+// 1. Authentication Check
   function checkAuth() {
-    const token = sessionStorage.getItem('nu_admin_token');
+    const token = localStorage.getItem('nu_admin_token') || sessionStorage.getItem('nu_admin_token');
     if (token) {
-      if (adminAuthSection) adminAuthSection.classList.add('d-none');
-      if (adminDashboardSection) adminDashboardSection.classList.remove('d-none');
-      loadAllData();
+      adminAuthSection.classList.add('d-none');
+      adminDashboardSection.classList.remove('d-none');
+      loadAllAdminData();
     } else {
-      if (adminAuthSection) adminAuthSection.classList.remove('d-none');
-      if (adminDashboardSection) adminDashboardSection.classList.add('d-none');
+      adminAuthSection.classList.remove('d-none');
+      adminDashboardSection.classList.add('d-none');
     }
   }
 
@@ -96,13 +96,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         const data = await res.json();
-        if (!res.ok || !data.success) {
-          throw new Error(data.message || 'ভুল পাসওয়ার্ড!');
-        }
+    if (!res.ok || !data.success) {
+        throw new Error(data.message || 'ভুল পাসওয়ার্ড!');
+      }
 
-        sessionStorage.setItem('nu_admin_token', data.token);
-        adminPassInput.value = '';
-        checkAuth();
+      localStorage.setItem('nu_admin_token', data.token);
+      sessionStorage.setItem('nu_admin_token', data.token);
+      checkAuth();
       } catch (err) {
         showAlert(adminLoginAlert, err.message, 'danger');
       }
@@ -110,15 +110,13 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Logout
-  if (logoutBtn) {
-    logoutBtn.addEventListener('click', () => {
-      if (confirm('আপনি কি এডমিন প্যানেল থেকে লগআউট করতে চান?')) {
-        sessionStorage.removeItem('nu_admin_token');
-        checkAuth();
-      }
-    });
-  }
-
+logoutBtn?.addEventListener('click', () => {
+    if (confirm('এডমিন প্যানেল থেকে লগআউট করতে চান?')) {
+      localStorage.removeItem('nu_admin_token');
+      sessionStorage.removeItem('nu_admin_token');
+      checkAuth();
+    }
+  });
   async function loadAllData() {
     await Promise.all([
       loadStats(),
