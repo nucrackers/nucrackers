@@ -446,6 +446,36 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  examSelect.innerHTML = cachedExams.map(ex => {
+      const isFree = ex.isFree === true || ex.batch === 'free';
+      const batchTag = isFree ? '🎁 [FREE]' : '💎 [PREMIUM]';
+      const groupEmoji = ex.group === 'science' ? '🔬' : ex.group === 'arts' ? '🎨' : ex.group === 'commerce' ? '📊' : '🌐';
+      const qCount = (ex.questions || []).length;
+      const duration = ex.durationMinutes || ex.duration || 15;
+      return `<option value="${ex.id}">${batchTag} ${groupEmoji} [${ex.group.toUpperCase()}] ${escapeHtml(ex.title)} (${qCount}টি প্রশ্ন, ${duration} মি.)</option>`;
+    }).join('');
+  const isFree = exam.isFree === true || exam.batch === 'free';
+    const batchBadge = isFree
+      ? '<span class="badge bg-success rounded-pill px-3 py-2"><i class="fa-solid fa-gift me-1"></i>ফ্রি ব্যাচ (Free Live Exam)</span>'
+      : '<span class="badge bg-primary rounded-pill px-3 py-2"><i class="fa-solid fa-gem me-1"></i>প্রিমিয়াম ব্যাচ</span>';
+    const groupName = exam.group === 'science' ? 'বিজ্ঞান' : exam.group === 'arts' ? 'মানবিক' : exam.group === 'commerce' ? 'ব্যবসায় শিক্ষা' : 'সকল ইউনিট';
+    const duration = exam.durationMinutes || exam.duration || 15;
+    const marks = (exam.totalMarks !== undefined && exam.totalMarks !== null && !isNaN(exam.totalMarks))
+      ? exam.totalMarks
+      : ((exam.questions || []).length || 0);
+
+    selectedExamBadge.innerHTML = `
+      <div class="d-flex flex-wrap align-items-center gap-2 mt-1">
+        ${batchBadge}
+        <span class="badge bg-secondary rounded-pill px-3 py-2">${groupName} বিভাগ</span>
+        <button type="button" class="btn btn-sm btn-outline-danger rounded-pill px-3 py-1 fw-bold shadow-sm" id="btnQuickEditDuration" title="পরীক্ষার সময় পরিবর্তন করুন">
+          <i class="fa-solid fa-clock text-danger me-1"></i> টাইমার: ${duration} মিনিট <i class="fa-solid fa-pen-to-square ms-1 small"></i>
+        </button>
+        <span class="badge bg-light text-dark border rounded-pill px-3 py-2"><i class="fa-solid fa-trophy text-warning me-1"></i>পূর্ণমান: ${marks}</span>
+      </div>
+    `;
+  const batch = document.getElementById('newExamBatch') ? document.getElementById('newExamBatch').value : 'premium';
+    const isFree = batch === 'free';
   // Exams Management
   async function loadExams() {
     try {
