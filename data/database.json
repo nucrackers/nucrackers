@@ -79,7 +79,9 @@
       "transactionId": "MADARBOAGG",
       "status": "approved",
       "registeredAt": "2026-09-16T17:40:42.624Z",
-      "approvedAt": "2026-09-16T17:42:21.784Z"
+      "approvedAt": "2026-09-16T17:42:21.784Z",
+      "whatsappSent": true,
+      "whatsappSentAt": "2026-09-16T17:42:22.346Z"
     }
   ],
   "exams": [
