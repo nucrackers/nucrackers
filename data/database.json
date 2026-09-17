@@ -7742,7 +7742,7 @@
       "subject": "Bangla, English, GK",
       "durationMinutes": 60,
       "duration": 60,
-      "totalMarks": 98,
+      "totalMarks": 99,
       "passMarks": 40,
       "negativeMark": 0.25,
       "status": "live",
@@ -9021,6 +9021,19 @@
           "correctIndex": 1,
           "correctAnswer": 1,
           "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 99,
+          "question": "কোনটি 'অগ্নি'র সমার্থক শব্দ নয়?",
+          "options": [
+            "অনল",
+            "বহ্নি",
+            "পাবক",
+            "নিশীথিনি"
+          ],
+          "correctIndex": 3,
+          "correctAnswer": 3,
+          "explanation": "কোনো ব্যাখ্যা প্রদান করা হয়নি।"
         }
       ]
     }
