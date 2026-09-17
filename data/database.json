@@ -93,7 +93,7 @@
       "durationMinutes": 10,
       "totalMarks": 12,
       "passMarks": 5,
-      "negativeMark": 0.25,
+      "negativeMark": 0,
       "status": "live",
       "description": "জাতীয় বিশ্ববিদ্যালয় অনার্স বিজ্ঞান ইউনিট ভর্তি পরীক্ষা মডেল টেস্ট। পদার্থবিজ্ঞান, রসায়ন ও জীববিজ্ঞান সংক্রান্ত বিশেষ প্রশ্নাবলি।",
       "questions": [
@@ -240,7 +240,7 @@
       "durationMinutes": 10,
       "totalMarks": 5,
       "passMarks": 3,
-      "negativeMark": 0.25,
+      "negativeMark": 0,
       "status": "live",
       "description": "বিজ্ঞান ইউনিটের শিক্ষার্থীদের জন্য রসায়ন ও পদার্থবিজ্ঞানের নির্বাচিত গুরুত্বপূর্ণ প্রশ্নের স্পেশাল পরীক্ষা।",
       "questions": [
@@ -315,7 +315,7 @@
       "durationMinutes": 15,
       "totalMarks": 110,
       "passMarks": 5,
-      "negativeMark": 0.25,
+      "negativeMark": 0,
       "status": "live",
       "description": "জাতীয় বিশ্ববিদ্যালয় অনার্স মানবিক ইউনিট ভর্তি পরীক্ষা মডেল টেস্ট। বাংলা সাহিত্য ও ব্যাকরণ, ইংরেজি এবং বাংলাদেশ ও আন্তর্জাতিক বিষয়াবলি।",
       "questions": [
@@ -1749,7 +1749,7 @@
       "durationMinutes": 10,
       "totalMarks": 5,
       "passMarks": 3,
-      "negativeMark": 0.25,
+      "negativeMark": 0,
       "status": "live",
       "description": "মানবিক ইউনিটের শিক্ষার্থীদের জন্য সাধারণ জ্ঞান ও ইংরেজির অত্যন্ত গুরুত্বপূর্ণ প্রশ্ন সংবলিত মডেল টেস্ট।",
       "questions": [
@@ -1823,7 +1823,7 @@
       "durationMinutes": 15,
       "totalMarks": 10,
       "passMarks": 5,
-      "negativeMark": 0.25,
+      "negativeMark": 0,
       "status": "live",
       "description": "জাতীয় বিশ্ববিদ্যালয় অনার্স ব্যবসায় শিক্ষা ইউনিট ভর্তি পরীক্ষা মডেল টেস্ট। হিসাববিজ্ঞান, ব্যবসায় সংগঠন, ফিন্যান্স ও মার্কেটিং।",
       "questions": [
@@ -1957,7 +1957,7 @@
       "durationMinutes": 10,
       "totalMarks": 5,
       "passMarks": 3,
-      "negativeMark": 0.25,
+      "negativeMark": 0,
       "status": "live",
       "description": "ব্যবসায় শিক্ষা ইউনিটের শিক্ষার্থীদের জন্য হিসাববিজ্ঞানের অত্যন্ত গুরুত্বপূর্ণ বিষয়ের সংক্ষিপ্ত স্পিড টেস্ট।",
       "questions": [
@@ -3793,7 +3793,7 @@
       "duration": 60,
       "totalMarks": 100,
       "passMarks": 40,
-      "negativeMark": 0.25,
+      "negativeMark": 0,
       "status": "live",
       "description": "",
       "questions": [
@@ -5110,7 +5110,7 @@
       "duration": 60,
       "totalMarks": 100,
       "passMarks": 40,
-      "negativeMark": 0.25,
+      "negativeMark": 0,
       "status": "live",
       "description": "",
       "questions": [
@@ -6427,7 +6427,7 @@
       "duration": 60,
       "totalMarks": 100,
       "passMarks": 40,
-      "negativeMark": 0.25,
+      "negativeMark": 0,
       "status": "live",
       "description": "",
       "questions": [
@@ -7744,7 +7744,7 @@
       "duration": 60,
       "totalMarks": 100,
       "passMarks": 40,
-      "negativeMark": 0.25,
+      "negativeMark": 0,
       "status": "live",
       "description": "",
       "questions": [
