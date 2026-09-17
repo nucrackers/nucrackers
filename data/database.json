@@ -9210,40 +9210,6 @@
       "submittedAt": "2026-09-10T13:46:09.382Z"
     },
     {
-      "id": "sub_1789246499843_mgwie",
-      "examId": "exam_1789223138582",
-      "examTitle": "Model test  3",
-      "group": "science",
-      "roll": "12701001",
-      "name": "12701001",
-      "score": 1,
-      "totalMarks": 1,
-      "correctCount": 1,
-      "wrongCount": 0,
-      "skippedCount": 0,
-      "percentage": 100,
-      "isPassed": true,
-      "timeSpent": 0,
-      "submittedAt": "2026-09-12T20:54:59.843Z",
-      "detailedResults": [
-        {
-          "questionId": 1,
-          "question": "Bangladesh er capital kothay",
-          "options": [
-            "ঢাকা",
-            "বরিশাল",
-            "ভোলা",
-            "নিলফামারী"
-          ],
-          "studentAnswer": 0,
-          "correctAnswer": 0,
-          "isCorrect": true,
-          "isSkipped": false,
-          "explanation": "Dhaka Hobe"
-        }
-      ]
-    },
-    {
       "id": "sub_1789271363683_s36xm",
       "examId": "exam_1789246647625",
       "examTitle": "Special Genaral knowledge Exam",
@@ -27478,6 +27444,26 @@
         "100": 3
       },
       "submittedAt": "2026-09-17T12:44:57.742Z"
+    },
+    {
+      "id": "sub-1789649217235-41",
+      "examId": "exam_1789223138582",
+      "isFree": false,
+      "roll": "12701001",
+      "name": "uthso",
+      "college": "",
+      "group": "science",
+      "score": 0,
+      "totalMarks": 1,
+      "passMarks": 5,
+      "correctCount": 0,
+      "wrongCount": 1,
+      "skippedCount": 0,
+      "timeTakenSeconds": 8,
+      "answers": {
+        "1": 1
+      },
+      "submittedAt": "2026-09-17T12:46:57.235Z"
     }
   ]
 }
