@@ -7742,7 +7742,7 @@
       "subject": "Bangla, English, GK",
       "durationMinutes": 60,
       "duration": 60,
-      "totalMarks": 99,
+      "totalMarks": 100,
       "passMarks": 40,
       "negativeMark": 0.25,
       "status": "live",
@@ -9030,6 +9030,19 @@
             "বহ্নি",
             "পাবক",
             "নিশীথিনি"
+          ],
+          "correctIndex": 3,
+          "correctAnswer": 3,
+          "explanation": "কোনো ব্যাখ্যা প্রদান করা হয়নি।"
+        },
+        {
+          "id": 100,
+          "question": "সঠিক বানান নয় কোনটি?",
+          "options": [
+            "ধরণি",
+            "মূর্ছা",
+            "গুণ",
+            "প্রানী"
           ],
           "correctIndex": 3,
           "correctAnswer": 3,
