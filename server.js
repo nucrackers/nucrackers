@@ -583,24 +583,22 @@ app.post('/api/exams/:id/submit', (req, res) => {
     finalGroup = student.group;
   }
 
-  const negativeMark = exam.negativeMark || 0;
+const negativeMark = 0;
   let correctCount = 0;
   let wrongCount = 0;
   let skippedCount = 0;
   let rawScore = 0;
 
-  const userAnswers = answers || {};
-
   (exam.questions || []).forEach(q => {
-    const chosen = userAnswers[q.id];
-    if (chosen === undefined || chosen === null || chosen === -1 || chosen === '') {
+    const studentAns = answers ? answers[q.id] : undefined;
+    if (studentAns === undefined || studentAns === null || studentAns === '') {
       skippedCount++;
-    } else if (Number(chosen) === q.correctIndex) {
+    } else if (Number(studentAns) === Number(q.correctAnswer)) {
       correctCount++;
       rawScore += 1;
     } else {
       wrongCount++;
-      rawScore -= negativeMark;
+      // ভুল উত্তরের জন্য কোনো মার্ক কাটা যাবে না
     }
   });
 
@@ -1327,7 +1325,7 @@ app.post('/api/admin/exams', (req, res) => {
     duration: rawDuration,
     totalMarks: rawTotalMarks,
     passMarks: Number(passMarks) || 5,
-    negativeMark: Number(negativeMark) || 0.25,
+   negativeMark: 0,
     status: 'live',
     description: description ? String(description).trim() : '',
     questions: []
@@ -1368,7 +1366,7 @@ app.put('/api/admin/exams/:id', (req, res) => {
   }
   if (description !== undefined) exam.description = String(description).trim();
   if (passMarks !== undefined) exam.passMarks = Number(passMarks);
-  if (negativeMark !== undefined) exam.negativeMark = Number(negativeMark);
+   exam.negativeMark = 0;
   if (totalMarks !== undefined) exam.totalMarks = Number(totalMarks);
 
   writeDb(db);
