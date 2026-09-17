@@ -1624,7 +1624,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const subject = document.getElementById('newExamSubject').value.trim();
     const durationMinutes = parseInt(document.getElementById('newExamDuration').value) || 15;
     const passMarks = parseInt(document.getElementById('newExamPassMarks').value) || 5;
-    const negativeMark = parseFloat(document.getElementById('newExamNegativeMark').value) || 0.25;
+
     const description = document.getElementById('newExamDesc').value.trim();
 
     if (!title || !subject || !group) {
@@ -1650,7 +1650,6 @@ document.addEventListener('DOMContentLoaded', () => {
           durationMinutes,
           totalMarks: 0,
           passMarks,
-          negativeMark,
           description
         })
       });
