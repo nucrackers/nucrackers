@@ -584,47 +584,51 @@ app.post('/api/exams/:id/submit', (req, res) => {
   }
 
 const negativeMark = 0;
-  let correctCount = 0;
-  let wrongCount = 0;
-  let skippedCount = 0;
-  let rawScore = 0;
-  const userAnswers = answers || {};
-  (exam.questions || []).forEach(q => {
-    const studentAns = answers ? answers[q.id] : undefined;
-    if (studentAns === undefined || studentAns === null || studentAns === '') {
-      skippedCount++;
-    } else if (Number(studentAns) === Number(q.correctAnswer)) {
-      correctCount++;
-      rawScore += 1;
-    } else {
-      wrongCount++;
-      // ভুল উত্তরের জন্য কোনো মার্ক কাটা যাবে না
-    }
-  });
+    let correctCount = 0;
+    let wrongCount = 0;
+    let skippedCount = 0;
+    let rawScore = 0;
 
-  const finalScore = Math.max(0, Number(rawScore.toFixed(2)));
-  const totalQuestions = (exam.questions || []).length;
-  const totalMarks = Number(exam.totalMarks !== undefined && exam.totalMarks !== null ? exam.totalMarks : totalQuestions);
-  const passMarks = Number(exam.passMarks || 5);
+    // এই লাইনটি জরুরি (যাতে userAnswers ডিফাইন থাকে):
+    const userAnswers = answers || {};
 
-  const submission = {
-    id: 'sub-' + Date.now() + '-' + Math.floor(Math.random() * 1000),
-    examId: exam.id,
-    isFree: isExamFree,
-    roll: finalRoll,
-    name: finalName,
-    college: finalCollege,
-    group: finalGroup,
-    score: finalScore,
-    totalMarks: totalMarks,
-    passMarks: passMarks,
-    correctCount,
-    wrongCount,
-    skippedCount,
-    timeTakenSeconds: Number(timeTakenSeconds) || 0,
-    answers: userAnswers,
-    submittedAt: new Date().toISOString()
-  };
+    (exam.questions || []).forEach(q => {
+      const chosen = userAnswers[q.id];
+      const target = q.correctIndex !== undefined ? q.correctIndex : q.correctAnswer;
+      if (chosen === undefined || chosen === null || chosen === -1 || chosen === '') {
+        skippedCount++;
+      } else if (target !== undefined && Number(chosen) === Number(target)) {
+        correctCount++;
+        rawScore += 1;
+      } else {
+        wrongCount++;
+        // ভুল উত্তরের জন্য কোনো মার্ক কাটা যাবে না
+      }
+    });
+
+    const finalScore = Math.max(0, Number(rawScore.toFixed(2)));
+    const totalQuestions = (exam.questions || []).length;
+    const totalMarks = Number(exam.totalMarks !== undefined && exam.totalMarks !== null ? exam.totalMarks : totalQuestions);
+    const passMarks = Number(exam.passMarks || 5);
+
+    const submission = {
+      id: 'sub-' + Date.now() + '-' + Math.floor(Math.random() * 1000),
+      examId: exam.id,
+      isFree: isExamFree,
+      roll: finalRoll,
+      name: finalName,
+      college: finalCollege,
+      group: finalGroup,
+      score: finalScore,
+      totalMarks: totalMarks,
+      passMarks: passMarks,
+      correctCount,
+      wrongCount,
+      skippedCount,
+      timeTakenSeconds: Number(timeTakenSeconds) || 0,
+      answers: userAnswers,
+      submittedAt: new Date().toISOString()
+    };
 
   // Remove previous submission if student retakes this exam
   db.submissions = (db.submissions || []).filter(
