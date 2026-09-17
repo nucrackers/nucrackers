@@ -1624,7 +1624,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const subject = document.getElementById('newExamSubject').value.trim();
     const durationMinutes = parseInt(document.getElementById('newExamDuration').value) || 15;
     const passMarks = parseInt(document.getElementById('newExamPassMarks').value) || 5;
-
+ const negativeMark = 0;
     const description = document.getElementById('newExamDesc').value.trim();
 
     if (!title || !subject || !group) {
