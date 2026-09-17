@@ -27821,6 +27821,27 @@
         "100": 3
       },
       "submittedAt": "2026-09-17T12:52:17.248Z"
+    },
+    {
+      "id": "sub-1789649648963-459",
+      "examId": "free-art-1789544460635",
+      "isFree": true,
+      "roll": "FREE-8963",
+      "name": "Lima",
+      "college": "Rajshahi College",
+      "group": "arts",
+      "score": 1,
+      "totalMarks": 100,
+      "passMarks": 40,
+      "correctCount": 1,
+      "wrongCount": 1,
+      "skippedCount": 98,
+      "timeTakenSeconds": 34,
+      "answers": {
+        "1": 1,
+        "2": 3
+      },
+      "submittedAt": "2026-09-17T12:54:08.963Z"
     }
   ]
 }
