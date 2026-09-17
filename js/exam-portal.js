@@ -169,7 +169,6 @@ document.addEventListener('DOMContentLoaded', () => {
                   <span><i class="fa-regular fa-circle-question me-1 text-primary"></i>${exam.questionCount}টি প্রশ্ন</span>
                   <span class="mx-1">•</span>
                   <span><i class="fa-solid fa-trophy me-1 text-warning"></i>পূর্ণমান: ${exam.totalMarks}</span>
-                  ${exam.negativeMark ? `<span class="mx-1">•</span><span class="text-danger"><i class="fa-solid fa-minus me-1"></i>নেগেটিভ: ${exam.negativeMark}</span>` : ''}
                 </div>
 
                 ${hasScore ? `
