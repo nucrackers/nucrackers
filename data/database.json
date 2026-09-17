@@ -20338,6 +20338,29 @@
         "60": 1
       },
       "submittedAt": "2026-09-17T00:49:45.528Z"
+    },
+    {
+      "id": "sub-1789606893596-674",
+      "examId": "free-com-1789545840488",
+      "isFree": true,
+      "roll": "FREE-3596",
+      "name": "Taskin Ahmed Antor",
+      "college": "mohadavpur union govt college",
+      "group": "commerce",
+      "score": 4,
+      "totalMarks": 100,
+      "passMarks": 40,
+      "correctCount": 4,
+      "wrongCount": 0,
+      "skippedCount": 96,
+      "timeTakenSeconds": 140,
+      "answers": {
+        "97": 1,
+        "98": 3,
+        "99": 3,
+        "100": 1
+      },
+      "submittedAt": "2026-09-17T01:01:33.597Z"
     }
   ]
 }
