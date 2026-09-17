@@ -7742,12 +7742,1287 @@
       "subject": "Bangla, English, GK",
       "durationMinutes": 60,
       "duration": 60,
-      "totalMarks": 0,
+      "totalMarks": 98,
       "passMarks": 40,
       "negativeMark": 0.25,
       "status": "live",
       "description": "",
-      "questions": []
+      "questions": [
+        {
+          "id": 1,
+          "question": "কোন বানানটি শুদ্ধ নয়?",
+          "options": [
+            "দরিদ্রতা",
+            "উপযোগিতা",
+            "শ্রদ্ধাঞ্জলি",
+            "উর্দ্ধ"
+          ],
+          "correctIndex": 3,
+          "correctAnswer": 3,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 2,
+          "question": "'একুশের কৃষ্ণচূড়া আমাদের চেতনারই রং' -এই পঙ্‌ক্তিটির রচয়িতা কে?",
+          "options": [
+            "আলাউদ্দিন আল আজাদ",
+            "রফিক আজাদ",
+            "আল-মাহমুদ",
+            "শামসুর রাহমান"
+          ],
+          "correctIndex": 3,
+          "correctAnswer": 3,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 3,
+          "question": "“মেয়েটির বয়স ষোল কি সতেরো হইবে” - মেয়েটির নাম কি?",
+          "options": [
+            "হৈমন্তী",
+            "বিলাসী",
+            "কল্যাণী",
+            "রতন"
+          ],
+          "correctIndex": 2,
+          "correctAnswer": 2,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 4,
+          "question": "'মম এক হাতে বাঁকা বাঁশের বাঁশরী আর হাতে রণ তূর্য' -",
+          "options": [
+            "দ্রোহ ও প্রেম",
+            "বিদ্রোহ ও বীর যোদ্ধা",
+            "প্রেম ও বিদ্রোহ",
+            "বিদ্রোহ ও বংশীবাদক"
+          ],
+          "correctIndex": 2,
+          "correctAnswer": 2,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 5,
+          "question": "'আঠারো বছর বয়স' কবিতাটি কোন ছন্দে রচিত?",
+          "options": [
+            "স্বরবৃত্ত",
+            "মাত্রাবৃত্ত",
+            "অক্ষরবৃত্ত",
+            "মিশ্র"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 6,
+          "question": "'দেশটা মরার দেশ' - এখানে 'মরার দেশ' বলতে কি বুঝানো হয়েছে?",
+          "options": [
+            "সবাই মরে গেছে",
+            "শিক্ষাহীনতা",
+            "শস্য-শূন্যতা",
+            "হৃদয়হীনতা"
+          ],
+          "correctIndex": 2,
+          "correctAnswer": 2,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 7,
+          "question": "'নিদাঘ' শব্দের অর্থ কী?",
+          "options": [
+            "তলোয়ার",
+            "মরুভূমি",
+            "ঝরনা",
+            "গ্রীষ্ম"
+          ],
+          "correctIndex": 3,
+          "correctAnswer": 3,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 8,
+          "question": "'সবাই মিলে সত্যিই আমরা বাংলাকে বিক্রি করে দিচ্ছি না তো'?- উক্তিটি কার?",
+          "options": [
+            "জগৎশেঠ",
+            "মীর জাফর আলী খান",
+            "রাজবল্লভ",
+            "ঘষেট বেগম"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 9,
+          "question": "'রক্তজবা' কোন সমাসের দৃষ্টান্ত?",
+          "options": [
+            "সাধারণ কর্মধারয়",
+            "উপমান কর্মধারয়",
+            "উপমিত কর্মধারয়",
+            "রূপক কর্মধারয়"
+          ],
+          "correctIndex": 2,
+          "correctAnswer": 2,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 10,
+          "question": "রবীন্দ্রনাথ ঠাকুরের প্রথম কাব্যগ্রন্থ কোনটি?",
+          "options": [
+            "মানসী",
+            "বলাকা",
+            "শেষ লেখা",
+            "বনফুল"
+          ],
+          "correctIndex": 3,
+          "correctAnswer": 3,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 11,
+          "question": "আত্মাকে চিনলে নিজের মধ্যে কী আসে বলে কবি কাজী নজরুল ইসলাম মনে করেন?",
+          "options": [
+            "সহজ স্বীকারোক্তি",
+            "বিনয়",
+            "মিথ্যার প্রতি ভয়",
+            "আত্মনির্ভরতা"
+          ],
+          "correctIndex": 3,
+          "correctAnswer": 3,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 12,
+          "question": "'এপারেতে ছোটো খেত, আমি একেলা'– সোনার তরী কবিতায় কবি 'ছোটো খেত' বলতে কী বুঝিয়েছেন?",
+          "options": [
+            "আয়তনে ছোট খেত",
+            "নদীর ছোট চর",
+            "জীবনের অজানা গন্তব্য",
+            "মানুষের জীবনপরিধি"
+          ],
+          "correctIndex": 3,
+          "correctAnswer": 3,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 13,
+          "question": "তৎসম উপসর্গ কয়টি?",
+          "options": [
+            "২০",
+            "২১",
+            "২২",
+            "২৩"
+          ],
+          "correctIndex": 0,
+          "correctAnswer": 0,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 14,
+          "question": "'তামসিক' শব্দের বিপরীতার্থক শব্দ -",
+          "options": [
+            "রাজসিক",
+            "রাজবিহন",
+            "রাজস্থান",
+            "রাজবিহার"
+          ],
+          "correctIndex": 0,
+          "correctAnswer": 0,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 15,
+          "question": "'মানব-কল্যাণ ' গল্পে লেখক রাষ্ট্রকে জাতির কীসের প্রতীক বলেছেন?",
+          "options": [
+            "যৌথ জীবন ও চেতনার",
+            "মর্যাদার",
+            "পারস্পরিক সংযোগ-সহযোগিতার",
+            "মানব কল্যাণের"
+          ],
+          "correctIndex": 0,
+          "correctAnswer": 0,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 16,
+          "question": "I look forward to -------- you soon.",
+          "options": [
+            "Seeing",
+            "have seen",
+            "See",
+            "be seeing"
+          ],
+          "correctIndex": 0,
+          "correctAnswer": 0,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 17,
+          "question": "Neither my parents nor my brother ------ going to the party.",
+          "options": [
+            "is",
+            "be",
+            "are",
+            "were"
+          ],
+          "correctIndex": 0,
+          "correctAnswer": 0,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 18,
+          "question": "He said that he ------ be there.",
+          "options": [
+            "would",
+            "shall",
+            "should",
+            "will"
+          ],
+          "correctIndex": 0,
+          "correctAnswer": 0,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 19,
+          "question": "The man was so weak that he ------- not walk.",
+          "options": [
+            "would",
+            "could",
+            "should",
+            "can"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 20,
+          "question": "Identify the correct sentence:",
+          "options": [
+            "A scissors is sharp.",
+            "The scissors is sharp.",
+            "Scissors is a sharp tool.",
+            "The scissors are sharp."
+          ],
+          "correctIndex": 3,
+          "correctAnswer": 3,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 21,
+          "question": "What is the antonym of 'Fragile'?",
+          "options": [
+            "Delicate",
+            "Weak",
+            "Strong",
+            "Tenuous"
+          ],
+          "correctIndex": 2,
+          "correctAnswer": 2,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 22,
+          "question": "He died ------- cancer.",
+          "options": [
+            "by",
+            "from",
+            "of",
+            "for"
+          ],
+          "correctIndex": 2,
+          "correctAnswer": 2,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 23,
+          "question": "The word 'Indigenous' means:",
+          "options": [
+            "Industrious",
+            "Foreign",
+            "Native",
+            "Intelligent"
+          ],
+          "correctIndex": 2,
+          "correctAnswer": 2,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 24,
+          "question": "Choose the correct sentence:",
+          "options": [
+            "I, he and you are present.",
+            "You, he and I are present.",
+            "He, you and I are present.",
+            "I, you and he are present."
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 25,
+          "question": "শান্তিতে নোবেল পুরস্কার কোন শহর থেকে প্রদান করা হয়।",
+          "options": [
+            "জেনেভা",
+            "স্টকহোম",
+            "নিউ ইয়র্ক",
+            "অসলো"
+          ],
+          "correctIndex": 3,
+          "correctAnswer": 3,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 26,
+          "question": "বিশ্বের বৃহত্তম মরুভূমি কোনটি?",
+          "options": [
+            "থর",
+            "সাহারা",
+            "কালাহারি",
+            "গোবি"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 27,
+          "question": "সার্ক (SAARC) এর সদর দপ্তর কোথায় অবস্থিত?",
+          "options": [
+            "ইসলামাবাদ",
+            "ঢাকা",
+            "কাঠমান্ডু",
+            "কলম্বো"
+          ],
+          "correctIndex": 2,
+          "correctAnswer": 2,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 28,
+          "question": "বাংলাদেশের সংবিধানের অভিভাবক ও রক্ষক কে?",
+          "options": [
+            "সুপ্রিম কোর্ট",
+            "জাতীয় সংসদ",
+            "প্রধানমন্���্রী",
+            "রাষ্ট্রপতি"
+          ],
+          "correctIndex": 0,
+          "correctAnswer": 0,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 29,
+          "question": "বাংলাদেশের প্রথম এভারেস্ট বিজয়ী নারী কে?",
+          "options": [
+            "মুসা ইব্রাহীম",
+            "এম এ মুহিত",
+            "নিশাত মজুমদার",
+            "ওয়াসফিয়া নাজরীন"
+          ],
+          "correctIndex": 2,
+          "correctAnswer": 2,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 30,
+          "question": "বাংলাদেশের একমাত্র প্রবল দ্বীপ কোনটি?",
+          "options": [
+            "ছেঁড়া দ্বীপ",
+            "হাতিয়া",
+            "সেন্ট মার্টিন",
+            "মহেশখালী"
+          ],
+          "correctIndex": 2,
+          "correctAnswer": 2,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 31,
+          "question": "সুয়েজ খাল কোন দুটি সাগরকে যুক্ত করেছে?",
+          "options": [
+            "কৃষ্ণ সাগর ও ভূমধ্যসাগর",
+            "আরব সাগর ও লোহিত সাগর",
+            "লোহিত সাগর ও ভূমধ্যসাগর",
+            "কাস্পিয়ান সাগর ও কৃষ্ণ সাগর"
+          ],
+          "correctIndex": 2,
+          "correctAnswer": 2,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 32,
+          "question": "'পুষ্পারতি লভেনি কি ঋতুর রাজন' - এখানে কবি সুফিয়া কামাল 'পুষ্পারতি' বলতে কী বুঝিয়েছেন?",
+          "options": [
+            "বাসন্তী লতা",
+            "ফুলের সাজ",
+            "রূপক বসন্ত",
+            "ফুলেল নিবেদন"
+          ],
+          "correctIndex": 3,
+          "correctAnswer": 3,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 33,
+          "question": "'লালসালু' উপন্যাসে মহব্বতনগরের সামাজিক নেতৃত্বে কে মূল ভূমিকা পালন করে?",
+          "options": [
+            "মজিদ",
+            "খালেক ব্যাপারী",
+            "আক্কাস",
+            "দুদু মিয়া"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 34,
+          "question": "'ইংরেজদের হয়ে যুদ্ধ করছি কোম্পানির টাকার জন্যে।' - উক্তিটি কার?",
+          "options": [
+            "ওয়ালি খান",
+            "মানিকচাঁদ",
+            "হলওয়েল",
+            "ওয়াট্‌স"
+          ],
+          "correctIndex": 0,
+          "correctAnswer": 0,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 35,
+          "question": "'শুদ্ধোদন' এর সঠিক সন্ধি বিচ্ছে��� কোনটি?",
+          "options": [
+            "শুদ্ধ + ওদন",
+            "শুদ্ধ + ওধন",
+            "শুদ্ধ + অদন",
+            "শুদ্ধ + ওদোন"
+          ],
+          "correctIndex": 0,
+          "correctAnswer": 0,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 36,
+          "question": "Choose the correct preposition.\nThe train arrived _____ time.",
+          "options": [
+            "A. on",
+            "B. in",
+            "C. at",
+            "D. by"
+          ],
+          "correctIndex": 0,
+          "correctAnswer": 0,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 37,
+          "question": "Choose the correct tense.\nBy the time we reached the station, the train _____.",
+          "options": [
+            "A. left",
+            "B. leaves",
+            "C. had left",
+            "D. has left"
+          ],
+          "correctIndex": 2,
+          "correctAnswer": 2,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 38,
+          "question": "Choose the correct synonym of Rapid.",
+          "options": [
+            "A. Slow",
+            "B. Fast",
+            "C. Weak",
+            "D. Calm"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 39,
+          "question": "Choose the antonym of Scarce.",
+          "options": [
+            "A. Rare",
+            "B. Plenty",
+            "C. Abundant",
+            "D. Empty"
+          ],
+          "correctIndex": 2,
+          "correctAnswer": 2,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 40,
+          "question": "'Economics' শব্দটি কোন গ্রিক শব্দ থেকে এসেছে?",
+          "options": [
+            "Oikos",
+            "Oikonomia",
+            "Nomos",
+            "Economia"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 41,
+          "question": "আয়তনের দিক দিয়ে কোন শহর সবচেয়ে বড়?",
+          "options": [
+            "ঢাকা",
+            "টোকিও",
+            "মস্কো",
+            "লন্ডন"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 42,
+          "question": "'গৃহী' শব্দের বিপরীতার্থক শব্দ-",
+          "options": [
+            "সংসারী",
+            "সঞ্চয়ী",
+            "সংস্থিতি",
+            "সন্ন্যাসী"
+          ],
+          "correctIndex": 3,
+          "correctAnswer": 3,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 43,
+          "question": "'অপরিচিতা' গল্পে কল্যাণীর বাবার নাম কী?",
+          "options": [
+            "হরিশ",
+            "বিনুদা",
+            "শম্ভুনাথ সেন",
+            "রামলোচন"
+          ],
+          "correctIndex": 2,
+          "correctAnswer": 2,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 44,
+          "question": "Excise duty এর পরিভাষা কোনটি?",
+          "options": [
+            "অতিরিক্ত কর",
+            "আবগারি শুল্ক",
+            "অর্পিত দায়িত্ব",
+            "অতিরিক্ত কর্তব্য"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 45,
+          "question": "'চর্যাপদ' কত সালে আবিষ্কৃত হয়?",
+          "options": [
+            "১৮০০",
+            "১৮৫৭",
+            "১৯০৭",
+            "১৯০৯"
+          ],
+          "correctIndex": 2,
+          "correctAnswer": 2,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 46,
+          "question": "'আমার পথ' প্রবন্ধে কাজী নজরুল ইসলামের কর্ণধার কে?",
+          "options": [
+            "সমাজ",
+            "তিনি নিজেই",
+            "সত্য",
+            "রাষ্ট্র"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 47,
+          "question": "'বায়ান্নর দিনগুলো' রচনায় কাকে 'নয়া পল্টনের শহীদ' বলা হয়েছে?",
+          "options": [
+            "সালাম",
+            "বরকত",
+            "রফিক",
+            "শফিউর"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 48,
+          "question": "'রেইনকোট' গল্পে আবহাওয়া কেমন ছিল?",
+          "options": [
+            "রোদেলা",
+            "কালবৈশাখী",
+            "কার্তিকের গুঁড়ি গুঁড়ি বৃষ্টি",
+            "কনকনে শীত"
+          ],
+          "correctIndex": 2,
+          "correctAnswer": 2,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 49,
+          "question": "'মাসি-পিসি' গল্পে আলহাদির স্বামীর নাম কী?",
+          "options": [
+            "গোকুল",
+            "কানাই",
+            "জগু",
+            "কৈলেশ"
+          ],
+          "correctIndex": 2,
+          "correctAnswer": 2,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 50,
+          "question": "'ঢাকের কাঠি' বাগধারার অর্থ কি?",
+          "options": [
+            "কপট ব্যক্তি",
+            "ঘনিষ্ঠ সম্পর্ক",
+            "হতভাগ্য",
+            "মোসাহেব"
+          ],
+          "correctIndex": 3,
+          "correctAnswer": 3,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 51,
+          "question": "কোন বানানটি শুদ্ধ?",
+          "options": [
+            "পিপিলিকা",
+            "পিপীলিকা",
+            "পীপিলিকা",
+            "পিপিলীকা"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 52,
+          "question": "'ঘরে-বাইরে' উপন্যাসটি কার ল���খা?",
+          "options": [
+            "আলাওল",
+            "কাজী দীন মহম্মদ",
+            "কাজী মোতাহার হোসেন",
+            "রবীন্দ্রনাথ ঠাকুর"
+          ],
+          "correctIndex": 3,
+          "correctAnswer": 3,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 53,
+          "question": "নিচের কোন বানাটি শুদ্ধ?",
+          "options": [
+            "মনীষী",
+            "মনিষি",
+            "মনীষি",
+            "মনিষী"
+          ],
+          "correctIndex": 0,
+          "correctAnswer": 0,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 54,
+          "question": "কোন বানানটি শুদ্ধ?",
+          "options": [
+            "দৈন্য সর্বদা মহত্বের পরিচায়ক নয়",
+            "দৈন্যতা সর্বদা মহত্বের পরিচায়ক নয়",
+            "দৈন্য সর্বদা মহত্ত্বের পরিচায়ক নয়",
+            "দৈন্যতা সর্বদা মহত্ত্বের পরিচায়ক নয়"
+          ],
+          "correctIndex": 2,
+          "correctAnswer": 2,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 55,
+          "question": "'Consumer goods' এর উপযুক্ত পরিভাষা কী?",
+          "options": [
+            "ভোক্তার কল্যাণ",
+            "ভোগ্যপণ্য",
+            "ক্রয়কৃত পণ্য",
+            "ক্রেতার গুণাগুণ"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 56,
+          "question": "'জল' শব্দের সমার্থক নয় কোনটি?",
+          "options": [
+            "সলিল",
+            "উদক",
+            "জলধি",
+            "নীর"
+          ],
+          "correctIndex": 2,
+          "correctAnswer": 2,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 57,
+          "question": "কোন শব্দজোড় বিপরীতার্থক নয়?",
+          "options": [
+            "অনুলোম-প্রতিলোম",
+            "নশ্বর-শাশ্বত",
+            "গরিষ্ঠ-লঘিষ্ঠ",
+            "হৃষ্ঠ-পুষ্ঠ"
+          ],
+          "correctIndex": 3,
+          "correctAnswer": 3,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 58,
+          "question": "'পরশ্ব' শব্দটির অর্থ কী?",
+          "options": [
+            "পরশু",
+            "পরের ধন",
+            "কোকিল",
+            "পার্শ্ববর্তী"
+          ],
+          "correctIndex": 0,
+          "correctAnswer": 0,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 59,
+          "question": "বাংলা ভাষায় মৌলিক স্বরধ্বনির সংখ্যা কত?",
+          "options": [
+            "৭টি",
+            "৯টি",
+            "১১টি",
+            "১৩টি"
+          ],
+          "correctIndex": 0,
+          "correctAnswer": 0,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 60,
+          "question": "Iron is ________ useful metal.",
+          "options": [
+            "the",
+            "No articles",
+            "an",
+            "a"
+          ],
+          "correctIndex": 3,
+          "correctAnswer": 3,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 61,
+          "question": "The superlative degree of the word 'able' is _____",
+          "options": [
+            "most able",
+            "ablest",
+            "best able",
+            "abler"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 62,
+          "question": "'Please write to me at the above address.' The word 'above' in this sentence is a/an-",
+          "options": [
+            "noun",
+            "adjective",
+            "pronoun",
+            "adverd"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 63,
+          "question": "The walls of our house have been painted ______ green.",
+          "options": [
+            "no preposition",
+            "by",
+            "in",
+            "with"
+          ],
+          "correctIndex": 0,
+          "correctAnswer": 0,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 64,
+          "question": "They have called ______ a strike.",
+          "options": [
+            "in",
+            "on",
+            "off",
+            "out"
+          ],
+          "correctIndex": 2,
+          "correctAnswer": 2,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 65,
+          "question": "'Rice sells cheap' is--",
+          "options": [
+            "Passive voice",
+            "Active voice",
+            "Both",
+            "None"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 66,
+          "question": "'Munmun says that she did not go there.' (Make it direct)",
+          "options": [
+            "Munmun says, \"I did not go there.\"",
+            "Munmun says, \"I do not go there.\"",
+            "Munmun said, \"I did not went there.\"",
+            "Munmun says that I did not go there.\""
+          ],
+          "correctIndex": 0,
+          "correctAnswer": 0,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 67,
+          "question": "The big room ____ air-conditioned.",
+          "options": [
+            "is",
+            "are",
+            "should",
+            "do"
+          ],
+          "correctIndex": 0,
+          "correctAnswer": 0,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 68,
+          "question": "Teacher said, \"The earth____round the sun.\"",
+          "options": [
+            "moves",
+            "moved",
+            "has moved",
+            "will be moving"
+          ],
+          "correctIndex": 0,
+          "correctAnswer": 0,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 69,
+          "question": "Rabindranath's stories often ____ surprise endings.",
+          "options": [
+            "had",
+            "have",
+            "has",
+            "have had"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 70,
+          "question": "He tennis twice a week.....",
+          "options": [
+            "is playing usually",
+            "usually plays",
+            "plays usually",
+            "is usually playing"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 71,
+          "question": "If he has time, he___us next Friday.",
+          "options": [
+            "visits",
+            "would go",
+            "have gone",
+            "was gone"
+          ],
+          "correctIndex": 0,
+          "correctAnswer": 0,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 72,
+          "question": "After seeing the movie, _____.",
+          "options": [
+            "the book was read by many people",
+            "the book made many people want to read it",
+            "many people wanted to read the book",
+            "the reading of the book interested many people"
+          ],
+          "correctIndex": 2,
+          "correctAnswer": 2,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 73,
+          "question": "'To win a prize is my ambition.' the underlined part of the sentence is a/an—",
+          "options": [
+            "adjective phrase",
+            "noun phrase",
+            "adverb phrase",
+            "conjunctional phrase"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 74,
+          "question": "Where he was born is not known. The underlined clause is a/an----",
+          "options": [
+            "Noun clause",
+            "Adjective clause",
+            "Adverbial clause",
+            "Co-ordinate clause"
+          ],
+          "correctIndex": 0,
+          "correctAnswer": 0,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 75,
+          "question": "A Complex sentence has ----",
+          "options": [
+            "One principal/main clause and one or more subordinate causes",
+            "One subject and more subordinate clauses",
+            "One principal verb and one clause",
+            "None"
+          ],
+          "correctIndex": 0,
+          "correctAnswer": 0,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 76,
+          "question": "Which of the following sentence is correct?",
+          "options": [
+            "Why you have done this?",
+            "Why did you have done this?",
+            "Why have you done this?",
+            "Why you had done this?"
+          ],
+          "correctIndex": 2,
+          "correctAnswer": 2,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 77,
+          "question": "The correct spelling is",
+          "options": [
+            "adolescence",
+            "adolessence",
+            "adoloscence",
+            "adolesense"
+          ],
+          "correctIndex": 0,
+          "correctAnswer": 0,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 78,
+          "question": "What is the antonym of 'indifferent'?",
+          "options": [
+            "detached",
+            "interested",
+            "different",
+            "related"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 79,
+          "question": "Which word is similar to 'appal'?",
+          "options": [
+            "deceive",
+            "confuse",
+            "dismy",
+            "solicit"
+          ],
+          "correctIndex": 2,
+          "correctAnswer": 2,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 80,
+          "question": "মুক্তিযুদ্ধের সময় বাংলাদেশকে কয়টি সেক্টরে ভাগ করা হয়েছিল?",
+          "options": [
+            "৮টি",
+            "৯টি",
+            "১০টি",
+            "১১টি"
+          ],
+          "correctIndex": 3,
+          "correctAnswer": 3,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 81,
+          "question": "ঐতিহাসিক 'ছয় দফা' দাবি কত সালে এবং কোথায় উত্থাপিত হয়?",
+          "options": [
+            "১৯৬৬ সালে, লাহোরে",
+            "১৯৫৪ সালে, করাচিতে",
+            "১৯৬৯ সালে, ঢাকায়",
+            "১৯৭০ সালে, রাওয়ালপিন্ডিতে"
+          ],
+          "correctIndex": 0,
+          "correctAnswer": 0,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 82,
+          "question": "বাংলাদেশের সংবিধান কার্যকর হয় কত তারিখে?",
+          "options": [
+            "২৬ মার্চ ১৯৭২",
+            "৪ নভেম্বর ১৯৭২",
+            "১৬ ডিসেম্বর ১৯৭২",
+            "২৬ জানুয়ারি ১৯৭৩"
+          ],
+          "correctIndex": 2,
+          "correctAnswer": 2,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 83,
+          "question": "বাংলাদেশের সংবিধানের কত নম্বর ভাগে মৌলিক অধিকারের কথা বলা হয়েছে?",
+          "options": [
+            "১ম ভাগে",
+            "২য় ভাগে",
+            "৩য় ভাগে",
+            "৪র্থ ভাগে"
+          ],
+          "correctIndex": 2,
+          "correctAnswer": 2,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 84,
+          "question": "বাংলাদেশের জাতীয় সংসদ ভবনের স্থপতি কে?",
+          "options": [
+            "এফ আর খান",
+            "লুই আই কান",
+            "মাজহারুল ইসলাম",
+            "হামিদুজ্জামান খান"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 85,
+          "question": "মুক্তিযুদ্ধে বীরত্বসূচক বীরপ্রতীক খেতাবপ্রাপ্ত একমাত্র বিদেশি নাগরিক কে?",
+          "options": [
+            "সাইমন ড্রিং",
+            "ডব্লিউ এ এস ওডারল্যান্ড",
+            "জ্যাঁ পল সার্ত্রে",
+            "জর্জ হ্যারিসন"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 86,
+          "question": "বাংলাদেশের বৃহত্তম স্থলবন্দর কোনটি?",
+          "options": [
+            "হিলি",
+            "বেনাপোল",
+            "বাংলাবান্ধা",
+            "সোনা মসজিদ"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 87,
+          "question": "জাতিসংঘ (UN) আনুষ্ঠানিকভাবে প্রতিষ্ঠিত হয় কবে?",
+          "options": [
+            "২৪ অক্টোবর ১৯৪৫",
+            "২৪ অক্টোবর ১৯৪৬",
+            "১০ ডিসেম্বর ১৯৪৮",
+            "১ জানুয়ারি ১৯৪৫"
+          ],
+          "correctIndex": 0,
+          "correctAnswer": 0,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 88,
+          "question": "জাতিসংঘের বর্তমান সদস্য সংখ্যা কত?",
+          "options": [
+            "১৯১",
+            "১৯২",
+            "১৯৩",
+            "১৯৪"
+          ],
+          "correctIndex": 2,
+          "correctAnswer": 2,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 89,
+          "question": "আন্তর্জাতিক বিচার আদালত (ICJ)-এর সদর দপ্তর কোথায়?",
+          "options": [
+            "নিউ ইয়র্ক",
+            "হেগ, নেদারল্যান্ডস",
+            "ভিয়েনা",
+            "জেনেভা"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 90,
+          "question": "বিশ্ব বাণিজ্য সংস্থা (WTO)-এর সদর দপ্তর কোথায়?",
+          "options": [
+            "জেনেভা",
+            "প্যারিস",
+            "রোম",
+            "হেগ"
+          ],
+          "correctIndex": 0,
+          "correctAnswer": 0,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 91,
+          "question": "ভিটো (Veto) ক্ষমতা প্রয়োগ করতে পারে নিরাপত্তা পরিষদের কয়টি স্থায়ী সদস্য রাষ্ট্র?",
+          "options": [
+            "৪টি",
+            "৫টি",
+            "৭ট��",
+            "১৫টি"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 92,
+          "question": "আয়তনে বিশ্বের ক্ষুদ্রতম দেশ কোনটি?",
+          "options": [
+            "মোনাকো",
+            "ভ্যাটিকান সিটি",
+            "সান মারিনো",
+            "মালে"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 93,
+          "question": "বিশ্বের বৃহত্তম মহাদেশ কোনটি?",
+          "options": [
+            "আফ্রিকা",
+            "এশিয়া",
+            "উত্তর আমেরিকা",
+            "ইউরোপ"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 94,
+          "question": "মানবাধিকার দিবস পালন করা হয় কোন তার���খে?",
+          "options": [
+            "২৪ অক্টোবর",
+            "১০ ডিসেম্বর",
+            "১ ডিসেম্বর",
+            "৮ মার্চ"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 95,
+          "question": "২০২৪ সালের জুলাই বিপ্লবের মূল উৎস কী ছিল?",
+          "options": [
+            "মূল্যস্ফীতি নিরসন আন্দোলন",
+            "সরকারি চাকরিতে কোটা সংস্কার আন্দোলন",
+            "শিক্ষানীতি সংশোধন আন্দোলন",
+            "পরিবেশ রক্ষা আন্দোলন"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 96,
+          "question": "২০২৬ সালের ফিফা বিশ্বকাপ কততম আসর?",
+          "options": [
+            "২১তম",
+            "২২তম",
+            "২৩তম",
+            "২৪তম"
+          ],
+          "correctIndex": 2,
+          "correctAnswer": 2,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 97,
+          "question": "বিশ্বের প্রথম কৃত্রিম বুদ্ধিমত্তা (AI) নিয়ন্ত্রিত আইন প্রবর্তন করেছে কোন সংস্থা/জোট?",
+          "options": [
+            "জাতিসংঘ",
+            "ইউরোপীয় ইউনিয়ন (EU)",
+            "আসিয়ান",
+            "জি–২০"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        },
+        {
+          "id": 98,
+          "question": "বাংলাদেশ কত সালের মধ্যে 'উন্নয়নশীল দেশ' হিসেবে চূড়ান্ত মর্যাদা লাভের লক্ষ্যে রয়েছে?",
+          "options": [
+            "২০২৫",
+            "২০২৬",
+            "২০৩০",
+            "২০৪১"
+          ],
+          "correctIndex": 1,
+          "correctAnswer": 1,
+          "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
+        }
+      ]
     }
   ],
   "submissions": [
