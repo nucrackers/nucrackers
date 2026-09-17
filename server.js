@@ -588,7 +588,7 @@ const negativeMark = 0;
   let wrongCount = 0;
   let skippedCount = 0;
   let rawScore = 0;
-
+  const userAnswers = answers || {};
   (exam.questions || []).forEach(q => {
     const studentAns = answers ? answers[q.id] : undefined;
     if (studentAns === undefined || studentAns === null || studentAns === '') {
