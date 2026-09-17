@@ -7732,6 +7732,22 @@
           "explanation": "Google Form থেকে স্বয়ংক্রিয়ভাবে এক্সপোর্ট করা হয়েছে।"
         }
       ]
+    },
+    {
+      "id": "free-all-1789637088934",
+      "group": "all",
+      "batch": "free",
+      "isFree": true,
+      "title": "Special Model Test",
+      "subject": "Bangla, English, GK",
+      "durationMinutes": 60,
+      "duration": 60,
+      "totalMarks": 0,
+      "passMarks": 40,
+      "negativeMark": 0.25,
+      "status": "live",
+      "description": "",
+      "questions": []
     }
   ],
   "submissions": [
