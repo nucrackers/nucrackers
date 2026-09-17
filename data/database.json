@@ -30896,6 +30896,30 @@
         "100": 3
       },
       "submittedAt": "2026-09-17T14:04:59.766Z"
+    },
+    {
+      "id": "sub-1789654022468-387",
+      "examId": "free-art-1789544460635",
+      "isFree": true,
+      "roll": "FREE-2467",
+      "name": "Sumaiya",
+      "college": "Birgonj womens college",
+      "group": "arts",
+      "score": 3,
+      "totalMarks": 100,
+      "passMarks": 40,
+      "correctCount": 3,
+      "wrongCount": 2,
+      "skippedCount": 95,
+      "timeTakenSeconds": 88,
+      "answers": {
+        "1": 2,
+        "2": 3,
+        "3": 0,
+        "4": 0,
+        "21": 3
+      },
+      "submittedAt": "2026-09-17T14:07:02.468Z"
     }
   ]
 }
