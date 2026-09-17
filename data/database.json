@@ -23383,34 +23383,6 @@
       "submittedAt": "2026-09-17T10:28:41.854Z"
     },
     {
-      "id": "sub-1789640940864-501",
-      "examId": "free-all-1789637088934",
-      "isFree": true,
-      "roll": "FREE-0864",
-      "name": "s",
-      "college": "Cg",
-      "group": "all",
-      "score": 5,
-      "totalMarks": 100,
-      "passMarks": 40,
-      "correctCount": 5,
-      "wrongCount": 4,
-      "skippedCount": 91,
-      "timeTakenSeconds": 23,
-      "answers": {
-        "1": 2,
-        "2": 2,
-        "3": 1,
-        "4": 2,
-        "5": 1,
-        "6": 2,
-        "7": 3,
-        "8": 1,
-        "9": 1
-      },
-      "submittedAt": "2026-09-17T10:29:00.864Z"
-    },
-    {
       "id": "sub-1789641473512-150",
       "examId": "free-all-1789637088934",
       "isFree": true,
@@ -31883,6 +31855,27 @@
         "100": 3
       },
       "submittedAt": "2026-09-17T14:49:49.763Z"
+    },
+    {
+      "id": "sub-1789656799006-615",
+      "examId": "free-all-1789637088934",
+      "isFree": true,
+      "roll": "FREE-9006",
+      "name": "s",
+      "college": "Cg",
+      "group": "all",
+      "score": 0,
+      "totalMarks": 100,
+      "passMarks": 40,
+      "correctCount": 0,
+      "wrongCount": 2,
+      "skippedCount": 98,
+      "timeTakenSeconds": 36,
+      "answers": {
+        "1": 1,
+        "2": 2
+      },
+      "submittedAt": "2026-09-17T14:53:19.006Z"
     }
   ]
 }
