@@ -1012,7 +1012,87 @@ app.get('/api/admin/students/preview-roll', (req, res) => {
     roll: generatedRoll
   });
 });
+// Google Sheet Webhook Settings
+app.get('/api/admin/google-sheet-settings', (req, res) => {
+  const db = readDb();
+  res.json({
+    success: true,
+    webhookUrl: (db.settings && db.settings.googleSheetWebhookUrl) || ''
+  });
+});
 
+app.post('/api/admin/google-sheet-settings', (req, res) => {
+  const { webhookUrl } = req.body;
+  const db = readDb();
+  db.settings = db.settings || {};
+  db.settings.googleSheetWebhookUrl = (webhookUrl || '').trim();
+  writeDb(db);
+  res.json({
+    success: true,
+    message: 'গুগল শিট Webhook URL সফলভাবে সেভ করা হয়েছে!',
+    webhookUrl: db.settings.googleSheetWebhookUrl
+  });
+});
+
+// Sync Approved Students to Google Sheet
+app.post('/api/admin/sync-google-sheet', async (req, res) => {
+  try {
+    const db = readDb();
+    const webhookUrl = (req.body.webhookUrl || (db.settings && db.settings.googleSheetWebhookUrl) || '').trim();
+
+    if (!webhookUrl) {
+      return res.status(400).json({
+        success: false,
+        message: 'গুগল শিট Webhook URL সেট করা নেই। অনুগ্রহ করে প্রথমে Webhook URL দিন।'
+      });
+    }
+
+    const approvedStudents = (db.students || [])
+      .filter(s => s.status === 'approved' || !!s.roll)
+      .map(s => ({
+        roll: s.roll || '',
+        name: s.name || '',
+        college: s.college || '',
+        district: s.district || '',
+        group: s.group || '',
+        whatsapp: s.whatsapp || '',
+        paymentMethod: s.paymentMethod || '',
+        senderNumber: s.paymentNumber || '',
+        transactionId: s.transactionId || '',
+        approvedAt: s.approvedAt || s.registeredAt || ''
+      }));
+
+    if (approvedStudents.length === 0) {
+      return res.json({
+        success: true,
+        message: 'কোনো অনুমোদিত শিক্ষার্থী নেই সিঙ্ক করার জন্য।',
+        count: 0
+      });
+    }
+
+    await fetch(webhookUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'syncApprovedStudents',
+        timestamp: new Date().toISOString(),
+        totalStudents: approvedStudents.length,
+        students: approvedStudents
+      })
+    });
+
+    res.json({
+      success: true,
+      message: `মোট ${approvedStudents.length} জন অনুমোদিত শিক্ষার্থীর তথ্য গুগল শিটে সফলভাবে সিঙ্ক হয়েছে!`,
+      count: approvedStudents.length
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: `গুগল শিট সিঙ্ক করার সময় ত্রুটি: ${err.message}`
+    });
+  }
+});
 // 12. Admin: Add new student with STRICT UNIQUE ROLL validation (Supports auto 8-digit generation)
 app.post('/api/admin/students', (req, res) => {
   const { roll, name, group, college, district, whatsapp } = req.body;
