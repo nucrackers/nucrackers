@@ -1299,6 +1299,173 @@ document.addEventListener('DOMContentLoaded', () => {
       showAlert(studentAlert, '<i class="fa-solid fa-download me-1"></i> শিক্ষার্থীদের ব্যাকআপ ফাইল সফলভাবে ডাউনলোড হয়েছে!', 'success');
     });
   }
+  // ==========================================
+  // Google Sheet Sync & Export Handlers
+  // ==========================================
+  const googleSheetSyncModalEl = document.getElementById('googleSheetSyncModal');
+  const googleSheetWebhookInput = document.getElementById('googleSheetWebhookInput');
+  const saveGoogleSheetWebhookBtn = document.getElementById('saveGoogleSheetWebhookBtn');
+  const triggerGoogleSheetSyncBtn = document.getElementById('triggerGoogleSheetSyncBtn');
+  const exportGoogleSheetCsvBtn = document.getElementById('exportGoogleSheetCsvBtn');
+  const sheetSyncApprovedCount = document.getElementById('sheetSyncApprovedCount');
+  const sheetWebhookStatus = document.getElementById('sheetWebhookStatus');
+  const copyAppsScriptBtn = document.getElementById('copyAppsScriptBtn');
+
+  // Load saved Google Sheet Webhook URL
+  const loadSheetSettings = async () => {
+    try {
+      const res = await fetch('/api/admin/google-sheet-settings');
+      const data = await res.json();
+      if (data && data.webhookUrl && googleSheetWebhookInput) {
+        googleSheetWebhookInput.value = data.webhookUrl;
+      }
+    } catch (e) {
+      console.warn('Could not load sheet settings:', e);
+    }
+  };
+
+  if (googleSheetSyncModalEl) {
+    googleSheetSyncModalEl.addEventListener('show.bs.modal', () => {
+      const approved = (cachedStudents || []).filter(s => s.status === 'approved' || !!s.roll);
+      if (sheetSyncApprovedCount) {
+        sheetSyncApprovedCount.textContent = approved.length;
+      }
+      loadSheetSettings();
+    });
+  }
+
+  // ১. Webhook URL সেভ করার হ্যান্ডলার
+  if (saveGoogleSheetWebhookBtn && googleSheetWebhookInput) {
+    saveGoogleSheetWebhookBtn.addEventListener('click', async () => {
+      const url = (googleSheetWebhookInput.value || '').trim();
+      try {
+        saveGoogleSheetWebhookBtn.disabled = true;
+        saveGoogleSheetWebhookBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> সেভ হচ্ছে...';
+
+        const res = await fetch('/api/admin/google-sheet-settings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ webhookUrl: url })
+        });
+        const data = await res.json();
+        if (data.success) {
+          if (sheetWebhookStatus) {
+            sheetWebhookStatus.innerHTML = '<span class="text-success"><i class="fa-solid fa-circle-check me-1"></i> Webhook URL সফলভাবে সেভ হয়েছে!</span>';
+          }
+        } else {
+          throw new Error(data.message || 'সেভ করা যায়নি');
+        }
+      } catch (err) {
+        if (sheetWebhookStatus) {
+          sheetWebhookStatus.innerHTML = `<span class="text-danger"><i class="fa-solid fa-circle-exclamation me-1"></i> ${err.message}</span>`;
+        }
+      } finally {
+        saveGoogleSheetWebhookBtn.disabled = false;
+        saveGoogleSheetWebhookBtn.innerHTML = '<i class="fa-solid fa-floppy-disk me-1"></i> সেভ করুন';
+      }
+    });
+  }
+
+  // ২. সরাসরি গুগল শিটে ডাটা পাঠানোর হ্যান্ডলার (Cloud Sync)
+  if (triggerGoogleSheetSyncBtn) {
+    triggerGoogleSheetSyncBtn.addEventListener('click', async () => {
+      const webhookUrl = (googleSheetWebhookInput ? googleSheetWebhookInput.value : '').trim();
+      if (!webhookUrl) {
+        alert('অনুগ্রহ করে প্রথমে আপনার গুগল শিট Webhook URL টি ইনপুট বক্সে দিন।');
+        if (googleSheetWebhookInput) googleSheetWebhookInput.focus();
+        return;
+      }
+
+      const approved = (cachedStudents || []).filter(s => s.status === 'approved' || !!s.roll);
+      if (approved.length === 0) {
+        alert('সিঙ্ক করার মতো কোনো অনুমোদিত শিক্ষার্থী নেই।');
+        return;
+      }
+
+      try {
+        triggerGoogleSheetSyncBtn.disabled = true;
+        triggerGoogleSheetSyncBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> গুগল শিটে পাঠানো হচ্ছে...';
+
+        const res = await fetch('/api/admin/sync-google-sheet', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ webhookUrl })
+        });
+
+        const data = await res.json();
+        if (!res.ok || !data.success) {
+          throw new Error(data.message || 'সিঙ্ক ব্যর্থ হয়েছে');
+        }
+
+        alert(`🎉 ${data.message}`);
+        if (sheetWebhookStatus) {
+          sheetWebhookStatus.innerHTML = `<span class="text-success fw-bold"><i class="fa-solid fa-circle-check me-1"></i> ${data.message} (${new Date().toLocaleTimeString('bn-BD')})</span>`;
+        }
+      } catch (err) {
+        alert(`ত্রুটি: ${err.message}`);
+        if (sheetWebhookStatus) {
+          sheetWebhookStatus.innerHTML = `<span class="text-danger"><i class="fa-solid fa-circle-exclamation me-1"></i> ${err.message}</span>`;
+        }
+      } finally {
+        triggerGoogleSheetSyncBtn.disabled = false;
+        triggerGoogleSheetSyncBtn.innerHTML = '<i class="fa-solid fa-arrows-rotate me-2"></i> এখনই গুগল শিটে ডাটা পাঠান (Sync to Google Sheet)';
+      }
+    });
+  }
+
+  // ৩. এক ক্লিকে গুগল শিট ও এক্সেল রেডি CSV ফাইল ডাউনলোড
+  if (exportGoogleSheetCsvBtn) {
+    exportGoogleSheetCsvBtn.addEventListener('click', () => {
+      const approved = (cachedStudents || []).filter(s => s.status === 'approved' || !!s.roll);
+      if (approved.length === 0) {
+        alert('ডাউনলোড করার মতো কোনো অনুমোদিত শিক্ষার্থী নেই।');
+        return;
+      }
+
+      const headers = ['রোল নম্বর', 'শিক্ষার্থীর নাম', 'কলেজ', 'জেলা', 'বিভাগ', 'হোয়াটসঅ্যাপ', 'পেমেন্ট মেথড', 'প্রেরক নম্বর', 'TrxID', 'অনুমোদনের তারিখ'];
+      const rows = approved.map(s => [
+        `"${(s.roll || '').replace(/"/g, '""')}"`,
+        `"${(s.name || '').replace(/"/g, '""')}"`,
+        `"${(s.college || '').replace(/"/g, '""')}"`,
+        `"${(s.district || '').replace(/"/g, '""')}"`,
+        `"${(s.group || '').replace(/"/g, '""')}"`,
+        `"${(s.whatsapp || '').replace(/"/g, '""')}"`,
+        `"${(s.paymentMethod || '').replace(/"/g, '""')}"`,
+        `"${(s.paymentNumber || '').replace(/"/g, '""')}"`,
+        `"${(s.transactionId || '').replace(/"/g, '""')}"`,
+        `"${(s.approvedAt ? new Date(s.approvedAt).toLocaleString('bn-BD') : (s.registeredAt || '')).replace(/"/g, '""')}"`
+      ]);
+
+      const csvContent = '\uFEFF' + [headers.join(','), ...rows.map(r => r.join(','))].join('\r\n');
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `nu_crackers_approved_students_${new Date().toISOString().slice(0, 10)}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    });
+  }
+
+  // ৪. Apps Script এর কোড সহজে কপি করার বাটন
+  if (copyAppsScriptBtn) {
+    copyAppsScriptBtn.addEventListener('click', () => {
+      const codeBlock = document.getElementById('appsScriptCodeBlock');
+      if (codeBlock) {
+        navigator.clipboard.writeText(codeBlock.innerText).then(() => {
+          const original = copyAppsScriptBtn.innerHTML;
+          copyAppsScriptBtn.innerHTML = '<i class="fa-solid fa-check me-1"></i> কপি হয়েছে!';
+          copyAppsScriptBtn.classList.replace('btn-outline-light', 'btn-success');
+          setTimeout(() => {
+            copyAppsScriptBtn.innerHTML = original;
+            copyAppsScriptBtn.classList.replace('btn-success', 'btn-outline-light');
+          }, 2000);
+        });
+      }
+    });
+  }
 
   if (importBackupBtn && importBackupFileInput) {
     importBackupBtn.addEventListener('click', () => {
