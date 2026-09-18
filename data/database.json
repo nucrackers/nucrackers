@@ -38822,5 +38822,8 @@
       },
       "submittedAt": "2026-09-18T08:03:19.850Z"
     }
-  ]
+  ],
+  "settings": {
+    "googleSheetWebhookUrl": "https://script.google.com/macros/s/AKfycbzq_YltFddB79y9zNLXN4ekFMZcn9W_j886d1yHeEPVH_Wd_wcNaRRe0YY-4lbI8XJAbQ/exec"
+  }
 }
