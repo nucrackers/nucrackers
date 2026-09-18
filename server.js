@@ -452,7 +452,7 @@ app.get('/api/exams', (req, res) => {
       duration: duration,
       totalMarks: totalMarks,
       passMarks: Number(e.passMarks || 5),
-      negativeMark: e.negativeMark || 0,
+      negativeMark: 0,
       status: e.status || 'live',
       description: e.description,
       questionCount: (e.questions || []).length,
@@ -516,7 +516,7 @@ app.get('/api/exams/:id', (req, res) => {
       duration: Number(exam.duration || exam.durationMinutes || 15),
       totalMarks: Number(exam.totalMarks !== undefined && exam.totalMarks !== null ? exam.totalMarks : (exam.questions ? exam.questions.length : 0)),
       passMarks: Number(exam.passMarks || 5),
-      negativeMark: exam.negativeMark || 0,
+      negativeMark: 0,
       status: exam.status || 'live',
       description: exam.description,
       questions: safeQuestions
@@ -526,70 +526,70 @@ app.get('/api/exams/:id', (req, res) => {
 
 // 6. Submit Exam (Supports both Free Batch with Name/College and Premium with Roll)
 app.post('/api/exams/:id/submit', (req, res) => {
-  const { id } = req.params;
-  const { roll, studentName, collegeName, answers, timeTakenSeconds } = req.body;
+  try {
+    const { id } = req.params;
+    const { roll, studentName, collegeName, answers, timeTakenSeconds } = req.body;
 
-  const db = readDb();
-  const exam = (db.exams || []).find(e => e.id === id);
-  if (!exam) {
-    return res.status(404).json({ success: false, message: 'পরীক্ষা পাওয়া যায়নি।' });
-  }
-
-  const isExamFree = exam.isFree === true || exam.batch === 'free';
-  let finalRoll = '';
-  let finalName = '';
-  let finalCollege = '';
-  let finalGroup = exam.group || 'all';
-
-  if (isExamFree) {
-    // For free exams, student enters Name & College name
-    finalName = String(studentName || req.body.name || '').trim();
-    finalCollege = String(collegeName || req.body.college || '').trim() || 'কলেজ উল্লেখ নেই';
-    if (!finalName) {
-      return res.status(400).json({ success: false, message: 'পরীক্ষা জমা দেওয়ার জন্য আপনার নাম আবশ্যক।' });
-    }
-    finalRoll = roll ? String(roll).trim() : `FREE-${Date.now().toString().slice(-4)}`;
-  } else {
-    // For premium exams, roll is strictly required & checked
-    if (!roll) {
-      return res.status(400).json({ success: false, message: 'রোল নম্বর প্রয়োজন।' });
+    const db = readDb();
+    const exam = (db.exams || []).find(e => e.id === id);
+    if (!exam) {
+      return res.status(404).json({ success: false, message: 'পরীক্ষা পাওয়া যায়নি।' });
     }
 
-    const student = (db.students || []).find(s => String(s.roll).trim().toLowerCase() === String(roll).trim().toLowerCase());
-    if (!student) {
-      return res.status(401).json({
-        success: false,
-        message: 'প্রিমিয়াম শিক্ষার্থী তালিকায় রোল পাওয়া যায়নি। অনুগ্রহ করে সঠিক রোল ও নাম দিয়ে লগইন করুন।'
-      });
+    const isExamFree = exam.isFree === true || exam.batch === 'free';
+    let finalRoll = '';
+    let finalName = '';
+    let finalCollege = '';
+    let finalGroup = exam.group || 'all';
+
+    if (isExamFree) {
+      // For free exams, student enters Name & College name
+      finalName = String(studentName || req.body.name || '').trim();
+      finalCollege = String(collegeName || req.body.college || '').trim() || 'কলেজ উল্লেখ নেই';
+      if (!finalName) {
+        return res.status(400).json({ success: false, message: 'পরীক্ষা জমা দেওয়ার জন্য আপনার নাম আবশ্যক।' });
+      }
+      finalRoll = roll ? String(roll).trim() : `FREE-${Date.now().toString().slice(-4)}`;
+    } else {
+      // For premium exams, roll is strictly required & checked
+      if (!roll) {
+        return res.status(400).json({ success: false, message: 'রোল নম্বর প্রয়োজন।' });
+      }
+
+      const student = (db.students || []).find(s => String(s.roll).trim().toLowerCase() === String(roll).trim().toLowerCase());
+      if (!student) {
+        return res.status(401).json({
+          success: false,
+          message: 'প্রিমিয়াম শিক্ষার্থী তালিকায় রোল পাওয়া যায়নি। অনুগ্রহ করে সঠিক রোল ও নাম দিয়ে লগইন করুন।'
+        });
+      }
+
+      if (student.status === 'pending') {
+        return res.status(403).json({
+          success: false,
+          message: 'আপনার রেজিস্ট্রেশনটি এখনো এডমিন দ্বারা অনুমোদিত হয়নি।'
+        });
+      }
+
+      if (student.group !== exam.group && exam.group !== 'all') {
+        return res.status(403).json({
+          success: false,
+          message: `প্রবেশাধিকার সংরক্ষিত! আপনি ${student.group.toUpperCase()} ইউনিটের শিক্ষার্থী। ${exam.group.toUpperCase()} ইউনিটের পরীক্ষায় অংশগ্রহণ করার অনুমতি নেই।`
+        });
+      }
+
+      finalName = student.name;
+      finalCollege = student.college || '';
+      finalRoll = student.roll;
+      finalGroup = student.group;
     }
 
-    if (student.status === 'pending') {
-      return res.status(403).json({
-        success: false,
-        message: 'আপনার রেজিস্ট্রেশনটি এখনো এডমিন দ্বারা অনুমোদিত হয়নি।'
-      });
-    }
-
-    if (student.group !== exam.group && exam.group !== 'all') {
-      return res.status(403).json({
-        success: false,
-        message: `প্রবেশাধিকার সংরক্ষিত! আপনি ${student.group.toUpperCase()} ইউনিটের শিক্ষার্থী। ${exam.group.toUpperCase()} ইউনিটের পরীক্ষায় অংশগ্রহণ করার অনুমতি নেই।`
-      });
-    }
-
-    finalName = student.name;
-    finalCollege = student.college || '';
-    finalRoll = student.roll;
-    finalGroup = student.group;
-  }
-
-const negativeMark = 0;
+    const negativeMark = 0;
     let correctCount = 0;
     let wrongCount = 0;
     let skippedCount = 0;
     let rawScore = 0;
 
-    // এই লাইনটি জরুরি (যাতে userAnswers ডিফাইন থাকে):
     const userAnswers = answers || {};
 
     (exam.questions || []).forEach(q => {
@@ -614,6 +614,7 @@ const negativeMark = 0;
     const submission = {
       id: 'sub-' + Date.now() + '-' + Math.floor(Math.random() * 1000),
       examId: exam.id,
+      examTitle: exam.title || 'মডেল টেস্ট',
       isFree: isExamFree,
       roll: finalRoll,
       name: finalName,
@@ -622,6 +623,7 @@ const negativeMark = 0;
       score: finalScore,
       totalMarks: totalMarks,
       passMarks: passMarks,
+      isPassed: finalScore >= passMarks,
       correctCount,
       wrongCount,
       skippedCount,
@@ -630,49 +632,56 @@ const negativeMark = 0;
       submittedAt: new Date().toISOString()
     };
 
-  // Remove previous submission if student retakes this exam
-  db.submissions = (db.submissions || []).filter(
-    s => !(s.examId === exam.id && (
-      (finalRoll && String(s.roll).trim().toLowerCase() === String(finalRoll).trim().toLowerCase()) ||
-      (isExamFree && String(s.name).trim().toLowerCase() === String(finalName).trim().toLowerCase())
-    ))
-  );
-  db.submissions.push(submission);
-  writeDb(db);
+    // Remove previous submission if student retakes this exam
+    db.submissions = (db.submissions || []).filter(
+      s => !(s && s.examId === exam.id && (
+        (finalRoll && s.roll && String(s.roll).trim().toLowerCase() === String(finalRoll).trim().toLowerCase()) ||
+        (isExamFree && s.name && String(s.name).trim().toLowerCase() === String(finalName).trim().toLowerCase())
+      ))
+    );
+    db.submissions.push(submission);
+    writeDb(db);
 
-  // Compute Rank for this exam
-  const examSubmissions = db.submissions
-    .filter(s => s.examId === exam.id)
-    .sort((a, b) => {
-      if (b.score !== a.score) return b.score - a.score;
-      return (a.timeTakenSeconds || 0) - (b.timeTakenSeconds || 0);
+    // Compute Rank for this exam
+    const examSubmissions = (db.submissions || [])
+      .filter(s => s && s.examId === exam.id)
+      .sort((a, b) => {
+        if (b.score !== a.score) return b.score - a.score;
+        return (a.timeTakenSeconds || 0) - (b.timeTakenSeconds || 0);
+      });
+
+    const myRank = examSubmissions.findIndex(s => s.id === submission.id) + 1;
+
+    return res.json({
+      success: true,
+      message: 'পরীক্ষা সফলভাবে জমা নেওয়া হয়েছে!',
+      result: {
+        submissionId: submission.id,
+        examId: exam.id,
+        examTitle: exam.title,
+        isFree: isExamFree,
+        roll: submission.roll,
+        name: submission.name,
+        college: submission.college,
+        score: finalScore,
+        totalMarks: totalMarks,
+        passMarks: passMarks,
+        isPassed: finalScore >= passMarks,
+        correctCount,
+        wrongCount,
+        skippedCount,
+        timeTakenSeconds: submission.timeTakenSeconds,
+        rank: myRank || 1,
+        totalParticipants: examSubmissions.length || 1
+      }
     });
-
-  const myRank = examSubmissions.findIndex(s => s.id === submission.id) + 1;
-
-  res.json({
-    success: true,
-    message: 'পরীক্ষা সফলভাবে জমা নেওয়া হয়েছে!',
-    result: {
-      submissionId: submission.id,
-      examId: exam.id,
-      examTitle: exam.title,
-      isFree: isExamFree,
-      roll: submission.roll,
-      name: submission.name,
-      college: submission.college,
-      score: finalScore,
-      totalMarks: totalMarks,
-      passMarks: passMarks,
-      isPassed: finalScore >= passMarks,
-      correctCount,
-      wrongCount,
-      skippedCount,
-      timeTakenSeconds: submission.timeTakenSeconds,
-      rank: myRank,
-      totalParticipants: examSubmissions.length
-    }
-  });
+  } catch (err) {
+    console.error('Error submitting exam:', err);
+    return res.status(500).json({
+      success: false,
+      message: 'পরীক্ষা জমা দেওয়ার সময় সার্ভার ত্রুটি ঘটেছে: ' + err.message
+    });
+  }
 });
 
 // 7. Leaderboard for an Exam
@@ -1000,19 +1009,7 @@ app.put('/api/admin/students/bulk-replace', (req, res) => {
   });
 });
 
-// 11.8. Admin: Preview next 8-Digit Unique Roll for a group
-app.get('/api/admin/students/preview-roll', (req, res) => {
-  const { group, year } = req.query;
-  const db = readDb();
-  const cleanGroup = String(group || 'science').trim().toLowerCase();
-  const generatedRoll = generate8DigitRoll(db, cleanGroup, year || '27');
-  return res.json({
-    success: true,
-    group: cleanGroup,
-    roll: generatedRoll
-  });
-});
-// Google Sheet Webhook Settings
+// 11.7. Google Sheet Webhook Settings
 app.get('/api/admin/google-sheet-settings', (req, res) => {
   const db = readDb();
   res.json({
@@ -1034,7 +1031,7 @@ app.post('/api/admin/google-sheet-settings', (req, res) => {
   });
 });
 
-// Sync Approved Students to Google Sheet
+// 11.8. Sync Approved Students to Google Sheet
 app.post('/api/admin/sync-google-sheet', async (req, res) => {
   try {
     const db = readDb();
@@ -1070,6 +1067,7 @@ app.post('/api/admin/sync-google-sheet', async (req, res) => {
       });
     }
 
+    // Send payload to Google Apps Script Web App
     await fetch(webhookUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -1087,12 +1085,27 @@ app.post('/api/admin/sync-google-sheet', async (req, res) => {
       count: approvedStudents.length
     });
   } catch (err) {
+    console.error('Google Sheet sync error:', err);
     res.status(500).json({
       success: false,
       message: `গুগল শিট সিঙ্ক করার সময় ত্রুটি: ${err.message}`
     });
   }
 });
+
+// 11.8. Admin: Preview next 8-Digit Unique Roll for a group
+app.get('/api/admin/students/preview-roll', (req, res) => {
+  const { group, year } = req.query;
+  const db = readDb();
+  const cleanGroup = String(group || 'science').trim().toLowerCase();
+  const generatedRoll = generate8DigitRoll(db, cleanGroup, year || '27');
+  return res.json({
+    success: true,
+    group: cleanGroup,
+    roll: generatedRoll
+  });
+});
+
 // 12. Admin: Add new student with STRICT UNIQUE ROLL validation (Supports auto 8-digit generation)
 app.post('/api/admin/students', (req, res) => {
   const { roll, name, group, college, district, whatsapp } = req.body;
@@ -1409,7 +1422,7 @@ app.post('/api/admin/exams', (req, res) => {
     duration: rawDuration,
     totalMarks: rawTotalMarks,
     passMarks: Number(passMarks) || 5,
-   negativeMark: 0,
+    negativeMark: 0,
     status: 'live',
     description: description ? String(description).trim() : '',
     questions: []
@@ -1450,7 +1463,7 @@ app.put('/api/admin/exams/:id', (req, res) => {
   }
   if (description !== undefined) exam.description = String(description).trim();
   if (passMarks !== undefined) exam.passMarks = Number(passMarks);
-   exam.negativeMark = 0;
+  exam.negativeMark = 0;
   if (totalMarks !== undefined) exam.totalMarks = Number(totalMarks);
 
   writeDb(db);
@@ -1817,9 +1830,27 @@ app.delete('/api/admin/exams/:id/questions/:questionId', (req, res) => {
 // 20. Admin: View all submissions / audit
 app.get('/api/admin/submissions', (req, res) => {
   const db = readDb();
+  const examMap = {};
+  (db.exams || []).forEach(e => {
+    if (e && e.id) examMap[e.id] = e;
+  });
+
+  const submissions = (db.submissions || []).map(s => {
+    if (!s) return null;
+    const exam = examMap[s.examId];
+    const passMarks = s.passMarks !== undefined ? Number(s.passMarks) : (exam ? Number(exam.passMarks || 5) : 5);
+    const isPassed = s.isPassed !== undefined ? Boolean(s.isPassed) : (Number(s.score || 0) >= passMarks);
+    return {
+      ...s,
+      examTitle: s.examTitle || (exam ? exam.title : 'মডেল টেস্ট'),
+      passMarks,
+      isPassed
+    };
+  }).filter(Boolean).reverse();
+
   res.json({
     success: true,
-    submissions: (db.submissions || []).slice().reverse()
+    submissions
   });
 });
 
