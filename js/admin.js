@@ -1299,9 +1299,8 @@ document.addEventListener('DOMContentLoaded', () => {
       showAlert(studentAlert, '<i class="fa-solid fa-download me-1"></i> শিক্ষার্থীদের ব্যাকআপ ফাইল সফলভাবে ডাউনলোড হয়েছে!', 'success');
     });
   }
-  // ==========================================
+
   // Google Sheet Sync & Export Handlers
-  // ==========================================
   const googleSheetSyncModalEl = document.getElementById('googleSheetSyncModal');
   const googleSheetWebhookInput = document.getElementById('googleSheetWebhookInput');
   const saveGoogleSheetWebhookBtn = document.getElementById('saveGoogleSheetWebhookBtn');
@@ -1323,9 +1322,7 @@ document.addEventListener('DOMContentLoaded', () => {
       console.warn('Could not load sheet settings:', e);
     }
   };
-const googleSheetSyncModalBtn = document.getElementById('googleSheetSyncModalBtn');
-  if (googleSheetSyncModalBtn && googleSheetSyncModalEl) {
-  
+
   if (googleSheetSyncModalEl) {
     googleSheetSyncModalEl.addEventListener('show.bs.modal', () => {
       const approved = (cachedStudents || []).filter(s => s.status === 'approved' || !!s.roll);
@@ -1336,7 +1333,7 @@ const googleSheetSyncModalBtn = document.getElementById('googleSheetSyncModalBtn
     });
   }
 
-  // ১. Webhook URL সেভ করার হ্যান্ডলার
+  // Save Webhook URL
   if (saveGoogleSheetWebhookBtn && googleSheetWebhookInput) {
     saveGoogleSheetWebhookBtn.addEventListener('click', async () => {
       const url = (googleSheetWebhookInput.value || '').trim();
@@ -1368,7 +1365,7 @@ const googleSheetSyncModalBtn = document.getElementById('googleSheetSyncModalBtn
     });
   }
 
-  // ২. সরাসরি গুগল শিটে ডাটা পাঠানোর হ্যান্ডলার (Cloud Sync)
+  // Trigger Google Sheet Sync
   if (triggerGoogleSheetSyncBtn) {
     triggerGoogleSheetSyncBtn.addEventListener('click', async () => {
       const webhookUrl = (googleSheetWebhookInput ? googleSheetWebhookInput.value : '').trim();
@@ -1415,7 +1412,7 @@ const googleSheetSyncModalBtn = document.getElementById('googleSheetSyncModalBtn
     });
   }
 
-  // ৩. এক ক্লিকে গুগল শিট ও এক্সেল রেডি CSV ফাইল ডাউনলোড
+  // Instant 1-Click CSV Export for Google Sheets & Excel
   if (exportGoogleSheetCsvBtn) {
     exportGoogleSheetCsvBtn.addEventListener('click', () => {
       const approved = (cachedStudents || []).filter(s => s.status === 'approved' || !!s.roll);
@@ -1451,7 +1448,7 @@ const googleSheetSyncModalBtn = document.getElementById('googleSheetSyncModalBtn
     });
   }
 
-  // ৪. Apps Script এর কোড সহজে কপি করার বাটন
+  // Copy Apps Script Code button
   if (copyAppsScriptBtn) {
     copyAppsScriptBtn.addEventListener('click', () => {
       const codeBlock = document.getElementById('appsScriptCodeBlock');
@@ -1793,7 +1790,7 @@ const googleSheetSyncModalBtn = document.getElementById('googleSheetSyncModalBtn
     const subject = document.getElementById('newExamSubject').value.trim();
     const durationMinutes = parseInt(document.getElementById('newExamDuration').value) || 15;
     const passMarks = parseInt(document.getElementById('newExamPassMarks').value) || 5;
- const negativeMark = 0;
+    const negativeMark = 0;
     const description = document.getElementById('newExamDesc').value.trim();
 
     if (!title || !subject || !group) {
@@ -1819,6 +1816,7 @@ const googleSheetSyncModalBtn = document.getElementById('googleSheetSyncModalBtn
           durationMinutes,
           totalMarks: 0,
           passMarks,
+          negativeMark,
           description
         })
       });
@@ -1877,19 +1875,23 @@ const googleSheetSyncModalBtn = document.getElementById('googleSheetSyncModalBtn
           const min = Math.floor((s.timeTakenSeconds || 0) / 60);
           const sec = (s.timeTakenSeconds || 0) % 60;
 
+          const passMarks = s.passMarks !== undefined ? Number(s.passMarks) : 5;
+          const isPassed = s.isPassed !== undefined ? Boolean(s.isPassed) : (Number(s.score || 0) >= passMarks);
+
           return `
             <tr>
               <td class="text-muted small">${idx + 1}</td>
               <td>
-                <span class="badge bg-light text-dark border fw-bold"><code>${escapeHtml(s.roll)}</code></span>
+                <span class="badge bg-light text-dark border fw-bold"><code>${escapeHtml(s.roll || 'N/A')}</code></span>
               </td>
               <td>
-                <div class="fw-semibold text-dark">${escapeHtml(s.name)}</div>
+                <div class="fw-semibold text-dark">${escapeHtml(s.name || 'শিক্ষার্থী')}</div>
+                ${s.college ? `<div class="text-muted" style="font-size: 0.75rem;">${escapeHtml(s.college)}</div>` : ''}
               </td>
-              <td class="small text-muted">${escapeHtml(s.examTitle)}</td>
+              <td class="small text-muted">${escapeHtml(s.examTitle || 'মডেল টেস্ট')}</td>
               <td>
                 <span class="badge bg-primary px-2 py-1 fs-6">${s.score} / ${s.totalMarks}</span>
-                ${s.isPassed ? '<span class="badge bg-success bg-opacity-10 text-success ms-1">পাস</span>' : '<span class="badge bg-danger bg-opacity-10 text-danger ms-1">ফেল</span>'}
+                ${isPassed ? '<span class="badge bg-success bg-opacity-10 text-success ms-1">পাস</span>' : '<span class="badge bg-danger bg-opacity-10 text-danger ms-1">ফেল</span>'}
               </td>
               <td class="small text-muted">${min}m ${sec}s</td>
               <td class="small text-muted">${subDate}</td>
