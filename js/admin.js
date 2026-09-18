@@ -1325,16 +1325,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 const googleSheetSyncModalBtn = document.getElementById('googleSheetSyncModalBtn');
   if (googleSheetSyncModalBtn && googleSheetSyncModalEl) {
-    googleSheetSyncModalBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      try {
-        const modal = bootstrap.Modal.getOrCreateInstance(googleSheetSyncModalEl);
-        modal.show();
-      } catch (err) {
-        console.warn('Bootstrap modal trigger fallback:', err);
-      }
-    });
-  }
+  
   if (googleSheetSyncModalEl) {
     googleSheetSyncModalEl.addEventListener('show.bs.modal', () => {
       const approved = (cachedStudents || []).filter(s => s.status === 'approved' || !!s.roll);
