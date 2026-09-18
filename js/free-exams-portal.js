@@ -549,21 +549,26 @@
     }
   }
 
-  // 5. Result Modal & Performance
+// 5. Result Modal & Performance
   function showResultModal(result) {
     const resModalEl = document.getElementById('freeResultModal');
     if (!resModalEl) return;
 
-    document.getElementById('resStudentName').textContent = result.name;
-    document.getElementById('resStudentCollege').textContent = result.college || 'সাধারণ শিক্ষার্থী';
-    document.getElementById('resExamTitle').textContent = result.examTitle;
+    const setTxt = (id, text) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = text !== undefined && text !== null ? text : '';
+    };
 
-    document.getElementById('resScoreDisplay').textContent = `${result.score} / ${result.totalMarks}`;
-    document.getElementById('resRankBadge').textContent = `মেধা স্থান: ${result.rank} তম (মোট ${result.totalParticipants} জনের মধ্যে)`;
-    document.getElementById('resCorrectCount').textContent = result.correctCount;
-    document.getElementById('resWrongCount').textContent = result.wrongCount;
-    document.getElementById('resSkippedCount').textContent = result.skippedCount;
-    document.getElementById('resTimeTaken').textContent = formatSecondsToMinSec(result.timeTakenSeconds);
+    setTxt('resStudentName', result.name || 'সাধারণ শিক্ষার্থী');
+    setTxt('resStudentCollege', result.college || 'কলেজ উল্লেখ নেই');
+    setTxt('resExamTitle', result.examTitle || 'মডেল টেস্ট');
+
+    setTxt('resScoreDisplay', `${result.score} / ${result.totalMarks}`);
+    setTxt('resRankBadge', `মেধা স্থান: ${result.rank} তম (মোট ${result.totalParticipants} জনের মধ্যে)`);
+    setTxt('resCorrectCount', result.correctCount || 0);
+    setTxt('resWrongCount', result.wrongCount || 0);
+    setTxt('resSkippedCount', result.skippedCount || 0);
+    setTxt('resTimeTaken', formatSecondsToMinSec(result.timeTakenSeconds || 0));
 
     const passEl = document.getElementById('resPassFailStatus');
     if (passEl) {
@@ -575,7 +580,23 @@
         passEl.innerHTML = '<i class="fa-solid fa-circle-xmark me-1"></i> অনুত্তীর্ণ (FAILED)';
       }
     }
+const btnLeaderboard = document.getElementById('resBtnViewLeaderboard');
+    if (btnLeaderboard) {
+      btnLeaderboard.onclick = () => {
+        const resModal = bootstrap.Modal.getInstance(resModalEl);
+        if (resModal) resModal.hide();
+        openLeaderboardModal(result.examId, result.examTitle);
+      };
+    }
 
+    const btnSolveSheet = document.getElementById('resBtnViewSolveSheet');
+    if (btnSolveSheet) {
+      btnSolveSheet.onclick = () => {
+        const resModal = bootstrap.Modal.getInstance(resModalEl);
+        if (resModal) resModal.hide();
+        openSolveSheetModal(result.examId, result.examTitle, result.submissionId);
+      };
+    }
     // Attach actions to Result Modal Buttons
     document.getElementById('resBtnViewLeaderboard').onclick = () => {
       const resModal = bootstrap.Modal.getInstance(resModalEl);
