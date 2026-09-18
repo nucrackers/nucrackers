@@ -87,7 +87,7 @@
               <p class="text-muted small">ইউনিক রোল ও প্রশ্ন ব্যবস্থাপনার জন্য এডমিন পাসওয়ার্ড প্রদান করুন।</p>
             </div>
 
-            <form id="adminLoginForm">
+            <form id="adminLoginForm" onsubmit="return false;">
               <div class="mb-3">
                 <label for="adminPassword" class="form-label fw-semibold small text-muted">এডমিন পাসওয়ার্ড</label>
                 <div class="input-group">
@@ -97,7 +97,12 @@
                     <i class="fa-regular fa-eye" id="toggleAdminPassIcon"></i>
                   </button>
                 </div>
-               
+                <div class="d-flex justify-content-between align-items-center mt-2">
+                  <span class="small text-muted">ডিফল্ট পাসওয়ার্ড: <code class="user-select-all fw-bold text-dark">Nucrackers#.com</code></span>
+                  <button type="button" class="btn btn-link btn-sm p-0 text-decoration-none" id="fillAdminPassBtn">
+                    <i class="fa-regular fa-copy me-1"></i>স্বয়ংক্রিয় পূরণ
+                  </button>
+                </div>
               </div>
 
               <div id="adminLoginAlert" class="alert d-none"></div>
@@ -311,6 +316,9 @@
                     </div>
                   </div>
                   <div class="d-flex flex-wrap gap-2">
+                    <button class="btn btn-sm btn-success rounded-pill px-3 shadow-sm" id="googleSheetSyncModalBtn" data-bs-toggle="modal" data-bs-target="#googleSheetSyncModal" title="অনুমোদিত শিক্ষার্থীদের তথ্য গুগল শিটে স্বয়ংক্রিয়ভাবে জমা করুন">
+                      <i class="fa-solid fa-file-excel me-1"></i> গুগল শিট সিঙ্ক
+                    </button>
                     <button class="btn btn-sm btn-outline-primary rounded-pill px-3" id="exportBackupBtn" title="শিক্ষার্থীদের সম্পূর্ণ তালিকা ব্যাকআপ ডাউনলোড করুন">
                       <i class="fa-solid fa-cloud-arrow-down me-1"></i> ব্যাকআপ
                     </button>
@@ -318,9 +326,6 @@
                       <i class="fa-solid fa-cloud-arrow-up me-1"></i> রিস্টোর
                     </button>
                     <input type="file" id="importBackupFileInput" accept=".json" class="d-none">
-                    <button class="btn btn-sm btn-success rounded-pill px-3 shadow-sm" id="googleSheetSyncModalBtn" data-bs-toggle="modal" data-bs-target="#googleSheetSyncModal" title="অনুমোদিত শিক্ষার্থীদের তথ্য গুগল শিটে স্বয়ংক্রিয়ভাবে জমা করুন">
-  <i class="fa-solid fa-file-excel me-1"></i> গুগল শিট সিঙ্ক
-</button>
                   </div>
                 </div>
 
@@ -654,14 +659,15 @@
             </div>
 
             <div class="row g-2 mb-3">
-              <div class="col-4">
+              <div class="col-6">
                 <label for="newExamDuration" class="form-label fw-semibold small text-muted">সময় (মিনিট)</label>
                 <input type="number" class="form-control" id="newExamDuration" value="15" min="1" required>
               </div>
-              <div class="col-4">
+              <div class="col-6">
                 <label for="newExamPassMarks" class="form-label fw-semibold small text-muted">পাস মার্ক</label>
                 <input type="number" class="form-control" id="newExamPassMarks" value="5" min="1" required>
               </div>
+            </div>
 
             <div class="mb-4">
               <label for="newExamDesc" class="form-label fw-semibold small text-muted">সংক্ষিপ্ত বিবরণ</label>
@@ -679,128 +685,7 @@
       </div>
     </div>
   </div>
-  <!-- Google Sheet Sync & Export Modal -->
-  <div class="modal fade" id="googleSheetSyncModal" tabindex="-1" aria-labelledby="googleSheetSyncModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-      <div class="modal-content rounded-4 border-0 shadow">
-        <div class="modal-header bg-success bg-opacity-10 border-bottom px-4 py-3">
-          <div class="d-flex align-items-center gap-2">
-            <div class="rounded-circle bg-success text-white d-flex align-items-center justify-content-center" style="width: 38px; height: 38px;">
-              <i class="fa-solid fa-file-excel fs-5"></i>
-            </div>
-            <div>
-              <h5 class="modal-title fw-bold text-success mb-0" id="googleSheetSyncModalLabel">অনুমোদিত শিক্ষার্থীদের গুগল শিট সিঙ্ক ও এক্সপোর্ট</h5>
-              <span class="text-muted small">অনুমোদিত সকল শিক্ষার্থীর তালিকা সরাসরি গুগল শিটে জমা করুন</span>
-            </div>
-          </div>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body p-4">
-          <!-- Quick Status Card -->
-          <div class="card border-0 bg-light rounded-4 p-3 mb-4">
-            <div class="d-flex align-items-center justify-content-between">
-              <div>
-                <span class="text-muted small d-block">মোট অনুমোদিত শিক্ষার্থী</span>
-                <h4 class="fw-bold text-dark mb-0"><span id="sheetSyncApprovedCount">০</span> জন</h4>
-              </div>
-              <button type="button" class="btn btn-outline-success btn-sm rounded-pill px-3" id="exportGoogleSheetCsvBtn">
-                <i class="fa-solid fa-file-csv me-1"></i> ১-ক্লিকে CSV ফাইল ডাউনলোড
-              </button>
-            </div>
-          </div>
 
-          <!-- Webhook Auto Sync Section -->
-          <div class="border rounded-4 p-3 mb-3 bg-white">
-            <label class="form-label fw-bold text-dark mb-1">
-              <i class="fa-solid fa-link text-success me-1"></i> গুগল শিট Apps Script Webhook URL:
-            </label>
-            <p class="text-muted small mb-2">
-              আপনার গুগল শিটের Apps Script ওয়েব অ্যাপ লিঙ্কটি নিচে পেস্ট করে সেভ করুন। এরপর "এখনই গুগল শিটে সিঙ্ক করুন" চাপলেই অনুমোদিত সকল ডাটা গুগল শিটে চলে যাবে।
-            </p>
-            <div class="input-group mb-2">
-              <input type="url" class="form-control" id="googleSheetWebhookInput" placeholder="https://script.google.com/macros/s/.../exec">
-              <button class="btn btn-outline-secondary px-3" type="button" id="saveGoogleSheetWebhookBtn">
-                <i class="fa-solid fa-floppy-disk me-1"></i> সেভ করুন
-              </button>
-            </div>
-            <div id="sheetWebhookStatus" class="small mb-3"></div>
-
-            <button type="button" class="btn btn-success rounded-pill px-4 py-2 fw-bold w-100 shadow-sm" id="triggerGoogleSheetSyncBtn">
-              <i class="fa-solid fa-arrows-rotate me-2"></i> এখনই গুগল শিটে ডাটা পাঠান (Sync to Google Sheet)
-            </button>
-          </div>
-
-          <!-- Instructions Accordion -->
-          <div class="accordion" id="sheetHelpAccordion">
-            <div class="accordion-item border rounded-3 overflow-hidden">
-              <h2 class="accordion-header">
-                <button class="accordion-button collapsed py-2 small fw-bold bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#sheetHelpCollapse">
-                  <i class="fa-solid fa-circle-question text-primary me-2"></i> গুগল শিটে কিভাবে Webhook সেটআপ করবেন? (১ মিনিটের সহজ নিয়ম)
-                </button>
-              </h2>
-              <div id="sheetHelpCollapse" class="accordion-collapse collapse" data-bs-parent="#sheetHelpAccordion">
-                <div class="accordion-body small text-muted">
-                  <ol class="ps-3 mb-3">
-                    <li class="mb-1">একটি নতুন <strong>Google Sheet</strong> খুলুন।</li>
-                    <li class="mb-1">উপরের মেন্যু থেকে <strong>Extensions &gt; Apps Script</strong>-এ ক্লিক করুন।</li>
-                    <li class="mb-1">পূর্বের সব কোড মুছে নিচের কোডটি কপি করে পেস্ট করুন:</li>
-                  </ol>
-                  <div class="position-relative mb-3">
-                    <pre class="bg-dark text-light p-3 rounded-3 small mb-0" style="max-height: 180px; overflow-y: auto;" id="appsScriptCodeBlock">function doPost(e) {
-  try {
-    var data = JSON.parse(e.postData.contents);
-    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-    var headers = ["রোল নম্বর", "শিক্ষার্থীর নাম", "কলেজ", "জেলা", "বিভাগ", "হোয়াটসঅ্যাপ", "পেমেন্ট মেথড", "প্রেরক নম্বর", "TrxID", "অনুমোদনের তারিখ"];
-    sheet.clear();
-    sheet.appendRow(headers);
-    sheet.getRange(1, 1, 1, headers.length).setFontWeight("bold").setBackground("#d1e7dd");
-    var students = data.students || [];
-    var rows = [];
-    for (var i = 0; i < students.length; i++) {
-      var s = students[i];
-      rows.push([
-        s.roll || "",
-        s.name || "",
-        s.college || "",
-        s.district || "",
-        s.group || "",
-        s.whatsapp || "",
-        s.paymentMethod || "",
-        s.senderNumber || "",
-        s.transactionId || "",
-        s.approvedAt ? new Date(s.approvedAt).toLocaleString('bn-BD') : (s.createdAt || "")
-      ]);
-    }
-    if (rows.length > 0) {
-      sheet.getRange(2, 1, rows.length, headers.length).setValues(rows);
-    }
-    return ContentService.createTextOutput(JSON.stringify({ success: true, count: rows.length })).setMimeType(ContentService.MimeType.JSON);
-  } catch (err) {
-    return ContentService.createTextOutput(JSON.stringify({ success: false, error: err.toString() })).setMimeType(ContentService.MimeType.JSON);
-  }
-}</pre>
-                    <button class="btn btn-sm btn-outline-light position-absolute top-0 end-0 m-2" id="copyAppsScriptBtn" title="কোড কপি করুন">
-                      <i class="fa-solid fa-copy me-1"></i> কপি করুন
-                    </button>
-                  </div>
-                  <ol start="4" class="ps-3 mb-0">
-                    <li class="mb-1">উপরে <strong>Deploy &gt; New deployment</strong> এ ক্লিক করুন।</li>
-                    <li class="mb-1">Select type থেকে <strong>Web app</strong> নির্বাচন করুন।</li>
-                    <li class="mb-1"><strong>Who has access</strong> এ <strong>"Anyone"</strong> নির্বাচন করে <strong>Deploy</strong> চাপুন।</li>
-                    <li class="mb-0">প্রাপ্ত <strong>Web app URL</strong> টি কপি করে উপরের বক্সে পেস্ট করে সেভ করুন।</li>
-                  </ol>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-        <div class="modal-footer bg-light px-4 py-3">
-          <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">বন্ধ করুন</button>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <!-- GOOGLE FORM / DRIVE IMPORT MODAL -->
   <div class="modal fade" id="googleFormImportModal" tabindex="-1" aria-labelledby="googleFormImportModalLabel" aria-hidden="true">
@@ -1283,7 +1168,11 @@ Answer: A"></textarea>
       </div>
     </div>
   </div>
-<!-- Google Sheet Sync & Export Modal -->
+
+
+
+
+  <!-- Google Sheet Sync & Export Modal -->
   <div class="modal fade" id="googleSheetSyncModal" tabindex="-1" aria-labelledby="googleSheetSyncModalLabel" aria-hidden="true" style="z-index: 1060;">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content rounded-4 border-0 shadow">
@@ -1405,6 +1294,7 @@ Answer: A"></textarea>
       </div>
     </div>
   </div>
+
   <!-- FOOTER -->
   <footer class="py-4 mt-5 bg-white border-top">
     <div class="container text-center text-muted small">
