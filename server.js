@@ -51,7 +51,6 @@ function writeDb(data) {
 }
 
 // GitHub Auto-Persistence Integration
-// Automatically commits data/database.json to the GitHub repository so Render never loses data!
 let isSyncingToGitHub = false;
 let pendingGitHubSync = false;
 
@@ -62,7 +61,6 @@ async function triggerGitHubSync(data) {
   const filePath = 'data/database.json';
 
   if (!token) {
-    // If no GitHub Token is provided, local fs write succeeded
     return;
   }
 
@@ -135,7 +133,7 @@ async function triggerGitHubSync(data) {
 // API ROUTES
 // ==========================================
 
-// 1. Student Login via Unique Roll and Name
+// 1. Student Login via Unique Roll and Name (Supports Premium & Crack Batches)
 app.post('/api/auth/login', (req, res) => {
   const { roll, name } = req.body;
   if (!roll || typeof roll !== 'string' || !roll.trim()) {
@@ -149,7 +147,7 @@ app.post('/api/auth/login', (req, res) => {
   if (!student) {
     return res.status(404).json({
       success: false,
-      message: `রোল "${cleanRoll}"-এর কোনো শিক্ষার্থী প্রিমিয়াম তালিকায় পাওয়া যায়নি। সঠিক রোল লিখুন অথবা এডমিনের সাথে যোগাযোগ করুন।`
+      message: `রোল "${cleanRoll}"-এর কোনো শিক্ষার্থী তালিকায় পাওয়া যায়নি। সঠিক রোল লিখুন অথবা এডমিনের সাথে যোগাযোগ করুন।`
     });
   }
 
@@ -168,6 +166,8 @@ app.post('/api/auth/login', (req, res) => {
   if (student.group === 'arts') targetPage = 'arts-exams.html';
   if (student.group === 'commerce') targetPage = 'commerce-exams.html';
 
+  const isCrack = student.batch === 'crack' || ['7', '8', '9'].includes(String(student.roll).charAt(0));
+
   return res.json({
     success: true,
     message: 'লগইন সফল হয়েছে!',
@@ -175,6 +175,7 @@ app.post('/api/auth/login', (req, res) => {
       roll: student.roll,
       name: student.name,
       group: student.group,
+      batch: isCrack ? 'crack' : 'premium',
       status: student.status || 'approved'
     },
     targetPage
@@ -183,19 +184,27 @@ app.post('/api/auth/login', (req, res) => {
 
 // ==========================================
 // 8-DIGIT UNIQUE ROLL GENERATOR (ACCORDING TO USER FORMULA)
+// Premium Batch:
 // 1st digit: Group (1 = Science, 2 = Arts, 3 = Commerce)
+// Crack Batch:
+// 1st digit: Group (7 = Science Crack, 8 = Arts Crack, 9 = Commerce Crack)
 // 2nd & 3rd digits: Current Year (e.g. 27 for batch 2027)
-// 4th & 5th digits: Batch number (01 for first 100 students, 02 for next 100...)
+// 4th & 5th digits: Batch number (01, 02...)
 // 6th-8th digits: Serial number (001 to 100)
-// Total length: Exactly 8 characters (e.g. 12701001)
+// Total length: Exactly 8 characters (e.g. 12701001 or 72701001)
 // ==========================================
-function generate8DigitRoll(db, group, customYear = '27') {
-  const groupCodeMap = {
+function generate8DigitRoll(db, group, customYear = '27', batch = 'premium') {
+  const isCrack = String(batch || '').toLowerCase() === 'crack';
+  const groupCodeMap = isCrack ? {
+    science: '7',
+    arts: '8',
+    commerce: '9'
+  } : {
     science: '1',
     arts: '2',
     commerce: '3'
   };
-  const gCode = groupCodeMap[String(group).toLowerCase()] || '1';
+  const gCode = groupCodeMap[String(group).toLowerCase()] || (isCrack ? '7' : '1');
   const yearCode = String(customYear).slice(-2);
   const prefix = `${gCode}${yearCode}`;
 
@@ -220,13 +229,14 @@ function generate8DigitRoll(db, group, customYear = '27') {
   }
 }
 
-// 2. New Student Admission Registration (Pending Section)
+// 2. New Student Admission Registration (Pending Section with Batch Selection)
 app.post(['/api/registration/submit', '/api/students/register'], (req, res) => {
   const {
     name,
     college,
     district,
     group,
+    batch,
     whatsapp,
     paymentMethod,
     paymentNumber,
@@ -244,6 +254,7 @@ app.post(['/api/registration/submit', '/api/students/register'], (req, res) => {
   const cleanCollege = String(college).trim();
   const cleanDistrict = String(district).trim();
   const cleanGroup = String(group).trim().toLowerCase();
+  const cleanBatch = String(batch || 'premium').trim().toLowerCase() === 'crack' ? 'crack' : 'premium';
   const cleanWhatsapp = String(whatsapp).trim();
   const cleanPaymentMethod = String(paymentMethod).trim();
   const cleanPaymentNumber = String(paymentNumber).trim();
@@ -275,6 +286,7 @@ app.post(['/api/registration/submit', '/api/students/register'], (req, res) => {
     college: cleanCollege,
     district: cleanDistrict,
     group: cleanGroup,
+    batch: cleanBatch,
     whatsapp: cleanWhatsapp,
     paymentMethod: cleanPaymentMethod,
     paymentNumber: cleanPaymentNumber,
@@ -288,7 +300,7 @@ app.post(['/api/registration/submit', '/api/students/register'], (req, res) => {
 
   return res.status(201).json({
     success: true,
-    message: 'আপনার ভর্তি আবেদনটি সফলভাবে জমা হয়েছে! এডমিন খুব শীঘ্রই আপনার পেমেন্ট যাচাই করে ৮-ডিজিটের অফিসিয়াল রোল নম্বর প্রদান করবেন।',
+    message: `আপনার ${cleanBatch === 'crack' ? 'ক্র্যাক ব্যাচ' : 'প্রিমিয়াম ব্যাচ'} ভর্তি আবেদনটি সফলভাবে জমা হয়েছে! এডমিন খুব শীঘ্রই আপনার পেমেন্ট যাচাই করে ৮-ডিজিটের অফিসিয়াল রোল নম্বর প্রদান করবেন।`,
     registration: newStudent
   });
 });
@@ -318,6 +330,8 @@ app.get('/api/registration/check-status', (req, res) => {
     });
   }
 
+  const isCrack = found.batch === 'crack' || ['7', '8', '9'].includes(String(found.roll || '').charAt(0));
+
   return res.json({
     success: true,
     student: {
@@ -325,6 +339,7 @@ app.get('/api/registration/check-status', (req, res) => {
       college: found.college || '',
       district: found.district || '',
       group: found.group,
+      batch: isCrack ? 'crack' : 'premium',
       whatsapp: found.whatsapp || '',
       paymentMethod: found.paymentMethod || '',
       paymentNumber: found.paymentNumber || '',
@@ -339,7 +354,7 @@ app.get('/api/registration/check-status', (req, res) => {
 
 // Backward-compatible student registration endpoint
 app.post('/api/auth/register', (req, res) => {
-  const { roll, name, group, college, district, whatsapp, paymentMethod, paymentNumber, transactionId } = req.body;
+  const { roll, name, group, college, district, whatsapp, paymentMethod, paymentNumber, transactionId, batch } = req.body;
   if (!name || !group) {
     return res.status(400).json({ success: false, message: 'নাম এবং গ্রুপ সঠিকভাবে পূরণ করুন।' });
   }
@@ -347,6 +362,7 @@ app.post('/api/auth/register', (req, res) => {
   const cleanName = String(name).trim();
   const cleanGroup = String(group).trim().toLowerCase();
   const cleanRoll = roll ? String(roll).trim() : '';
+  const cleanBatch = String(batch || 'premium').trim().toLowerCase() === 'crack' ? 'crack' : 'premium';
 
   if (!['science', 'arts', 'commerce'].includes(cleanGroup)) {
     return res.status(400).json({ success: false, message: 'গ্রুপ অবশ্যই Science, Arts অথবা Commerce হতে হবে।' });
@@ -372,6 +388,7 @@ app.post('/api/auth/register', (req, res) => {
     college: college ? String(college).trim() : '',
     district: district ? String(district).trim() : '',
     group: cleanGroup,
+    batch: cleanBatch,
     whatsapp: whatsapp ? String(whatsapp).trim() : '',
     paymentMethod: paymentMethod ? String(paymentMethod).trim() : 'bKash',
     paymentNumber: paymentNumber ? String(paymentNumber).trim() : '',
@@ -391,30 +408,46 @@ app.post('/api/auth/register', (req, res) => {
   });
 });
 
-// 3. List Registered Students (for quick testing/reference)
+// 3. List Registered Students
 app.get('/api/students', (req, res) => {
   const db = readDb();
   const list = db.students.map(s => ({
     roll: s.roll,
     name: s.name,
     group: s.group,
+    batch: s.batch || 'premium',
     status: s.status || 'approved'
   }));
   res.json({ success: true, count: list.length, students: list });
 });
 
-// 4. Get Exams by Group & Batch Type
+// 4. Get Exams by Group & Batch Type (Strict Isolation for Crack vs Premium)
 app.get('/api/exams', (req, res) => {
-  const { group, roll, type, isFree, studentName } = req.query;
+  const { group, roll, type, batch, isFree, studentName } = req.query;
   const db = readDb();
+
+  let student = null;
+  if (roll) {
+    student = (db.students || []).find(s => String(s.roll).trim().toLowerCase() === String(roll).trim().toLowerCase());
+  }
+
+  const studentBatch = student ? (student.batch === 'crack' || ['7', '8', '9'].includes(String(student.roll).charAt(0)) ? 'crack' : 'premium') : null;
 
   let exams = db.exams || [];
 
-  // Filter by Free or Premium if specified
-  if (type === 'free' || isFree === 'true') {
+  // Filter based on student batch permissions
+  if (studentBatch === 'crack') {
+    // Crack students can see Crack exams and Free exams
+    exams = exams.filter(e => e.batch === 'crack' || e.batch === 'free' || e.isFree === true);
+  } else if (studentBatch === 'premium') {
+    // Premium students can see Premium exams and Free exams
+    exams = exams.filter(e => e.batch !== 'crack');
+  } else if (type === 'free' || isFree === 'true' || batch === 'free') {
     exams = exams.filter(e => e.isFree === true || e.batch === 'free');
-  } else if (type === 'premium') {
-    exams = exams.filter(e => !e.isFree && e.batch !== 'free');
+  } else if (type === 'premium' || batch === 'premium') {
+    exams = exams.filter(e => (!e.isFree && e.batch !== 'free' && e.batch !== 'crack'));
+  } else if (type === 'crack' || batch === 'crack') {
+    exams = exams.filter(e => e.batch === 'crack');
   }
 
   // Filter by group if specified
@@ -424,7 +457,6 @@ app.get('/api/exams', (req, res) => {
 
   // Sanitize exams so correct answers and explanations are not leaked
   const sanitized = exams.map(e => {
-    // Check if current roll or student name already submitted
     let userSubmission = null;
     if (roll) {
       userSubmission = (db.submissions || []).find(
@@ -464,7 +496,7 @@ app.get('/api/exams', (req, res) => {
   res.json({ success: true, exams: sanitized });
 });
 
-// 5. Get Single Exam Details & Questions for Taking (NO correct answers sent!)
+// 5. Get Single Exam Details & Questions (With Strict Batch Protection)
 app.get('/api/exams/:id', (req, res) => {
   const { id } = req.params;
   const { roll } = req.query;
@@ -476,8 +508,9 @@ app.get('/api/exams/:id', (req, res) => {
   }
 
   const isExamFree = exam.isFree === true || exam.batch === 'free';
+  const examBatch = exam.batch || (isExamFree ? 'free' : 'premium');
 
-  // Group permission verification ONLY for premium exams with roll
+  // Permission verification for paid exams with roll
   if (!isExamFree && roll) {
     const student = (db.students || []).find(s => String(s.roll).trim().toLowerCase() === String(roll).trim().toLowerCase());
     if (student) {
@@ -487,6 +520,21 @@ app.get('/api/exams/:id', (req, res) => {
           message: 'আপনার অ্যাকাউন্টটি এখনো এডমিন দ্বারা অনুমোদিত হয়নি। অনুগ্রহ করে অনুমোদনের অপেক্ষা করুন।'
         });
       }
+
+      const isStudentCrack = student.batch === 'crack' || ['7', '8', '9'].includes(String(student.roll).charAt(0));
+      if (examBatch === 'crack' && !isStudentCrack) {
+        return res.status(403).json({
+          success: false,
+          message: 'প্রবেশাধিকার সংরক্ষিত! এই পরীক্ষাটি শুধুমাত্র "ক্র্যাক ব্যাচ (Crack Batch)"-এর শিক্ষার্থীদের জন্য উন্মুক্ত।'
+        });
+      }
+      if (examBatch === 'premium' && isStudentCrack) {
+        return res.status(403).json({
+          success: false,
+          message: 'প্রবেশাধিকার সংরক্ষিত! এই পরীক্ষাটি শুধুমাত্র "প্রিমিয়াম ব্যাচ"-এর শিক্ষার্থীদের জন্য উন্মুক্ত।'
+        });
+      }
+
       if (student.group !== exam.group && exam.group !== 'all') {
         return res.status(403).json({
           success: false,
@@ -496,7 +544,6 @@ app.get('/api/exams/:id', (req, res) => {
     }
   }
 
-  // Strip answers for taking test
   const safeQuestions = (exam.questions || []).map(q => ({
     id: q.id,
     question: q.question,
@@ -508,7 +555,7 @@ app.get('/api/exams/:id', (req, res) => {
     exam: {
       id: exam.id,
       group: exam.group,
-      batch: exam.batch || (isExamFree ? 'free' : 'premium'),
+      batch: examBatch,
       isFree: isExamFree,
       title: exam.title,
       subject: exam.subject,
@@ -524,7 +571,7 @@ app.get('/api/exams/:id', (req, res) => {
   });
 });
 
-// 6. Submit Exam (Supports both Free Batch with Name/College and Premium with Roll)
+// 6. Submit Exam
 app.post('/api/exams/:id/submit', (req, res) => {
   try {
     const { id } = req.params;
@@ -543,7 +590,6 @@ app.post('/api/exams/:id/submit', (req, res) => {
     let finalGroup = exam.group || 'all';
 
     if (isExamFree) {
-      // For free exams, student enters Name & College name
       finalName = String(studentName || req.body.name || '').trim();
       finalCollege = String(collegeName || req.body.college || '').trim() || 'কলেজ উল্লেখ নেই';
       if (!finalName) {
@@ -551,7 +597,6 @@ app.post('/api/exams/:id/submit', (req, res) => {
       }
       finalRoll = roll ? String(roll).trim() : `FREE-${Date.now().toString().slice(-4)}`;
     } else {
-      // For premium exams, roll is strictly required & checked
       if (!roll) {
         return res.status(400).json({ success: false, message: 'রোল নম্বর প্রয়োজন।' });
       }
@@ -560,7 +605,7 @@ app.post('/api/exams/:id/submit', (req, res) => {
       if (!student) {
         return res.status(401).json({
           success: false,
-          message: 'প্রিমিয়াম শিক্ষার্থী তালিকায় রোল পাওয়া যায়নি। অনুগ্রহ করে সঠিক রোল ও নাম দিয়ে লগইন করুন।'
+          message: 'শিক্ষার্থী তালিকায় রোল পাওয়া যায়নি। অনুগ্রহ করে সঠিক রোল ও নাম দিয়ে লগইন করুন।'
         });
       }
 
@@ -571,20 +616,12 @@ app.post('/api/exams/:id/submit', (req, res) => {
         });
       }
 
-      if (student.group !== exam.group && exam.group !== 'all') {
-        return res.status(403).json({
-          success: false,
-          message: `প্রবেশাধিকার সংরক্ষিত! আপনি ${student.group.toUpperCase()} ইউনিটের শিক্ষার্থী। ${exam.group.toUpperCase()} ইউনিটের পরীক্ষায় অংশগ্রহণ করার অনুমতি নেই।`
-        });
-      }
-
       finalName = student.name;
       finalCollege = student.college || '';
       finalRoll = student.roll;
       finalGroup = student.group;
     }
 
-    const negativeMark = 0;
     let correctCount = 0;
     let wrongCount = 0;
     let skippedCount = 0;
@@ -602,7 +639,6 @@ app.post('/api/exams/:id/submit', (req, res) => {
         rawScore += 1;
       } else {
         wrongCount++;
-        // ভুল উত্তরের জন্য কোনো মার্ক কাটা যাবে না
       }
     });
 
@@ -632,7 +668,6 @@ app.post('/api/exams/:id/submit', (req, res) => {
       submittedAt: new Date().toISOString()
     };
 
-    // Remove previous submission if student retakes this exam
     db.submissions = (db.submissions || []).filter(
       s => !(s && s.examId === exam.id && (
         (finalRoll && s.roll && String(s.roll).trim().toLowerCase() === String(finalRoll).trim().toLowerCase()) ||
@@ -642,7 +677,6 @@ app.post('/api/exams/:id/submit', (req, res) => {
     db.submissions.push(submission);
     writeDb(db);
 
-    // Compute Rank for this exam
     const examSubmissions = (db.submissions || [])
       .filter(s => s && s.examId === exam.id)
       .sort((a, b) => {
@@ -757,7 +791,6 @@ app.get('/api/exams/:id/review', (req, res) => {
 
   const isExamFree = exam.isFree === true || exam.batch === 'free';
 
-  // Locate submission if available
   let submission = null;
   if (submissionId) {
     submission = (db.submissions || []).find(s => s.id === submissionId);
@@ -773,7 +806,6 @@ app.get('/api/exams/:id/review', (req, res) => {
     );
   }
 
-  // If not free exam and no submission, require roll
   if (!isExamFree && !submission) {
     return res.status(404).json({ success: false, message: 'আপনি এই পরীক্ষায় এখনো অংশগ্রহণ করেননি।' });
   }
@@ -843,8 +875,7 @@ app.post('/api/admin/login', (req, res) => {
     return res.status(400).json({ success: false, message: 'এডমিন পাসওয়ার্ড প্রদান করুন।' });
   }
 
-  const cleanPass = String(password).trim().replace(/^["']|["']$/g, ''); // strip outer quotes if copied with quotes
-
+  const cleanPass = String(password).trim().replace(/^["']|["']$/g, '');
   const isValid = ADMIN_PASSWORDS.some(p => p.toLowerCase() === cleanPass.toLowerCase() || p === String(password).trim());
 
   if (isValid) {
@@ -861,7 +892,7 @@ app.post('/api/admin/login', (req, res) => {
   });
 });
 
-// 10. Admin Overview Stats
+// 10. Admin Overview Stats (Includes Crack Batch counts)
 app.get('/api/admin/stats', (req, res) => {
   const db = readDb();
   const students = db.students || [];
@@ -874,6 +905,11 @@ app.get('/api/admin/stats', (req, res) => {
   const pendingCount = students.filter(s => s.status === 'pending').length;
   const approvedCount = students.filter(s => s.status !== 'pending').length;
 
+  const premiumApprovedCount = students.filter(s => s.status !== 'pending' && s.batch !== 'crack').length;
+  const crackApprovedCount = students.filter(s => s.status !== 'pending' && s.batch === 'crack').length;
+  const pendingPremiumCount = students.filter(s => s.status === 'pending' && s.batch !== 'crack').length;
+  const pendingCrackCount = students.filter(s => s.status === 'pending' && s.batch === 'crack').length;
+
   let totalQuestions = 0;
   exams.forEach(ex => {
     totalQuestions += (ex.questions || []).length;
@@ -885,6 +921,10 @@ app.get('/api/admin/stats', (req, res) => {
       totalStudents: students.length,
       pendingCount,
       approvedCount,
+      premiumApprovedCount,
+      crackApprovedCount,
+      pendingPremiumCount,
+      pendingCrackCount,
       scienceCount,
       artsCount,
       commerceCount,
@@ -904,7 +944,7 @@ app.get('/api/admin/students', (req, res) => {
   });
 });
 
-// 11.5. Admin: Synchronize/Restore students (Prevents data loss on Render ephemeral filesystem restarts)
+// 11.5. Admin: Synchronize/Restore students
 app.post('/api/admin/students/sync', (req, res) => {
   const { students } = req.body;
   if (!Array.isArray(students)) {
@@ -914,7 +954,6 @@ app.post('/api/admin/students/sync', (req, res) => {
   const db = readDb();
   if (!Array.isArray(db.students)) db.students = [];
 
-  // Update or merge the persistent student list without losing any student fields
   const existingKeys = new Set();
   db.students.forEach(s => {
     if (s.id) existingKeys.add(String(s.id).trim().toLowerCase());
@@ -942,6 +981,7 @@ app.post('/api/admin/students/sync', (req, res) => {
         college: s.college ? String(s.college).trim() : '',
         district: s.district ? String(s.district).trim() : '',
         group: String(s.group || 'science').trim().toLowerCase(),
+        batch: s.batch ? String(s.batch).trim().toLowerCase() : (cleanRoll && ['7', '8', '9'].includes(cleanRoll.charAt(0)) ? 'crack' : 'premium'),
         whatsapp: s.whatsapp ? String(s.whatsapp).trim() : '',
         paymentMethod: s.paymentMethod ? String(s.paymentMethod).trim() : 'bKash',
         paymentNumber: s.paymentNumber ? String(s.paymentNumber).trim() : '',
@@ -973,7 +1013,7 @@ app.post('/api/admin/students/sync', (req, res) => {
   });
 });
 
-// 11.6. Admin: Force overwrite entire student list (When deletions or reorders need full sync)
+// 11.6. Admin: Force overwrite entire student list
 app.put('/api/admin/students/bulk-replace', (req, res) => {
   const { students } = req.body;
   if (!Array.isArray(students)) {
@@ -988,6 +1028,7 @@ app.put('/api/admin/students/bulk-replace', (req, res) => {
     college: s.college ? String(s.college).trim() : '',
     district: s.district ? String(s.district).trim() : '',
     group: String(s.group || 'science').trim().toLowerCase(),
+    batch: s.batch ? String(s.batch).trim().toLowerCase() : (s.roll && ['7', '8', '9'].includes(String(s.roll).charAt(0)) ? 'crack' : 'premium'),
     whatsapp: s.whatsapp ? String(s.whatsapp).trim() : '',
     paymentMethod: s.paymentMethod ? String(s.paymentMethod).trim() : 'bKash',
     paymentNumber: s.paymentNumber ? String(s.paymentNumber).trim() : '',
@@ -1052,6 +1093,7 @@ app.post('/api/admin/sync-google-sheet', async (req, res) => {
         college: s.college || '',
         district: s.district || '',
         group: s.group || '',
+        batch: s.batch === 'crack' ? 'ক্র্যাক ব্যাচ' : 'প্রিমিয়াম ব্যাচ',
         whatsapp: s.whatsapp || '',
         paymentMethod: s.paymentMethod || '',
         senderNumber: s.paymentNumber || '',
@@ -1067,7 +1109,6 @@ app.post('/api/admin/sync-google-sheet', async (req, res) => {
       });
     }
 
-    // Send payload to Google Apps Script Web App
     await fetch(webhookUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -1093,22 +1134,40 @@ app.post('/api/admin/sync-google-sheet', async (req, res) => {
   }
 });
 
-// 11.8. Admin: Preview next 8-Digit Unique Roll for a group
+// 11.9. Admin: Preview next 8-Digit Unique Roll for a group & batch
 app.get('/api/admin/students/preview-roll', (req, res) => {
-  const { group, year } = req.query;
+  const { group, year, batch } = req.query;
   const db = readDb();
   const cleanGroup = String(group || 'science').trim().toLowerCase();
-  const generatedRoll = generate8DigitRoll(db, cleanGroup, year || '27');
+  const cleanBatch = String(batch || 'premium').trim().toLowerCase();
+  const generatedRoll = generate8DigitRoll(db, cleanGroup, year || '27', cleanBatch);
   return res.json({
     success: true,
     group: cleanGroup,
+    batch: cleanBatch,
     roll: generatedRoll
   });
 });
 
-// 12. Admin: Add new student with STRICT UNIQUE ROLL validation (Supports auto 8-digit generation)
+// Backward compatible preview roll endpoint
+app.get('/api/admin/preview-roll', (req, res) => {
+  const { group, year, batch } = req.query;
+  const db = readDb();
+  const cleanGroup = String(group || 'science').trim().toLowerCase();
+  const cleanBatch = String(batch || 'premium').trim().toLowerCase();
+  const generatedRoll = generate8DigitRoll(db, cleanGroup, year || '27', cleanBatch);
+  return res.json({
+    success: true,
+    group: cleanGroup,
+    batch: cleanBatch,
+    nextRoll: generatedRoll,
+    roll: generatedRoll
+  });
+});
+
+// 12. Admin: Add new student with STRICT UNIQUE ROLL validation
 app.post('/api/admin/students', (req, res) => {
-  const { roll, name, group, college, district, whatsapp } = req.body;
+  const { roll, name, group, college, district, whatsapp, batch } = req.body;
 
   if (!name || !group) {
     return res.status(400).json({
@@ -1119,6 +1178,7 @@ app.post('/api/admin/students', (req, res) => {
 
   const cleanName = String(name).trim();
   const cleanGroup = String(group).trim().toLowerCase();
+  const cleanBatch = String(batch || 'premium').trim().toLowerCase() === 'crack' ? 'crack' : 'premium';
 
   if (!['science', 'arts', 'commerce'].includes(cleanGroup)) {
     return res.status(400).json({
@@ -1132,12 +1192,10 @@ app.post('/api/admin/students', (req, res) => {
 
   let cleanRoll = roll ? String(roll).trim() : '';
 
-  // If no roll is supplied, auto-generate 8-digit unique roll
   if (!cleanRoll) {
-    cleanRoll = generate8DigitRoll(db, cleanGroup, '27');
+    cleanRoll = generate8DigitRoll(db, cleanGroup, '27', cleanBatch);
   }
 
-  // Strict Unique Roll check
   const duplicate = db.students.find(
     s => s.roll && String(s.roll).trim().toLowerCase() === cleanRoll.toLowerCase()
   );
@@ -1156,8 +1214,9 @@ app.post('/api/admin/students', (req, res) => {
     college: college ? String(college).trim() : '',
     district: district ? String(district).trim() : '',
     group: cleanGroup,
+    batch: cleanBatch,
     whatsapp: whatsapp ? String(whatsapp).trim() : '',
-    status: 'approved', // Admin added students are automatically approved
+    status: 'approved',
     registeredAt: new Date().toISOString(),
     approvedAt: new Date().toISOString()
   };
@@ -1167,13 +1226,12 @@ app.post('/api/admin/students', (req, res) => {
 
   return res.status(201).json({
     success: true,
-    message: `শিক্ষার্থী "${cleanName}" (রোল: ${cleanRoll}) সফলভাবে অনুমোদিত তালিকায় যুক্ত হয়েছে!`,
+    message: `শিক্ষার্থী "${cleanName}" (রোল: ${cleanRoll}, ব্যাচ: ${cleanBatch === 'crack' ? 'ক্র্যাক' : 'প্রিমিয়াম'}) সফলভাবে অনুমোদিত তালিকায় যুক্ত হয়েছে!`,
     student: newStudent
   });
 });
 
-// 12.5. Admin: Approve student registration (Generates 8-Digit Unique Roll automatically)
-// Supports all legacy and current routes, PUT and POST
+// 12.5. Admin: Approve student registration (Separate Roll for Premium vs Crack Batch)
 app.all([
   '/api/admin/students/:identifier/approve',
   '/api/students/:identifier/approve',
@@ -1183,7 +1241,7 @@ app.all([
 ], (req, res) => {
   res.setHeader('Content-Type', 'application/json');
   const identifier = req.params.identifier || req.body.identifier || req.body.id || req.body.roll || req.body.transactionId;
-  const { customRoll, year } = req.body || {};
+  const { customRoll, year, batch } = req.body || {};
   const db = readDb();
 
   if (!identifier) {
@@ -1202,17 +1260,25 @@ app.all([
     return res.status(404).json({ success: false, message: 'শিক্ষার্থী পাওয়া যায়নি।' });
   }
 
+  // Determine target batch
+  const targetBatch = batch ? (String(batch).trim().toLowerCase() === 'crack' ? 'crack' : 'premium') : (student.batch === 'crack' ? 'crack' : 'premium');
+
   // Determine final 8-digit unique roll
   let finalRoll = '';
   if (customRoll && String(customRoll).trim()) {
     finalRoll = String(customRoll).trim();
   } else if (student.roll && String(student.roll).trim().length === 8) {
-    finalRoll = String(student.roll).trim();
+    const firstDigit = String(student.roll).trim()[0];
+    const isMatchingBatch = targetBatch === 'crack' ? ['7', '8', '9'].includes(firstDigit) : ['1', '2', '3'].includes(firstDigit);
+    if (isMatchingBatch) {
+      finalRoll = String(student.roll).trim();
+    } else {
+      finalRoll = generate8DigitRoll(db, student.group || 'science', year || '27', targetBatch);
+    }
   } else {
-    finalRoll = generate8DigitRoll(db, student.group || 'science', year || '27');
+    finalRoll = generate8DigitRoll(db, student.group || 'science', year || '27', targetBatch);
   }
 
-  // Check if roll is already assigned to someone else
   const duplicate = (db.students || []).find(
     s => s !== student && s.roll && String(s.roll).trim().toLowerCase() === finalRoll.toLowerCase()
   );
@@ -1220,19 +1286,20 @@ app.all([
   if (duplicate) {
     return res.status(409).json({
       success: false,
-      message: `রোল "${finalRoll}" ইতিমধ্যে শিক্ষার্থী "${duplicate.name}" (${(duplicate.group || '').toUpperCase()}) এর জন্য বরাদ্দ আছে। অন্য একটি রোল দিন।`
+      message: `রোল "${finalRoll}" ইতিমধ্যে শিক্ষার্থী "${duplicate.name}" এর জন্য বরাদ্দ আছে। অন্য একটি রোল দিন।`
     });
   }
 
   student.id = student.id || `std_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
   student.roll = String(finalRoll).trim();
+  student.batch = targetBatch;
   student.status = 'approved';
   student.approvedAt = new Date().toISOString();
   writeDb(db);
 
   return res.json({
     success: true,
-    message: `শিক্ষার্থী "${student.name}" কে সফলভাবে অনুমোদন (Approve) করা হয়েছে! বরাদ্দকৃত ইউনিক রোল নম্বর: ${student.roll}`,
+    message: `শিক্ষার্থী "${student.name}" কে সফলভাবে ${targetBatch === 'crack' ? 'ক্র্যাক ব্যাচে' : 'প্রিমিয়াম ব্যাচে'} অনুমোদন (Approve) করা হয়েছে! বরাদ্দকৃত ইউনিক রোল নম্বর: ${student.roll}`,
     student
   });
 });
@@ -1309,7 +1376,7 @@ app.all([
 // 13. Admin: Update student details
 app.put('/api/admin/students/:identifier', (req, res) => {
   const { identifier } = req.params;
-  const { name, group, roll, college, district, whatsapp } = req.body;
+  const { name, group, roll, college, district, whatsapp, batch } = req.body;
 
   const db = readDb();
   const cleanId = String(identifier).trim().toLowerCase();
@@ -1331,6 +1398,9 @@ app.put('/api/admin/students/:identifier', (req, res) => {
   if (whatsapp) student.whatsapp = String(whatsapp).trim();
   if (group && ['science', 'arts', 'commerce'].includes(group.toLowerCase())) {
     student.group = group.toLowerCase();
+  }
+  if (batch && ['premium', 'crack'].includes(String(batch).toLowerCase())) {
+    student.batch = String(batch).toLowerCase();
   }
 
   writeDb(db);
@@ -1381,7 +1451,7 @@ app.get('/api/admin/exams', (req, res) => {
   });
 });
 
-// 16. Admin: Create new exam
+// 16. Admin: Create new exam (Supports Premium, Crack, and Free Batches)
 app.post('/api/admin/exams', (req, res) => {
   const { id, group, batch, isFree, title, subject, durationMinutes, totalMarks, passMarks, negativeMark, description } = req.body;
 
@@ -1397,13 +1467,13 @@ app.post('/api/admin/exams', (req, res) => {
   const db = readDb();
   if (!Array.isArray(db.exams)) db.exams = [];
 
-  const examBatch = (batch === 'free' || isFree === true) ? 'free' : 'premium';
+  const cleanBatch = String(batch || '').trim().toLowerCase();
+  const examBatch = (cleanBatch === 'free' || isFree === true) ? 'free' : (cleanBatch === 'crack' ? 'crack' : 'premium');
   const isExamFree = examBatch === 'free';
-  const prefix = isExamFree ? 'free' : cleanGroup.slice(0, 3);
+  const prefix = isExamFree ? 'free' : (examBatch === 'crack' ? 'crack' : cleanGroup.slice(0, 3));
 
   const examId = id ? String(id).trim().toLowerCase().replace(/\s+/g, '-') : `${prefix}-${cleanGroup.slice(0, 3)}-${Date.now()}`;
 
-  // Check unique exam ID
   if (db.exams.some(e => e.id === examId)) {
     return res.status(409).json({ success: false, message: 'এই আইডির পরীক্ষা ইতিমধ্যে বিদ্যমান।' });
   }
@@ -1431,14 +1501,15 @@ app.post('/api/admin/exams', (req, res) => {
   db.exams.push(newExam);
   writeDb(db);
 
+  const batchLabel = isExamFree ? 'ফ্রি ব্যাচের' : (examBatch === 'crack' ? 'ক্র্যাক ব্যাচের' : 'প্রিমিয়াম ব্যাচের');
   res.status(201).json({
     success: true,
-    message: `নতুন ${isExamFree ? 'ফ্রি ব্যাচের' : 'প্রিমিয়াম'} পরীক্ষা সফলভাবে তৈরি হয়েছে!`,
+    message: `নতুন ${batchLabel} পরীক্ষা সফলভাবে তৈরি হয়েছে!`,
     exam: newExam
   });
 });
 
-// 16b. Admin: Update exam details (e.g. Duration, Title, Marks, Batch)
+// 16b. Admin: Update exam details
 app.put('/api/admin/exams/:id', (req, res) => {
   const { id } = req.params;
   const { durationMinutes, duration, title, subject, totalMarks, passMarks, negativeMark, description, group, batch, isFree } = req.body;
@@ -1458,7 +1529,8 @@ app.put('/api/admin/exams/:id', (req, res) => {
   if (subject) exam.subject = String(subject).trim();
   if (group) exam.group = String(group).trim().toLowerCase();
   if (batch !== undefined || isFree !== undefined) {
-    exam.batch = (batch === 'free' || isFree === true) ? 'free' : 'premium';
+    const cleanB = String(batch || '').trim().toLowerCase();
+    exam.batch = (cleanB === 'free' || isFree === true) ? 'free' : (cleanB === 'crack' ? 'crack' : 'premium');
     exam.isFree = exam.batch === 'free';
   }
   if (description !== undefined) exam.description = String(description).trim();
@@ -1487,7 +1559,6 @@ app.delete('/api/admin/exams/:id', (req, res) => {
     return res.status(404).json({ success: false, message: 'পরীক্ষা খুঁজে পাওয়া যায়নি।' });
   }
 
-  // Also remove submissions for this exam
   db.submissions = (db.submissions || []).filter(s => s.examId !== id);
 
   writeDb(db);
@@ -1527,7 +1598,6 @@ app.post('/api/admin/exams/:id/questions', (req, res) => {
 
   if (!Array.isArray(exam.questions)) exam.questions = [];
 
-  // Determine next question ID
   const maxId = exam.questions.reduce((max, q) => Math.max(max, Number(q.id) || 0), 0);
   const newQuestion = {
     id: maxId + 1,
@@ -1539,7 +1609,7 @@ app.post('/api/admin/exams/:id/questions', (req, res) => {
   };
 
   exam.questions.push(newQuestion);
-  exam.totalMarks = exam.questions.length; // auto adjust total marks to question count
+  exam.totalMarks = exam.questions.length;
 
   writeDb(db);
 
@@ -1683,7 +1753,7 @@ app.post('/api/admin/parse-google-form', async (req, res) => {
       if (!parsed || parsed.questions.length === 0) {
         return res.status(400).json({
           success: false,
-          message: 'Google Form থেকে কোনো বহুনির্বাচনী প্রশ্ন পাওয়া যায়নি। ফর্মটি পাবলিক আছে কিনা নিশ্চিত করুন অথবা মেথড ২ বা ৩ (HTML/টেক্সট পেস্ট) ব্যবহার করুন।'
+          message: 'Google Form থেকে কোনো বহুনির্বাচনী প্রশ্ন পাওয়া যায়নি। ফর্মটি পাবলিক আছে কিনা নিশ্চিত করুন অথবা মেথড ২ বা ৩ ব্যবহার করুন।'
         });
       }
 
@@ -1719,7 +1789,7 @@ app.post('/api/admin/parse-google-form', async (req, res) => {
       if (!parsedQuestions || parsedQuestions.length === 0) {
         return res.status(400).json({
           success: false,
-          message: 'টেক্সট থেকে কোনো প্রশ্ন ফরম্যাট শনাক্ত করা যায়নি। প্রশ্ন নম্বর (১., ২. বা 1., 2.) ও অপশন (ক, খ, গ, ঘ বা A, B, C, D) থাকা নিশ্চিত করুন।'
+          message: 'টেক্সট থেকে কোনো প্রশ্ন ফরম্যাট শনাক্ত করা যায়নি।'
         });
       }
 
@@ -1870,7 +1940,7 @@ app.get('/api/system/info', (req, res) => {
   });
 });
 
-// Explicit 404 for unhandled API endpoints so it NEVER returns HTML
+// Explicit 404 for unhandled API endpoints
 app.all('/api/*', (req, res) => {
   res.status(404).json({
     success: false,
