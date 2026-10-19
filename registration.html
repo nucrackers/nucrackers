@@ -110,7 +110,28 @@
                 </div>
               </div>
             </div>
-
+<!-- 0. Batch Selection (Premium vs Crack Batch) -->
+<div class="mb-4 p-3 rounded-4 bg-light border">
+  <label class="form-label d-block fw-bold text-dark small mb-2">
+    <i class="fa-solid fa-layer-group text-primary me-1"></i> কোন ব্যাচে ভর্তি হতে চান? (Choose Batch) *
+  </label>
+  <div class="row g-2">
+    <div class="col-sm-6">
+      <input type="radio" class="btn-check" name="regBatch" id="regBatchPremium" value="premium" checked autocomplete="off">
+      <label class="btn btn-outline-primary w-100 py-2 text-start rounded-3" for="regBatchPremium">
+        <div class="fw-bold"><i class="fa-solid fa-crown text-warning me-1"></i>💎 Premium Batch</div>
+        <div class="small text-muted" style="font-size:0.75rem;"> প্রিমিয়াম মডেল টেস্ট (৳ ১০০০)</div>
+      </label>
+    </div>
+    <div class="col-sm-6">
+      <input type="radio" class="btn-check" name="regBatch" id="regBatchCrack" value="crack" autocomplete="off">
+      <label class="btn btn-outline-warning text-dark border-warning w-100 py-2 text-start rounded-3" for="regBatchCrack">
+        <div class="fw-bold"><i class="fa-solid fa-bolt text-warning me-1"></i>⚡ Crack Batch</div>
+        <div class="small text-muted" style="font-size:0.75rem;">এক্সক্লুসিভ লাইভ পরীক্ষা ও গাইডেন্স (এখনো চালু হয়নি)</div>
+      </label>
+    </div>
+  </div>
+</div>
             <!-- 5. WhatsApp Number -->
             <div class="mb-3">
               <label class="form-label">৫. সক্রিয় WhatsApp নম্বর <span class="text-danger">*</span></label>
