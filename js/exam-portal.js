@@ -470,7 +470,26 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
   }
+const isCrackPortal = document.body.getAttribute('data-portal') === 'crack';
+  const isCrackStudent = currentStudent.batch === 'crack' || (String(currentStudent.roll).startsWith('7') || String(currentStudent.roll).startsWith('8') || String(currentStudent.roll).startsWith('9'));
 
+  // ক্র্যাক শিক্ষার্থী প্রিমিয়াম পেজে ঢুকলে সরাসরি ক্র্যাক পোর্টালে নিয়ে যাবে
+  if (!isCrackPortal && isCrackStudent) {
+    window.location.replace(`crack-exams.html?group=${currentStudent.group || 'science'}`);
+    return;
+  }
+
+  // প্রিমিয়াম শিক্ষার্থী ক্র্যাক পোর্টালে ঢুকতে চাইলে আটকে দেবে
+  if (isCrackPortal && !isCrackStudent) {
+    alert('⛔ এই পোর্টালটি শুধুমাত্র ক্র্যাক ব্যাচের (Crack Batch) অনুমোদিত শিক্ষার্থীদের জন্য। আপনাকে প্রিমিয়াম পোর্টালে নিয়ে যাওয়া হচ্ছে।');
+    const groupPages = {
+      science: 'science-exams.html',
+      arts: 'arts-exams.html',
+      commerce: 'commerce-exams.html'
+    };
+    window.location.replace(groupPages[currentStudent.group] || 'science-exams.html');
+    return;
+  }
   // Countdown Timer
   function startCountdownTimer() {
     clearInterval(timerInterval);
