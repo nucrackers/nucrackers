@@ -181,7 +181,13 @@ app.post('/api/auth/login', (req, res) => {
     targetPage
   });
 });
-
+let targetPage = 'science-exams.html';
+  if (studentBatch === 'crack') {
+    targetPage = `crack-exams.html?group=${student.group || 'science'}`;
+  } else {
+    if (student.group === 'arts') targetPage = 'arts-exams.html';
+    if (student.group === 'commerce') targetPage = 'commerce-exams.html';
+  }
 // ==========================================
 // 8-DIGIT UNIQUE ROLL GENERATOR (ACCORDING TO USER FORMULA)
 // Premium Batch:
