@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Tab & Content Elements
   const statsTotalStudents = document.getElementById('statsTotalStudents');
+  const statsPendingStudents = document.getElementById('statsPendingStudents');
   const statsScienceStudents = document.getElementById('statsScienceStudents');
   const statsArtsStudents = document.getElementById('statsArtsStudents');
   const statsCommerceStudents = document.getElementById('statsCommerceStudents');
@@ -56,6 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let cachedStudents = [];
   let cachedExams = [];
   let currentSelectedExamId = null;
+  let examBatchFilter = 'all';
 
   // 1. Authentication Check
   function checkAuth() {
@@ -97,7 +99,6 @@ document.addEventListener('DOMContentLoaded', () => {
     e.preventDefault();
     adminLoginAlert.classList.add('d-none');
 
-    // Clean extra quotation marks or spaces if user pasted with quotes
     const password = adminPassInput.value.trim().replace(/^["']|["']$/g, '');
     if (!password) {
       showLoginAlert('অনুগ্রহ করে এডমিন পাসওয়ার্ড প্রদান করুন।', 'danger');
@@ -170,7 +171,6 @@ document.addEventListener('DOMContentLoaded', () => {
       if (data.success && data.stats) {
         const s = data.stats;
         if (statsTotalStudents) statsTotalStudents.textContent = s.totalStudents;
-        const statsPendingStudents = document.getElementById('statsPendingStudents');
         if (statsPendingStudents) statsPendingStudents.textContent = s.pendingCount || 0;
         if (statsScienceStudents) statsScienceStudents.textContent = s.scienceCount;
         if (statsArtsStudents) statsArtsStudents.textContent = s.artsCount;
@@ -217,7 +217,9 @@ document.addEventListener('DOMContentLoaded', () => {
       if (pendingTbody) {
         pendingTbody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-muted"><div class="spinner-border spinner-border-sm text-warning me-2"></div>পেন্ডিং ভর্তি আবেদনসমূহ লোড হচ্ছে...</td></tr>`;
       }
-      studentTableBody.innerHTML = `<tr><td colspan="8" class="text-center py-4 text-muted"><div class="spinner-border spinner-border-sm text-primary me-2"></div>অনুমোদিত শিক্ষার্থীদের তালিকা লোড হচ্ছে...</td></tr>`;
+      if (studentTableBody) {
+        studentTableBody.innerHTML = `<tr><td colspan="8" class="text-center py-4 text-muted"><div class="spinner-border spinner-border-sm text-primary me-2"></div>অনুমোদিত শিক্ষার্থীদের তালিকা লোড হচ্ছে...</td></tr>`;
+      }
 
       const res = await fetch('/api/admin/students');
       const data = await safeJson(res);
@@ -257,7 +259,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (localBackup && localBackup.length > 0) {
         cachedStudents = localBackup;
         separateAndRenderStudents();
-      } else {
+      } else if (studentTableBody) {
         studentTableBody.innerHTML = `<tr><td colspan="8" class="text-center py-4 text-danger"><i class="fa-solid fa-triangle-exclamation me-1"></i>লোড ব্যর্থ হয়েছে: ${err.message}</td></tr>`;
       }
     }
@@ -296,11 +298,13 @@ document.addEventListener('DOMContentLoaded', () => {
     return clean;
   }
 
-  function buildOfficialWhatsAppMessage(student, roll) {
+  function buildOfficialWhatsAppMessage(student, roll, targetBatch) {
+    const isCrack = (targetBatch === 'crack') || (student.batch === 'crack') || (roll && (roll.startsWith('7') || roll.startsWith('8') || roll.startsWith('9')));
+    const batchTitle = isCrack ? 'ক্র্যাক ব্যাচ (Crack Batch - এক্সক্লুসিভ)' : 'প্রিমিয়াম ব্যাচ';
     const groupName = student.group === 'arts' ? 'মানবিক (Arts)' : (student.group === 'commerce' ? 'ব্যবসায় শিক্ষা (Commerce)' : 'বিজ্ঞান (Science)');
     const loginUrl = `${window.location.origin}/premium-login.html`;
 
-    return `অভিনন্দন ${student.name}! 🎉\nNU Crackers প্রিমিয়াম ব্যাচে আপনার ভর্তি নিশ্চিত ও অনুমোদিত হয়েছে।\n\n📋 আপনার ভর্তি বিবরণ:\n• নাম: ${student.name}\n• বিভাগ: ${groupName}\n• অফিসিয়াল ইউনিক রোল নম্বর: ${roll}\n\n🌐 লগইন পোর্টাল লিংক:\n${loginUrl}\n\nউপরে দেওয়া আপনার ৮-ডিজিট রোল নম্বরটি দিয়ে ওয়েবসাইটে লগইন করে এখনই সকল মডেল টেস্ট ও লাইভ পরীক্ষায় অংশ নিতে পারবেন।\n\nযেকোনো সহায়তায় আমাদের সাথে যোগাযোগ করবেন। আপনার সাফল্য কামনা করি!\n— NU Crackers টিম`;
+    return `অভিনন্দন ${student.name}! 🎉\nNU Crackers ${batchTitle}-এ আপনার ভর্তি নিশ্চিত ও অনুমোদিত হয়েছে।\n\n📋 আপনার ভর্তি বিবরণ:\n• নাম: ${student.name}\n• ব্যাচ: ${batchTitle}\n• বিভাগ: ${groupName}\n• অফিসিয়াল ইউনিক রোল নম্বর: ${roll}\n\n🌐 লগইন পোর্টাল লিংক:\n${loginUrl}\n\nউপরে দেওয়া আপনার ৮-ডিজিট রোল নম্বরটি দিয়ে ওয়েবসাইটে লগইন করে এখনই সকল মডেল টেস্ট ও লাইভ পরীক্ষায় অংশ নিতে পারবেন।\n\nযেকোনো সহায়তায় আমাদের সাথে যোগাযোগ করবেন। আপনার সাফল্য কামনা করি!\n— NU Crackers টিম`;
   }
 
   function getWhatsAppDirectUrl(phone, message) {
@@ -309,11 +313,10 @@ document.addEventListener('DOMContentLoaded', () => {
     return `https://api.whatsapp.com/send?phone=${encodeURIComponent(formatted)}&text=${encodeURIComponent(message)}`;
   }
 
-  // Helper to refresh live preview of WhatsApp message in approval modal
-  function updateModalWhatsAppPreview(student, roll) {
+  function updateModalWhatsAppPreview(student, roll, targetBatch) {
     const previewBox = document.getElementById('modalWhatsAppMessagePreview');
     if (!previewBox || !student) return;
-    const msg = buildOfficialWhatsAppMessage(student, roll);
+    const msg = buildOfficialWhatsAppMessage(student, roll, targetBatch);
     previewBox.innerText = msg;
   }
 
@@ -336,6 +339,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const isPending = student.status === 'pending';
     const isApproved = student.status === 'approved' || (!isPending && student.status !== 'rejected');
+    const isCrack = student.batch === 'crack' || (student.roll && (String(student.roll).startsWith('7') || String(student.roll).startsWith('8') || String(student.roll).startsWith('9')));
 
     // Header info
     const nameEl = document.getElementById('modalDetailName');
@@ -353,8 +357,13 @@ document.addEventListener('DOMContentLoaded', () => {
         statusBadge.className = 'badge bg-danger px-3 py-1 rounded-pill';
         statusBadge.innerHTML = '<i class="fa-solid fa-ban me-1"></i>আবেদন বাতিল';
       } else {
-        statusBadge.className = 'badge bg-success px-3 py-1 rounded-pill';
-        statusBadge.innerHTML = '<i class="fa-solid fa-circle-check me-1"></i>অনুমোদিত প্রিমিয়াম শিক্ষার্থী';
+        if (isCrack) {
+          statusBadge.className = 'badge bg-dark border border-warning text-warning px-3 py-1 rounded-pill';
+          statusBadge.innerHTML = '<i class="fa-solid fa-bolt me-1"></i>অনুমোদিত ক্র্যাক শিক্ষার্থী';
+        } else {
+          statusBadge.className = 'badge bg-success px-3 py-1 rounded-pill';
+          statusBadge.innerHTML = '<i class="fa-solid fa-circle-check me-1"></i>অনুমোদিত প্রিমিয়াম শিক্ষার্থী';
+        }
       }
     }
 
@@ -469,7 +478,7 @@ document.addEventListener('DOMContentLoaded', () => {
           </button>
         `;
       } else {
-        const waMsg = buildOfficialWhatsAppMessage(student, student.roll || 'N/A');
+        const waMsg = buildOfficialWhatsAppMessage(student, student.roll || 'N/A', student.batch);
         const waUrl = getWhatsAppDirectUrl(student.whatsapp, waMsg);
         actionsContainer.innerHTML = `
           ${waUrl ? `
@@ -483,7 +492,6 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
       }
 
-      // Attach handlers to modal buttons
       actionsContainer.querySelector('.modal-detail-approve-btn')?.addEventListener('click', () => {
         const detailModal = bootstrap.Modal.getInstance(document.getElementById('viewStudentDetailsModal'));
         if (detailModal) detailModal.hide();
@@ -503,7 +511,6 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // Attach copy button listeners in modal
     const copyRollBtnEl = document.getElementById('modalDetailCopyRollBtn');
     if (copyRollBtnEl) {
       copyRollBtnEl.onclick = () => {
@@ -561,7 +568,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const groupFilter = filterSelect?.value || 'all';
 
     let filtered = pendingStudentsCache.filter(s => {
-      const textPool = `${s.name || ''} ${s.college || ''} ${s.district || ''} ${s.whatsapp || ''} ${s.transactionId || ''} ${s.paymentNumber || ''}`.toLowerCase();
+      const textPool = `${s.name || ''} ${s.college || ''} ${s.district || ''} ${s.whatsapp || ''} ${s.transactionId || ''} ${s.paymentNumber || ''} ${s.batch || ''}`.toLowerCase();
       const matchQuery = textPool.includes(query);
       const matchFilter = groupFilter === 'all' || s.group === groupFilter;
       return matchQuery && matchFilter;
@@ -584,6 +591,11 @@ document.addEventListener('DOMContentLoaded', () => {
       if (s.group === 'arts') groupBadge = '<span class="badge bg-warning text-dark px-2 py-1 rounded-pill"><i class="fa-solid fa-palette me-1"></i>Arts</span>';
       if (s.group === 'commerce') groupBadge = '<span class="badge bg-success px-2 py-1 rounded-pill"><i class="fa-solid fa-chart-line me-1"></i>Commerce</span>';
 
+      const isCrack = s.batch === 'crack';
+      const batchBadge = isCrack
+        ? '<span class="badge bg-dark border border-warning text-warning px-2 py-1 rounded-pill ms-1"><i class="fa-solid fa-bolt me-1"></i>Crack</span>'
+        : '<span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 px-2 py-1 rounded-pill ms-1"><i class="fa-solid fa-gem me-1"></i>Premium</span>';
+
       const regDate = s.registeredAt ? new Date(s.registeredAt).toLocaleDateString('bn-BD', {
         month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
       }) : 'আজকে';
@@ -600,7 +612,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <tr class="align-middle">
           <td class="text-muted small fw-bold">${idx + 1}</td>
           <td>
-            <div class="fw-bold text-dark fs-6">${escapeHtml(s.name)}</div>
+            <div class="fw-bold text-dark fs-6">${escapeHtml(s.name)} ${batchBadge}</div>
             <div class="small text-muted mt-1">
               <span class="d-inline-block me-2"><i class="fa-solid fa-building-columns text-secondary me-1"></i>${escapeHtml(s.college || 'কলেজ উল্লেখ নেই')}</span>
               <span class="d-inline-block"><i class="fa-solid fa-location-dot text-secondary me-1"></i>${escapeHtml(s.district || 'জেলা উল্লেখ নেই')}</span>
@@ -647,32 +659,24 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
     }).join('');
 
-    // Attach View Details buttons
     tbody.querySelectorAll('.btn-view-details').forEach(btn => {
       btn.addEventListener('click', () => {
-        const id = btn.getAttribute('data-id');
-        openStudentDetailsModal(id);
+        openStudentDetailsModal(btn.getAttribute('data-id'));
       });
     });
 
-    // Attach Approve modal buttons
     tbody.querySelectorAll('.btn-open-approve').forEach(btn => {
       btn.addEventListener('click', () => {
-        const id = btn.getAttribute('data-id');
-        openApproveModal(id);
+        openApproveModal(btn.getAttribute('data-id'));
       });
     });
 
-    // Attach Reject modal buttons
     tbody.querySelectorAll('.btn-open-reject').forEach(btn => {
       btn.addEventListener('click', () => {
-        const id = btn.getAttribute('data-id');
-        const name = btn.getAttribute('data-name');
-        openRejectModal(id, name);
+        openRejectModal(btn.getAttribute('data-id'), btn.getAttribute('data-name'));
       });
     });
 
-    // Attach Copy Trx buttons
     tbody.querySelectorAll('.copy-trx-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const trx = btn.getAttribute('data-trx');
@@ -689,11 +693,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // RENDER 2: APPROVED STUDENTS TABLE
   // ==========================================
   function renderApprovedStudentsTable() {
-    const query = (studentSearchInput.value || '').trim().toLowerCase();
-    const groupFilter = studentFilterGroup.value;
+    if (!studentTableBody) return;
+    const query = (studentSearchInput?.value || '').trim().toLowerCase();
+    const groupFilter = studentFilterGroup?.value || 'all';
 
     let filtered = approvedStudentsCache.filter(s => {
-      const textPool = `${s.roll || ''} ${s.name || ''} ${s.college || ''} ${s.district || ''} ${s.whatsapp || ''} ${s.transactionId || ''} ${s.paymentNumber || ''}`.toLowerCase();
+      const textPool = `${s.roll || ''} ${s.name || ''} ${s.college || ''} ${s.district || ''} ${s.whatsapp || ''} ${s.transactionId || ''} ${s.paymentNumber || ''} ${s.batch || ''}`.toLowerCase();
       const matchQuery = textPool.includes(query);
       const matchFilter = groupFilter === 'all' || s.group === groupFilter;
       return matchQuery && matchFilter;
@@ -718,6 +723,11 @@ document.addEventListener('DOMContentLoaded', () => {
       if (s.group === 'arts') groupBadge = '<span class="badge bg-warning text-dark rounded-pill px-2 py-1"><i class="fa-solid fa-palette me-1"></i>Arts</span>';
       if (s.group === 'commerce') groupBadge = '<span class="badge bg-success rounded-pill px-2 py-1"><i class="fa-solid fa-chart-line me-1"></i>Commerce</span>';
 
+      const isCrack = s.batch === 'crack' || (s.roll && (String(s.roll).startsWith('7') || String(s.roll).startsWith('8') || String(s.roll).startsWith('9')));
+      const batchBadge = isCrack
+        ? '<span class="badge bg-dark border border-warning text-warning px-2 py-1 rounded-pill ms-1"><i class="fa-solid fa-bolt me-1"></i>Crack</span>'
+        : '<span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 px-2 py-1 rounded-pill ms-1"><i class="fa-solid fa-gem me-1"></i>Premium</span>';
+
       const approvedDate = (s.approvedAt || s.registeredAt) ? new Date(s.approvedAt || s.registeredAt).toLocaleDateString('bn-BD', {
         year: 'numeric', month: 'short', day: 'numeric'
       }) : 'অনুমোদিত';
@@ -725,7 +735,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const rollStr = String(s.roll || 'N/A');
       const identifier = s.id || s.roll || s.transactionId;
 
-      const waMessage = buildOfficialWhatsAppMessage(s, rollStr);
+      const waMessage = buildOfficialWhatsAppMessage(s, rollStr, s.batch);
       const waSendRollUrl = getWhatsAppDirectUrl(s.whatsapp, waMessage);
       const isWaSent = !!s.whatsappSent;
 
@@ -743,7 +753,7 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
           </td>
           <td>
-            <div class="fw-bold text-dark fs-6">${escapeHtml(s.name)}</div>
+            <div class="fw-bold text-dark fs-6">${escapeHtml(s.name)} ${batchBadge}</div>
             <div class="small text-muted mt-1">
               <span class="me-2"><i class="fa-solid fa-building-columns text-secondary me-1"></i>${escapeHtml(s.college || 'কলেজ উল্লেখ নেই')}</span>
               <span><i class="fa-solid fa-location-dot text-secondary me-1"></i>${escapeHtml(s.district || 'জেলা উল্লেখ নেই')}</span>
@@ -794,15 +804,12 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
     }).join('');
 
-    // Attach View Details buttons
     studentTableBody.querySelectorAll('.btn-view-details').forEach(btn => {
       btn.addEventListener('click', () => {
-        const id = btn.getAttribute('data-id');
-        openStudentDetailsModal(id);
+        openStudentDetailsModal(btn.getAttribute('data-id'));
       });
     });
 
-    // Attach Copy Roll listeners
     studentTableBody.querySelectorAll('.copy-roll-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const roll = btn.getAttribute('data-roll');
@@ -814,7 +821,6 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    // Attach Mark WhatsApp Sent on click
     studentTableBody.querySelectorAll('.mark-wa-sent-btn').forEach(btn => {
       btn.addEventListener('click', async () => {
         const id = btn.getAttribute('data-id');
@@ -829,21 +835,15 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    // Attach Edit listeners
     studentTableBody.querySelectorAll('.edit-student-btn').forEach(btn => {
       btn.addEventListener('click', () => {
-        const id = btn.getAttribute('data-id');
-        openEditModal(id);
+        openEditModal(btn.getAttribute('data-id'));
       });
     });
 
-    // Attach Delete listeners
     studentTableBody.querySelectorAll('.delete-student-btn').forEach(btn => {
       btn.addEventListener('click', () => {
-        const id = btn.getAttribute('data-id');
-        const name = btn.getAttribute('data-name');
-        const roll = btn.getAttribute('data-roll');
-        deleteStudent(id, name, roll);
+        deleteStudent(btn.getAttribute('data-id'), btn.getAttribute('data-name'), btn.getAttribute('data-roll'));
       });
     });
   }
@@ -870,6 +870,18 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('modalApproveName').textContent = student.name || '-';
     document.getElementById('modalApproveCollegeDistrict').textContent = `${student.college || 'কলেজ উল্লেখ নেই'}, ${student.district || 'জেলা উল্লেখ নেই'}`;
     
+    const isAppliedCrack = student.batch === 'crack';
+    const batchBadgeEl = document.getElementById('modalApproveBatchBadge');
+    if (batchBadgeEl) {
+      if (isAppliedCrack) {
+        batchBadgeEl.className = 'badge bg-dark border border-warning text-warning px-2 py-1 shadow-sm';
+        batchBadgeEl.innerHTML = '<i class="fa-solid fa-bolt me-1"></i>⚡ ক্র্যাক ব্যাচ আবেদন';
+      } else {
+        batchBadgeEl.className = 'badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 px-2 py-1';
+        batchBadgeEl.innerHTML = '<i class="fa-solid fa-crown me-1 text-warning"></i>💎 প্রিমিয়াম ব্যাচ আবেদন';
+      }
+    }
+
     const groupBadge = document.getElementById('modalApproveGroupBadge');
     if (student.group === 'arts') {
       groupBadge.className = 'badge bg-warning text-dark px-2 py-1';
@@ -890,35 +902,65 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('modalApprovePayment').textContent = `${student.paymentMethod || 'bKash'} (${student.paymentNumber || student.whatsapp || '-'})`;
     document.getElementById('modalApproveTrxId').textContent = student.transactionId || '-';
 
-    // Fetch next auto 8-digit unique roll preview from server
-    let previewRoll = '12701001';
-    try {
-      const res = await fetch(`/api/admin/students/preview-roll?group=${encodeURIComponent(student.group || 'science')}&year=27`);
-      const rollData = await res.json();
-      if (rollData.success && rollData.roll) {
-        previewRoll = rollData.roll;
-      }
-    } catch (e) {
-      console.warn('Roll preview failed, falling back', e);
+    // Batch Select Dropdown in Approval Modal
+    const batchSelect = document.getElementById('modalApproveBatchSelect');
+    if (batchSelect) {
+      batchSelect.value = isAppliedCrack ? 'crack' : 'premium';
     }
 
-    document.getElementById('modalCalculatedRollDisplay').textContent = previewRoll;
+    // Function to calculate and render roll preview based on selected batch
+    async function updateApprovalRollPreview(targetBatch) {
+      let previewRoll = targetBatch === 'crack' ? '72701001' : '12701001';
+      try {
+        const res = await fetch(`/api/admin/students/preview-roll?group=${encodeURIComponent(student.group || 'science')}&year=27&batch=${encodeURIComponent(targetBatch)}`);
+        const rollData = await res.json();
+        if (rollData.success && rollData.roll) {
+          previewRoll = rollData.roll;
+        }
+      } catch (e) {
+        console.warn('Roll preview failed, falling back', e);
+      }
+
+      document.getElementById('modalCalculatedRollDisplay').textContent = previewRoll;
+      const customRollInput = document.getElementById('modalCustomRollInput');
+      if (customRollInput) customRollInput.value = previewRoll;
+
+      let groupDigit = '১';
+      if (targetBatch === 'crack') {
+        groupDigit = student.group === 'arts' ? '৮' : (student.group === 'commerce' ? '৯' : '৭');
+      } else {
+        groupDigit = student.group === 'arts' ? '২' : (student.group === 'commerce' ? '৩' : '১');
+      }
+      const groupName = student.group === 'arts' ? 'মানবিক' : (student.group === 'commerce' ? 'ব্যবসায় শিক্ষা' : 'বিজ্ঞান');
+      const formulaEl = document.getElementById('modalRollFormulaBreakdown');
+      if (formulaEl) {
+        formulaEl.innerHTML = `
+          [${targetBatch === 'crack' ? 'ক্র্যাক কোড' : 'গ্রুপ কোড'}: <strong>${groupDigit}</strong> (${groupName})] + [বছর: <strong>২৭</strong>] + [ব্যাচ: <strong>${previewRoll.slice(3, 5)}</strong>] + [সিরিয়াল: <strong>${previewRoll.slice(5)}</strong>]
+        `;
+      }
+
+      // Live update preview message
+      updateModalWhatsAppPreview(student, previewRoll, targetBatch);
+    }
+
+    // Initial Roll Fetch
+    await updateApprovalRollPreview(isAppliedCrack ? 'crack' : 'premium');
+
+    // Watch for batch changes in approval modal
+    if (batchSelect) {
+      batchSelect.onchange = () => {
+        updateApprovalRollPreview(batchSelect.value);
+      };
+    }
+
+    // Watch for manual custom roll input edits
     const customRollInput = document.getElementById('modalCustomRollInput');
-    customRollInput.value = previewRoll;
-
-    const groupDigit = student.group === 'arts' ? '২' : (student.group === 'commerce' ? '৩' : '১');
-    const groupName = student.group === 'arts' ? 'মানবিক' : (student.group === 'commerce' ? 'ব্যবসায় শিক্ষা' : 'বিজ্ঞান');
-    document.getElementById('modalRollFormulaBreakdown').innerHTML = `
-      [গ্রুপ: <strong>${groupDigit}</strong> (${groupName})] + [বছর: <strong>২৭</strong>] + [ব্যাচ: <strong>${previewRoll.slice(3, 5)}</strong>] + [সিরিয়াল: <strong>${previewRoll.slice(5)}</strong>]
-    `;
-
-    // Live update preview message
-    updateModalWhatsAppPreview(student, previewRoll);
-
-    // Watch for roll input edits to update preview
-    customRollInput.oninput = () => {
-      updateModalWhatsAppPreview(student, customRollInput.value.trim() || '--------');
-    };
+    if (customRollInput) {
+      customRollInput.oninput = () => {
+        const curBatch = batchSelect ? batchSelect.value : (isAppliedCrack ? 'crack' : 'premium');
+        updateModalWhatsAppPreview(student, customRollInput.value.trim() || '--------', curBatch);
+      };
+    }
 
     const alertBox = document.getElementById('approveModalAlert');
     if (alertBox) alertBox.classList.add('d-none');
@@ -937,6 +979,7 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
+    const targetBatch = document.getElementById('modalApproveBatchSelect')?.value || 'premium';
     const autoOpenWhatsApp = document.getElementById('modalAutoOpenWhatsApp')?.checked ?? true;
     const btn = document.getElementById('btnConfirmApproveStudent');
     btn.disabled = true;
@@ -950,7 +993,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const res = await fetch(`/api/admin/students/${encodeURIComponent(identifier)}/approve`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ customRoll, year: '27' })
+        body: JSON.stringify({ customRoll, year: '27', batch: targetBatch })
       });
 
       const data = await safeJson(res);
@@ -963,7 +1006,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const studentPhone = currentApprovingStudent.whatsapp;
 
       // Build official WhatsApp message
-      const officialMessage = buildOfficialWhatsAppMessage(currentApprovingStudent, allocatedRoll);
+      const officialMessage = buildOfficialWhatsAppMessage(currentApprovingStudent, allocatedRoll, targetBatch);
       const waUrl = getWhatsAppDirectUrl(studentPhone, officialMessage);
 
       // Record WhatsApp sent on server
@@ -1015,11 +1058,10 @@ document.addEventListener('DOMContentLoaded', () => {
         waModal.show();
       }
 
-      // Also display top alert
       showAlert(studentAlert, `
         <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
           <div>
-            <strong>🎉 ${studentName}-এর ভর্তি অনুমোদিত হয়েছে!</strong> ইউনিক রোল: <code class="fw-bold fs-6 text-dark">${allocatedRoll}</code>
+            <strong>🎉 ${studentName}-এর ভর্তি অনুমোদিত হয়েছে!</strong> ইউনিক রোল: <code class="fw-bold fs-6 text-dark">${allocatedRoll}</code> [${targetBatch === 'crack' ? 'ক্র্যাক ব্যাচ' : 'প্রিমিয়াম ব্যাচ'}]
           </div>
           ${waUrl ? `
             <a href="${waUrl}" target="_blank" class="btn btn-success btn-sm rounded-pill px-3 py-1 shadow-sm">
@@ -1029,7 +1071,6 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
       `, 'success');
 
-      // Refresh lists & stats
       await loadStudents();
       loadStats();
 
@@ -1108,6 +1149,9 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('editStudentName').value = student.name || '';
     document.getElementById('editStudentRoll').value = student.roll || '';
     document.getElementById('editStudentGroup').value = student.group || 'science';
+    const isCrack = student.batch === 'crack' || String(student.roll).startsWith('7') || String(student.roll).startsWith('8') || String(student.roll).startsWith('9');
+    const editBatchEl = document.getElementById('editStudentBatch');
+    if (editBatchEl) editBatchEl.value = isCrack ? 'crack' : 'premium';
     document.getElementById('editStudentCollege').value = student.college || '';
     document.getElementById('editStudentDistrict').value = student.district || '';
     document.getElementById('editStudentWhatsapp').value = student.whatsapp || '';
@@ -1122,6 +1166,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const name = document.getElementById('editStudentName').value.trim();
     const roll = document.getElementById('editStudentRoll').value.trim();
     const group = document.getElementById('editStudentGroup').value;
+    const batch = document.getElementById('editStudentBatch')?.value || 'premium';
     const college = document.getElementById('editStudentCollege').value.trim();
     const district = document.getElementById('editStudentDistrict').value.trim();
     const whatsapp = document.getElementById('editStudentWhatsapp').value.trim();
@@ -1130,7 +1175,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const res = await fetch(`/api/admin/students/${encodeURIComponent(identifier)}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, roll, group, college, district, whatsapp })
+        body: JSON.stringify({ name, roll, group, batch, college, district, whatsapp })
       });
 
       const data = await safeJson(res);
@@ -1153,10 +1198,11 @@ document.addEventListener('DOMContentLoaded', () => {
   // 7. AUTO-GENERATE ROLL IN MANUAL ADD FORM
   document.getElementById('btnAutoGenerateRoll')?.addEventListener('click', async () => {
     const group = document.getElementById('newStudentGroup').value;
+    const batch = document.getElementById('newStudentBatch')?.value || 'premium';
     const btn = document.getElementById('btnAutoGenerateRoll');
     btn.disabled = true;
     try {
-      const res = await fetch(`/api/admin/students/preview-roll?group=${encodeURIComponent(group)}&year=27`);
+      const res = await fetch(`/api/admin/students/preview-roll?group=${encodeURIComponent(group)}&year=27&batch=${encodeURIComponent(batch)}`);
       const data = await res.json();
       if (data.success && data.roll) {
         document.getElementById('newStudentRoll').value = data.roll;
@@ -1168,13 +1214,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // When group in manual form changes, if roll is empty or matches pattern, offer to re-generate
   document.getElementById('newStudentGroup')?.addEventListener('change', async () => {
     const rollInput = document.getElementById('newStudentRoll');
     if (rollInput && rollInput.value.trim().length === 8) {
       const group = document.getElementById('newStudentGroup').value;
+      const batch = document.getElementById('newStudentBatch')?.value || 'premium';
       try {
-        const res = await fetch(`/api/admin/students/preview-roll?group=${encodeURIComponent(group)}&year=27`);
+        const res = await fetch(`/api/admin/students/preview-roll?group=${encodeURIComponent(group)}&year=27&batch=${encodeURIComponent(batch)}`);
         const data = await res.json();
         if (data.success && data.roll) {
           rollInput.value = data.roll;
@@ -1193,13 +1239,14 @@ document.addEventListener('DOMContentLoaded', () => {
   studentSearchInput?.addEventListener('input', renderApprovedStudentsTable);
   studentFilterGroup?.addEventListener('change', renderApprovedStudentsTable);
 
-  // Manual Add Student Form Handler (Enforces strict unique roll)
+  // Manual Add Student Form Handler
   addStudentForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
     hideAlert(studentAlert);
 
     const name = document.getElementById('newStudentName').value.trim();
     const group = document.getElementById('newStudentGroup').value;
+    const batch = document.getElementById('newStudentBatch')?.value || 'premium';
     const college = document.getElementById('newStudentCollege')?.value.trim() || '';
     const district = document.getElementById('newStudentDistrict')?.value.trim() || '';
     const whatsapp = document.getElementById('newStudentWhatsapp')?.value.trim() || '';
@@ -1218,7 +1265,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const res = await fetch('/api/admin/students', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ roll, name, group, college, district, whatsapp })
+        body: JSON.stringify({ roll, name, group, batch, college, district, whatsapp })
       });
 
       const data = await res.json();
@@ -1230,14 +1277,12 @@ document.addEventListener('DOMContentLoaded', () => {
       showAlert(studentAlert, `🎉 ${data.message}`, 'success');
       addStudentForm.reset();
 
-      // Switch to Approved tab so admin sees the new student right away
       const approvedTabBtn = document.getElementById('approvedSubTabBtn');
       if (approvedTabBtn) {
         const tab = new bootstrap.Tab(approvedTabBtn);
         tab.show();
       }
 
-      // Refresh list & stats
       await loadStudents();
       loadStats();
 
@@ -1267,7 +1312,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
       showAlert(studentAlert, `শিক্ষার্থী "${name}" সফলভাবে মুছে ফেলা হয়েছে।`, 'info');
       
-      // Update local storage backup to ensure deleted student NEVER returns
       const cleanId = String(identifier).trim().toLowerCase();
       cachedStudents = cachedStudents.filter(s =>
         !( (s.id && String(s.id).trim().toLowerCase() === cleanId) ||
@@ -1310,7 +1354,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const sheetWebhookStatus = document.getElementById('sheetWebhookStatus');
   const copyAppsScriptBtn = document.getElementById('copyAppsScriptBtn');
 
-  // Load saved Google Sheet Webhook URL
   const loadSheetSettings = async () => {
     try {
       const res = await fetch('/api/admin/google-sheet-settings');
@@ -1333,7 +1376,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Save Webhook URL
   if (saveGoogleSheetWebhookBtn && googleSheetWebhookInput) {
     saveGoogleSheetWebhookBtn.addEventListener('click', async () => {
       const url = (googleSheetWebhookInput.value || '').trim();
@@ -1365,7 +1407,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Trigger Google Sheet Sync
   if (triggerGoogleSheetSyncBtn) {
     triggerGoogleSheetSyncBtn.addEventListener('click', async () => {
       const webhookUrl = (googleSheetWebhookInput ? googleSheetWebhookInput.value : '').trim();
@@ -1412,7 +1453,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Instant 1-Click CSV Export for Google Sheets & Excel
   if (exportGoogleSheetCsvBtn) {
     exportGoogleSheetCsvBtn.addEventListener('click', () => {
       const approved = (cachedStudents || []).filter(s => s.status === 'approved' || !!s.roll);
@@ -1421,10 +1461,11 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      const headers = ['রোল নম্বর', 'শিক্ষার্থীর নাম', 'কলেজ', 'জেলা', 'বিভাগ', 'হোয়াটসঅ্যাপ', 'পেমেন্ট মেথড', 'প্রেরক নম্বর', 'TrxID', 'অনুমোদনের তারিখ'];
+      const headers = ['রোল নম্বর', 'শিক্ষার্থীর নাম', 'ব্যাচ', 'কলেজ', 'জেলা', 'বিভাগ', 'হোয়াটসঅ্যাপ', 'পেমেন্ট মেথড', 'প্রেরক নম্বর', 'TrxID', 'অনুমোদনের তারিখ'];
       const rows = approved.map(s => [
         `"${(s.roll || '').replace(/"/g, '""')}"`,
         `"${(s.name || '').replace(/"/g, '""')}"`,
+        `"${(s.batch === 'crack' ? 'Crack Batch' : 'Premium Batch')}"`,
         `"${(s.college || '').replace(/"/g, '""')}"`,
         `"${(s.district || '').replace(/"/g, '""')}"`,
         `"${(s.group || '').replace(/"/g, '""')}"`,
@@ -1448,7 +1489,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Copy Apps Script Code button
   if (copyAppsScriptBtn) {
     copyAppsScriptBtn.addEventListener('click', () => {
       const codeBlock = document.getElementById('appsScriptCodeBlock');
@@ -1487,7 +1527,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
           }
 
-          // Force replace to server
           const res = await fetch('/api/admin/students/bulk-replace', {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
@@ -1514,7 +1553,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // ==========================================
   // 4. QUESTION & EXAM MANAGEMENT
+  // ==========================================
   async function loadExams() {
     try {
       const res = await fetch('/api/admin/exams');
@@ -1529,6 +1570,41 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // 1. Exam Batch Filter Buttons
+  document.querySelectorAll('.exam-batch-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.exam-batch-btn').forEach(b => {
+        b.classList.remove('active', 'btn-dark', 'btn-warning', 'btn-primary', 'btn-success');
+        const bBatch = b.getAttribute('data-batch');
+        if (bBatch === 'all') b.className = 'btn btn-sm btn-outline-secondary rounded-pill px-2 py-0 exam-batch-btn';
+        else if (bBatch === 'crack') b.className = 'btn btn-sm btn-outline-warning text-dark border-warning rounded-pill px-2 py-0 exam-batch-btn';
+        else if (bBatch === 'premium') b.className = 'btn btn-sm btn-outline-primary rounded-pill px-2 py-0 exam-batch-btn';
+        else if (bBatch === 'free') b.className = 'btn btn-sm btn-outline-success rounded-pill px-2 py-0 exam-batch-btn';
+      });
+
+      examBatchFilter = btn.getAttribute('data-batch') || 'all';
+      btn.classList.add('active');
+      if (examBatchFilter === 'all') btn.classList.add('btn-dark');
+      else if (examBatchFilter === 'crack') btn.classList.add('btn-warning', 'text-dark');
+      else if (examBatchFilter === 'premium') btn.classList.add('btn-primary');
+      else if (examBatchFilter === 'free') btn.classList.add('btn-success');
+
+      populateExamSelect();
+    });
+  });
+
+  function getFilteredExams(batchFilter) {
+    return cachedExams.filter(ex => {
+      if (!batchFilter || batchFilter === 'all') return true;
+      const isFree = ex.isFree === true || ex.batch === 'free';
+      const isCrack = ex.batch === 'crack';
+      if (batchFilter === 'crack') return isCrack;
+      if (batchFilter === 'free') return isFree;
+      if (batchFilter === 'premium') return !isFree && !isCrack;
+      return true;
+    });
+  }
+
   function populateExamSelect() {
     if (cachedExams.length === 0) {
       examSelect.innerHTML = '<option value="">কোনো পরীক্ষা সক্রিয় নেই</option>';
@@ -1536,37 +1612,164 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
+    const filtered = getFilteredExams(examBatchFilter);
+    const displayList = filtered.length > 0 ? filtered : cachedExams;
+
     const previousVal = examSelect.value;
 
-    examSelect.innerHTML = cachedExams.map(ex => {
+    examSelect.innerHTML = displayList.map(ex => {
       const isFree = ex.isFree === true || ex.batch === 'free';
-      const batchTag = isFree ? '🎁 [FREE]' : '💎 [PREMIUM]';
+      const isCrack = ex.batch === 'crack';
+      const batchTag = isFree ? '🎁 [FREE]' : (isCrack ? '⚡ [CRACK]' : '💎 [PREMIUM]');
       const groupEmoji = ex.group === 'science' ? '🔬' : ex.group === 'arts' ? '🎨' : ex.group === 'commerce' ? '📊' : '🌐';
       const qCount = (ex.questions || []).length;
       const duration = ex.durationMinutes || ex.duration || 15;
       return `<option value="${ex.id}">${batchTag} ${groupEmoji} [${ex.group.toUpperCase()}] ${escapeHtml(ex.title)} (${qCount}টি প্রশ্ন, ${duration} মি.)</option>`;
     }).join('');
 
-    if (previousVal && cachedExams.some(e => e.id === previousVal)) {
+    if (previousVal && displayList.some(e => e.id === previousVal)) {
       examSelect.value = previousVal;
     } else {
-      examSelect.value = cachedExams[0].id;
+      examSelect.value = displayList[0].id;
     }
 
     currentSelectedExamId = examSelect.value;
-    const importTargetExamSelect = document.getElementById('importTargetExamSelect');
-    if (importTargetExamSelect) {
-      importTargetExamSelect.innerHTML = examSelect.innerHTML;
-      importTargetExamSelect.value = currentSelectedExamId;
-    }
+
+    populateQuestionTargetExamSelect();
+    populateImportTargetExamSelect();
     renderSelectedExamQuestions();
   }
 
-  examSelect.addEventListener('change', () => {
+  // Populate Target Exam select inside "Add Question" form
+  function populateQuestionTargetExamSelect() {
+    const qBatchSelect = document.getElementById('questionBatchOption');
+    const targetSelect = document.getElementById('questionTargetExamSelect');
+    const badge = document.getElementById('questionBatchSelectedBadge');
+    const help = document.getElementById('questionBatchHelpText');
+
+    if (!targetSelect) return;
+
+    const batchVal = qBatchSelect ? qBatchSelect.value : 'crack';
+
+    if (badge) {
+      if (batchVal === 'crack') {
+        badge.className = 'badge bg-warning text-dark border border-dark rounded-pill px-2 py-1 fw-bold';
+        badge.innerHTML = '<i class="fa-solid fa-bolt me-1 text-dark"></i>⚡ ক্র্যাক ব্যাচ অপশন সক্রিয়';
+      } else if (batchVal === 'premium') {
+        badge.className = 'badge bg-primary rounded-pill px-2 py-1 fw-bold';
+        badge.innerHTML = '<i class="fa-solid fa-crown me-1 text-warning"></i>💎 প্রিমিয়াম ব্যাচ';
+      } else if (batchVal === 'free') {
+        badge.className = 'badge bg-success rounded-pill px-2 py-1 fw-bold';
+        badge.innerHTML = '<i class="fa-solid fa-gift me-1"></i>🎁 ফ্রি ব্যাচ';
+      } else {
+        badge.className = 'badge bg-secondary rounded-pill px-2 py-1 fw-bold';
+        badge.innerHTML = '🌐 সকল মডেল টেস্ট';
+      }
+    }
+
+    if (help) {
+      if (batchVal === 'crack') {
+        help.innerHTML = '<strong class="text-dark">⚡ ক্র্যাক ব্যাচ:</strong> ক্র্যাক ব্যাচের ছাত্রছাত্রীদের এক্সক্লুসিভ লাইভ পরীক্ষা ও সলভ পেজে এই প্রশ্নটি যুক্ত হবে।';
+      } else if (batchVal === 'premium') {
+        help.innerHTML = '<strong class="text-primary">💎 প্রিমিয়াম ব্যাচ:</strong> প্রিমিয়াম ব্যাচের রেগুলার শিক্ষার্থীদের লাইভ পরীক্ষা ও সলভ শিটে প্রশ্নটি যাবে।';
+      } else if (batchVal === 'free') {
+        help.innerHTML = '<strong class="text-success">🎁 ফ্রি ব্যাচ:</strong> সকল উন্মুক্ত মডেল টেস্টের শিক্ষার্থীদের প্রশ্নপত্রে যুক্ত হবে।';
+      } else {
+        help.innerHTML = 'সকল ক্যাটাগরির পরীক্ষার তালিকা থেকে নির্দিষ্ট পরীক্ষা নির্বাচন করুন।';
+      }
+    }
+
+    const matchingExams = getFilteredExams(batchVal);
+    if (matchingExams.length === 0) {
+      targetSelect.innerHTML = `<option value="">এই ব্যাচে কোনো পরীক্ষা পাওয়া যায়নি</option>`;
+      return;
+    }
+
+    targetSelect.innerHTML = matchingExams.map(ex => {
+      const isFree = ex.isFree === true || ex.batch === 'free';
+      const isCrack = ex.batch === 'crack';
+      const tag = isCrack ? '⚡ [CRACK]' : (isFree ? '🎁 [FREE]' : '💎 [PREMIUM]');
+      const groupEmoji = ex.group === 'science' ? '🔬' : ex.group === 'arts' ? '🎨' : ex.group === 'commerce' ? '📊' : '🌐';
+      return `<option value="${ex.id}">${tag} ${groupEmoji} [${ex.group.toUpperCase()}] ${escapeHtml(ex.title)}</option>`;
+    }).join('');
+
+    if (currentSelectedExamId && matchingExams.some(e => e.id === currentSelectedExamId)) {
+      targetSelect.value = currentSelectedExamId;
+    } else {
+      targetSelect.value = matchingExams[0].id;
+    }
+  }
+
+  // Populate Target Exam select inside "Google Form Import" modal
+  function populateImportTargetExamSelect() {
+    const importBatchSelect = document.getElementById('importTargetBatchOption');
+    const importTargetExamSelect = document.getElementById('importTargetExamSelect');
+    if (!importTargetExamSelect) return;
+
+    const batchVal = importBatchSelect ? importBatchSelect.value : 'all';
+    const matchingExams = getFilteredExams(batchVal);
+
+    if (matchingExams.length === 0) {
+      importTargetExamSelect.innerHTML = `<option value="">কোনো পরীক্ষা পাওয়া যায়নি</option>`;
+      return;
+    }
+
+    importTargetExamSelect.innerHTML = matchingExams.map(ex => {
+      const isFree = ex.isFree === true || ex.batch === 'free';
+      const isCrack = ex.batch === 'crack';
+      const tag = isCrack ? '⚡ [CRACK]' : (isFree ? '🎁 [FREE]' : '💎 [PREMIUM]');
+      const groupEmoji = ex.group === 'science' ? '🔬' : ex.group === 'arts' ? '🎨' : ex.group === 'commerce' ? '📊' : '🌐';
+      return `<option value="${ex.id}">${tag} ${groupEmoji} [${ex.group.toUpperCase()}] ${escapeHtml(ex.title)}</option>`;
+    }).join('');
+
+    if (currentSelectedExamId && matchingExams.some(e => e.id === currentSelectedExamId)) {
+      importTargetExamSelect.value = currentSelectedExamId;
+    } else {
+      importTargetExamSelect.value = matchingExams[0].id;
+    }
+  }
+
+  // Batch Select Listener for Question Form
+  const questionBatchOptionEl = document.getElementById('questionBatchOption');
+  if (questionBatchOptionEl) {
+    questionBatchOptionEl.addEventListener('change', () => {
+      populateQuestionTargetExamSelect();
+      const targetSelect = document.getElementById('questionTargetExamSelect');
+      if (targetSelect && targetSelect.value) {
+        currentSelectedExamId = targetSelect.value;
+        if (examSelect) examSelect.value = currentSelectedExamId;
+        renderSelectedExamQuestions();
+      }
+    });
+  }
+
+  const questionTargetExamSelectEl = document.getElementById('questionTargetExamSelect');
+  if (questionTargetExamSelectEl) {
+    questionTargetExamSelectEl.addEventListener('change', () => {
+      if (questionTargetExamSelectEl.value) {
+        currentSelectedExamId = questionTargetExamSelectEl.value;
+        if (examSelect) examSelect.value = currentSelectedExamId;
+        renderSelectedExamQuestions();
+      }
+    });
+  }
+
+  const importTargetBatchOptionEl = document.getElementById('importTargetBatchOption');
+  if (importTargetBatchOptionEl) {
+    importTargetBatchOptionEl.addEventListener('change', () => {
+      populateImportTargetExamSelect();
+    });
+  }
+
+  examSelect?.addEventListener('change', () => {
     currentSelectedExamId = examSelect.value;
     const importTargetExamSelect = document.getElementById('importTargetExamSelect');
     if (importTargetExamSelect) {
       importTargetExamSelect.value = currentSelectedExamId;
+    }
+    const questionTargetExamSelect = document.getElementById('questionTargetExamSelect');
+    if (questionTargetExamSelect) {
+      questionTargetExamSelect.value = currentSelectedExamId;
     }
     renderSelectedExamQuestions();
   });
@@ -1579,11 +1782,14 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    // Update Badge
+    const isCrack = exam.batch === 'crack';
     const isFree = exam.isFree === true || exam.batch === 'free';
-    const batchBadge = isFree
-      ? '<span class="badge bg-success rounded-pill px-3 py-2"><i class="fa-solid fa-gift me-1"></i>ফ্রি ব্যাচ (Free Live Exam)</span>'
-      : '<span class="badge bg-primary rounded-pill px-3 py-2"><i class="fa-solid fa-gem me-1"></i>প্রিমিয়াম ব্যাচ</span>';
+    const batchBadge = isCrack
+      ? '<span class="badge bg-warning text-dark border border-dark rounded-pill px-3 py-2"><i class="fa-solid fa-bolt me-1"></i>ক্র্যাক ব্যাচ (Crack Batch)</span>'
+      : (isFree
+          ? '<span class="badge bg-success rounded-pill px-3 py-2"><i class="fa-solid fa-gift me-1"></i>ফ্রি ব্যাচ (Free Live Exam)</span>'
+          : '<span class="badge bg-primary rounded-pill px-3 py-2"><i class="fa-solid fa-gem me-1"></i>প্রিমিয়াম ব্যাচ</span>');
+
     const groupName = exam.group === 'science' ? 'বিজ্ঞান' : exam.group === 'arts' ? 'মানবিক' : exam.group === 'commerce' ? 'ব্যবসায় শিক্ষা' : 'সকল ইউনিট';
     const duration = exam.durationMinutes || exam.duration || 15;
     const marks = (exam.totalMarks !== undefined && exam.totalMarks !== null && !isNaN(exam.totalMarks))
@@ -1679,7 +1885,6 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
     }).join('');
 
-    // Attach Delete Question buttons
     document.querySelectorAll('.delete-question-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const examId = btn.getAttribute('data-exam-id');
@@ -1689,15 +1894,23 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Add Question Form Handler
+  // Add Question Form Handler (with Crack Batch / Target Exam support)
   addQuestionForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     hideAlert(questionAlert);
 
-    if (!currentSelectedExamId) {
-      showAlert(questionAlert, 'প্রথমে একটি পরীক্ষা নির্বাচন করুন।', 'warning');
+    const targetExamSelect = document.getElementById('questionTargetExamSelect');
+    const targetExamId = (targetExamSelect && targetExamSelect.value) ? targetExamSelect.value : currentSelectedExamId;
+
+    if (!targetExamId) {
+      showAlert(questionAlert, 'প্রথমে একটি মডেল টেস্ট বা পরীক্ষা নির্বাচন করুন।', 'warning');
       return;
     }
+
+    const targetExamObj = cachedExams.find(e => e.id === targetExamId);
+    const isCrackExam = targetExamObj && (targetExamObj.batch === 'crack');
+    const isFreeExam = targetExamObj && (targetExamObj.batch === 'free' || targetExamObj.isFree);
+    const batchLabel = isCrackExam ? '⚡ ক্র্যাক ব্যাচের' : (isFreeExam ? '🎁 ফ্রি ব্যাচের' : '💎 প্রিমিয়াম ব্যাচের');
 
     const question = document.getElementById('qText').value.trim();
     const opt0 = document.getElementById('qOpt0').value.trim();
@@ -1717,14 +1930,14 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> প্রশ্ন যোগ হচ্ছে...';
 
     try {
-      const res = await fetch(`/api/admin/exams/${currentSelectedExamId}/questions`, {
+      const res = await fetch(`/api/admin/exams/${targetExamId}/questions`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           question,
           options: [opt0, opt1, opt2, opt3],
           correctIndex,
-          correctAnswer: correctIndex, // Compatibility with Render backend check
+          correctAnswer: correctIndex,
           explanation
         })
       });
@@ -1734,7 +1947,7 @@ document.addEventListener('DOMContentLoaded', () => {
         throw new Error(data.message || 'প্রশ্ন যোগ করা যায়নি।');
       }
 
-      showAlert(questionAlert, '🎉 প্রশ্ন সফলভাবে সংযুক্ত করা হয়েছে!', 'success');
+      showAlert(questionAlert, `🎉 প্রশ্ন সফলভাবে <strong>${batchLabel}</strong> "${targetExamObj ? escapeHtml(targetExamObj.title) : ''}" পরীক্ষায় যুক্ত হয়েছে!`, 'success');
 
       // Clear question inputs
       document.getElementById('qText').value = '';
@@ -1745,7 +1958,11 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('qExplanation').value = '';
 
       // Refresh Exams and view
+      currentSelectedExamId = targetExamId;
       await loadExams();
+      if (examSelect) examSelect.value = targetExamId;
+      if (targetExamSelect) targetExamSelect.value = targetExamId;
+      renderSelectedExamQuestions();
       loadStats();
 
     } catch (err) {
@@ -1829,7 +2046,6 @@ document.addEventListener('DOMContentLoaded', () => {
       showAlert(createExamAlert, '🎉 নতুন মডেল টেস্ট পরীক্ষা সফলভাবে তৈরি করা হয়েছে! এখন এতে প্রশ্ন যুক্ত করতে পারেন।', 'success');
       createExamForm.reset();
 
-      // Close modal
       const modalEl = document.getElementById('createExamModal');
       const bsModal = bootstrap.Modal.getInstance(modalEl);
       if (bsModal) {
@@ -1837,7 +2053,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       await loadExams();
-      // Select the new exam
       if (data.exam && data.exam.id) {
         examSelect.value = data.exam.id;
         currentSelectedExamId = data.exam.id;
@@ -2109,7 +2324,6 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
     }).join('');
 
-    // Attach listener to radio buttons to update correctIndex
     parsedQuestionsList.querySelectorAll('.stage-correct-radio').forEach(radio => {
       radio.addEventListener('change', (e) => {
         const qIdx = parseInt(e.target.getAttribute('data-q-idx'), 10);
@@ -2120,7 +2334,6 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    // Attach listener to remove individual question
     parsedQuestionsList.querySelectorAll('.remove-stage-q-btn').forEach(btn => {
       btn.addEventListener('click', (e) => {
         const qIdx = parseInt(e.currentTarget.getAttribute('data-q-idx'), 10);
@@ -2129,7 +2342,6 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    // Scroll to preview container smoothly
     parsedPreviewContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 
@@ -2172,13 +2384,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
       showAlert(importAlert, `🎉 <strong>অভিনন্দন!</strong> ${data.addedCount}টি প্রশ্ন সফলভাবে নির্বাচিত মডেল টেস্টে যুক্ত করা হয়েছে!`, 'success');
 
-      // Clear staged questions and hide preview
       stagedImportQuestions = [];
       setTimeout(() => {
         parsedPreviewContainer?.classList.add('d-none');
       }, 1000);
 
-      // Refresh Exams in admin UI
       await loadExams();
       if (examSelect) {
         examSelect.value = targetExamId;
@@ -2187,7 +2397,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       loadStats();
 
-      // Close modal after 1.8s
       setTimeout(() => {
         if (importModalEl) {
           const bsModal = bootstrap.Modal.getInstance(importModalEl);
