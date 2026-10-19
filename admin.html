@@ -97,7 +97,6 @@
                     <i class="fa-regular fa-eye" id="toggleAdminPassIcon"></i>
                   </button>
                 </div>
-    
               </div>
 
               <div id="adminLoginAlert" class="alert d-none"></div>
@@ -130,7 +129,7 @@
           </div>
         </div>
 
-        <!-- Quick Stats Cards -->
+        <!-- Quick Stats Cards (Includes Crack Batch) -->
         <div class="row g-3 mt-3">
           <div class="col-6 col-md-4 col-lg-2">
             <div class="stat-box">
@@ -145,6 +144,12 @@
             </div>
           </div>
           <div class="col-6 col-md-4 col-lg-2">
+            <div class="stat-box border border-warning border-opacity-75" style="background: linear-gradient(180deg, #fffcf0 0%, #ffffff 100%);">
+              <span class="text-dark small d-block fw-bold"><i class="fa-solid fa-bolt text-warning me-1"></i>⚡ ক্র্যাক ব্যাচ</span>
+              <h3 class="fw-bold text-dark mb-0" id="statsCrackStudents">0</h3>
+            </div>
+          </div>
+          <div class="col-6 col-md-4 col-lg-2">
             <div class="stat-box">
               <span class="text-muted small d-block">🔬 বিজ্ঞান ইউনিট</span>
               <h3 class="fw-bold text-primary mb-0" id="statsScienceStudents">0</h3>
@@ -154,12 +159,6 @@
             <div class="stat-box">
               <span class="text-muted small d-block">🎨 মানবিক ইউনিট</span>
               <h3 class="fw-bold text-primary mb-0" id="statsArtsStudents">0</h3>
-            </div>
-          </div>
-          <div class="col-6 col-md-4 col-lg-2">
-            <div class="stat-box">
-              <span class="text-muted small d-block">📊 ব্যবসায় শিক্ষা</span>
-              <h3 class="fw-bold text-success mb-0" id="statsCommerceStudents">0</h3>
             </div>
           </div>
           <div class="col-6 col-md-4 col-lg-2">
@@ -206,23 +205,30 @@
 
           <div id="studentAlert" class="alert d-none mb-3"></div>
 
-          <!-- Sub Navigation Tabs for Student Management -->
+          <!-- Sub Navigation Tabs for Student Management (Includes Crack Batch Sub Tab) -->
           <ul class="nav nav-pills mb-4 bg-white p-2 rounded-4 shadow-sm border" id="studentSubTabs" role="tablist">
             <li class="nav-item flex-fill" role="presentation">
               <button class="nav-link active w-100 rounded-pill fw-bold py-2 d-flex align-items-center justify-content-center gap-2" id="pendingSubTabBtn" data-bs-toggle="pill" data-bs-target="#pendingStudentsSubPane" type="button" role="tab">
                 <i class="fa-solid fa-hourglass-half text-warning"></i>
-                <span>পেন্ডিং আবেদনসমূহ (Pending Students)</span>
+                <span>পেন্ডিং আবেদনসমূহ (Pending)</span>
                 <span class="badge bg-warning text-dark rounded-pill px-2" id="pendingCountBadge">0 জন</span>
               </button>
             </li>
             <li class="nav-item flex-fill" role="presentation">
               <button class="nav-link w-100 rounded-pill fw-bold py-2 d-flex align-items-center justify-content-center gap-2" id="approvedSubTabBtn" data-bs-toggle="pill" data-bs-target="#approvedStudentsSubPane" type="button" role="tab">
-                <i class="fa-solid fa-circle-check text-success"></i>
-                <span>অনুমোদিত শিক্ষার্থী (Approved Students)</span>
-                <span class="badge bg-success rounded-pill px-2" id="approvedCountBadge">0 জন</span>
+                <i class="fa-solid fa-crown text-warning"></i>
+                <span>💎 প্রিমিয়াম ব্যাচ (Premium)</span>
+                <span class="badge bg-primary rounded-pill px-2" id="approvedCountBadge">0 জন</span>
               </button>
             </li>
-            <li class="nav-item" role="presentation" style="min-width: 180px;">
+            <li class="nav-item flex-fill" role="presentation">
+              <button class="nav-link w-100 rounded-pill fw-bold py-2 d-flex align-items-center justify-content-center gap-2" id="crackSubTabBtn" data-bs-toggle="pill" data-bs-target="#crackStudentsSubPane" type="button" role="tab">
+                <i class="fa-solid fa-bolt text-warning"></i>
+                <span>⚡ ক্র্যাক ব্যাচ (Crack Batch)</span>
+                <span class="badge bg-warning text-dark rounded-pill px-2" id="crackCountBadge">0 জন</span>
+              </button>
+            </li>
+            <li class="nav-item" role="presentation" style="min-width: 160px;">
               <button class="nav-link w-100 rounded-pill fw-bold py-2 d-flex align-items-center justify-content-center gap-2" id="addStudentSubTabBtn" data-bs-toggle="pill" data-bs-target="#addStudentSubPane" type="button" role="tab">
                 <i class="fa-solid fa-user-plus text-primary"></i>
                 <span>ম্যানুয়াল এন্ট্রি</span>
@@ -257,10 +263,10 @@
 
                 <!-- Search & Filter Controls for Pending -->
                 <div class="row g-2 mb-3">
-                  <div class="col-md-8">
+                  <div class="col-md-5">
                     <div class="input-group input-group-sm">
                       <span class="input-group-text bg-light"><i class="fa-solid fa-magnifying-glass text-muted"></i></span>
-                      <input type="text" class="form-control" id="pendingSearchInput" placeholder="শিক্ষার্থীর নাম, কলেজ, জেলা, হোয়াটসঅ্যাপ নম্বর অথবা TrxID দিয়ে খুঁজুন...">
+                      <input type="text" class="form-control" id="pendingSearchInput" placeholder="শিক্ষার্থীর নাম, কলেজ, জেলা, হোয়াটসঅ্যাপ অথবা TrxID...">
                     </div>
                   </div>
                   <div class="col-md-4">
@@ -271,6 +277,13 @@
                       <option value="commerce">📊 ব্যবসায় শিক্ষা (Commerce)</option>
                     </select>
                   </div>
+                  <div class="col-md-3">
+                    <select class="form-select form-select-sm fw-semibold" id="pendingFilterBatch">
+                      <option value="all">সকল ব্যাচ (All Batches)</option>
+                      <option value="crack">⚡ ক্র্যাক ব্যাচ (Crack)</option>
+                      <option value="premium">💎 প্রিমিয়াম ব্যাচ (Premium)</option>
+                    </select>
+                  </div>
                 </div>
 
                 <!-- Pending Students Table -->
@@ -279,7 +292,8 @@
                     <thead class="table-light sticky-top">
                       <tr>
                         <th style="width: 40px;">#</th>
-                        <th>শিক্ষার্থীর বিবরণ (Name, College, District)</th>
+                        <th>শিক্ষার্থীর বিবরণ</th>
+                        <th>আবেদনকৃত ব্যাচ</th>
                         <th>বিভাগ</th>
                         <th>হোয়াটসঅ্যাপ</th>
                         <th>পেমেন্ট মেথড ও TrxID</th>
@@ -296,18 +310,18 @@
             </div>
 
             <!-- ============================================== -->
-            <!-- SUB-PANE 2: APPROVED STUDENTS (অনুমোদিত শিক্ষার্থী) -->
+            <!-- SUB-PANE 2: APPROVED PREMIUM STUDENTS -->
             <!-- ============================================== -->
             <div class="tab-pane fade" id="approvedStudentsSubPane" role="tabpanel">
               <div class="card card-custom p-4">
                 <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-3">
                   <div>
                     <h5 class="fw-bold text-dark mb-1 d-flex align-items-center gap-2">
-                      <i class="fa-solid fa-shield-halved text-success"></i>
-                      অনুমোদিত প্রিমিয়াম শিক্ষার্থী তালিকা (৮-ডিজিট ইউনিক রোল)
+                      <i class="fa-solid fa-crown text-warning"></i>
+                      অনুমোদিত প্রিমিয়াম শিক্ষার্থী তালিকা (৮-ডিজিট রোল: 127..., 227...)
                     </h5>
                     <div class="text-muted small">
-                      ৮-ডিজিট রোল নিয়ম: <span class="badge bg-light text-dark border font-monospace">[গ্রুপ: 1/2/3][বছর: 27][ব্যাচ: 01][সিরিয়াল: 001]</span>
+                      প্রিমিয়াম রোল কোডিং: <span class="badge bg-light text-primary border font-monospace">[বিজ্ঞান: 127... | মানবিক: 227... | ব্যবসায়: 327...]</span>
                     </div>
                   </div>
                   <div class="d-flex flex-wrap gap-2">
@@ -324,7 +338,7 @@
                   </div>
                 </div>
 
-                <!-- Search & Filter Controls for Approved -->
+                <!-- Search & Filter Controls for Approved Premium -->
                 <div class="row g-2 mb-3">
                   <div class="col-md-7">
                     <div class="input-group input-group-sm">
@@ -334,7 +348,7 @@
                   </div>
                   <div class="col-md-5">
                     <select class="form-select form-select-sm" id="studentFilterGroup">
-                      <option value="all">সকল অনুমোদিত শিক্ষার্থী (All)</option>
+                      <option value="all">সকল প্রিমিয়াম শিক্ষার্থী (All)</option>
                       <option value="science">🔬 বিজ্ঞান (Science)</option>
                       <option value="arts">🎨 মানবিক (Arts)</option>
                       <option value="commerce">📊 ব্যবসায় শিক্ষা (Commerce)</option>
@@ -348,11 +362,11 @@
                     <thead class="table-light sticky-top">
                       <tr>
                         <th style="width: 40px;">#</th>
-                        <th>৮-ডিজিট ইউনিক রোল</th>
+                        <th>৮-ডিজিট প্রিমিয়াম রোল</th>
                         <th>শিক্ষার্থীর নাম, কলেজ ও জেলা</th>
                         <th>বিভাগ</th>
                         <th>হোয়াটসঅ্যাপ</th>
-                        <th>পেমেন্ট বিবরণ (মেথড, প্রেরক, TrxID)</th>
+                        <th>পেমেন্ট বিবরণ (মেথড, TrxID)</th>
                         <th>অনুমোদনের তারিখ</th>
                         <th class="text-end" style="min-width: 160px;">অ্যাকশন</th>
                       </tr>
@@ -366,7 +380,70 @@
             </div>
 
             <!-- ============================================== -->
-            <!-- SUB-PANE 3: MANUAL STUDENT ENTRY (ম্যানুয়াল এন্ট্রি) -->
+            <!-- SUB-PANE 3: APPROVED CRACK BATCH STUDENTS -->
+            <!-- ============================================== -->
+            <div class="tab-pane fade" id="crackStudentsSubPane" role="tabpanel">
+              <div class="card card-custom p-4 border-warning">
+                <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-3">
+                  <div>
+                    <h5 class="fw-bold text-dark mb-1 d-flex align-items-center gap-2">
+                      <i class="fa-solid fa-bolt text-warning"></i>
+                      অনুমোদিত ক্র্যাক ব্যাচ শিক্ষার্থী তালিকা (৮-ডিজিট রোল: 727..., 827...)
+                    </h5>
+                    <div class="text-muted small">
+                      ক্র্যাক ব্যাচ কোডিং: <span class="badge bg-dark text-warning border border-warning font-monospace">[বিজ্ঞান: 727... | মানবিক: 827... | ব্যবসায়: 927...]</span>
+                    </div>
+                  </div>
+                  <div>
+                    <span class="badge bg-warning text-dark px-3 py-2 rounded-pill fw-bold" id="crackBannerBadge">
+                      <i class="fa-solid fa-shield-halved me-1"></i>ক্র্যাক অথরাইজড
+                    </span>
+                  </div>
+                </div>
+
+                <!-- Search & Filter Controls for Crack -->
+                <div class="row g-2 mb-3">
+                  <div class="col-md-7">
+                    <div class="input-group input-group-sm">
+                      <span class="input-group-text bg-light"><i class="fa-solid fa-magnifying-glass text-muted"></i></span>
+                      <input type="text" class="form-control" id="crackStudentSearch" placeholder="ক্র্যাক রোল (যেমন 72701001), নাম, কলেজ বা জেলা দিয়ে খুঁজুন...">
+                    </div>
+                  </div>
+                  <div class="col-md-5">
+                    <select class="form-select form-select-sm" id="crackFilterGroup">
+                      <option value="all">সকল ক্র্যাক শিক্ষার্থী (All)</option>
+                      <option value="science">🔬 বিজ্ঞান ক্র্যাক (Science)</option>
+                      <option value="arts">🎨 মানবিক ক্র্যাক (Arts)</option>
+                      <option value="commerce">📊 ব্যবসায় শিক্ষা ক্র্যাক (Commerce)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Crack Students Table -->
+                <div class="table-responsive" style="max-height: 560px; overflow-y: auto;">
+                  <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light sticky-top">
+                      <tr>
+                        <th style="width: 40px;">#</th>
+                        <th>৮-ডিজিট ক্র্যাক রোল</th>
+                        <th>শিক্ষার্থীর নাম, কলেজ ও জেলা</th>
+                        <th>বিভাগ</th>
+                        <th>হোয়াটসঅ্যাপ</th>
+                        <th>পেমেন্ট বিবরণ (মেথড, TrxID)</th>
+                        <th>অনুমোদনের তারিখ</th>
+                        <th class="text-end" style="min-width: 160px;">অ্যাকশন</th>
+                      </tr>
+                    </thead>
+                    <tbody id="crackStudentTableBody">
+                      <!-- Populated via admin.js -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- ============================================== -->
+            <!-- SUB-PANE 4: MANUAL STUDENT ENTRY (ম্যানুয়াল এন্ট্রি) -->
             <!-- ============================================== -->
             <div class="tab-pane fade" id="addStudentSubPane" role="tabpanel">
               <div class="row justify-content-center">
@@ -383,6 +460,17 @@
                     </div>
 
                     <form id="addStudentForm">
+                      <!-- Batch Selection Option -->
+                      <div class="mb-3 p-3 bg-light rounded-3 border">
+                        <label for="newStudentBatch" class="form-label fw-bold small text-dark mb-1">
+                          <i class="fa-solid fa-layer-group text-primary me-1"></i>ভর্তি ব্যাচ ধরন (Select Batch) *
+                        </label>
+                        <select class="form-select fw-semibold" id="newStudentBatch" required>
+                          <option value="premium">💎 প্রিমিয়াম ব্যাচ (Premium Batch)</option>
+                          <option value="crack">⚡ ক্র্যাক ব্যাচ (Crack Batch - আলাদা রোল সিরিজ ৭/৮/৯)</option>
+                        </select>
+                      </div>
+
                       <div class="row g-3 mb-3">
                         <div class="col-md-6">
                           <label for="newStudentName" class="form-label fw-semibold small text-muted">শিক্ষার্থীর পূর্ণ নাম *</label>
@@ -422,7 +510,7 @@
                             ৮-ডিজিট ইউনিক রোল (খালি রাখলে সিস্টেম স্বয়ংক্রিয়ভাবে তৈরি করবে)
                           </label>
                           <div class="input-group">
-                            <input type="text" class="form-control font-monospace fw-bold" id="newStudentRoll" placeholder="উদা: 12701001 (অথবা খালি রাখুন)">
+                            <input type="text" class="form-control font-monospace fw-bold" id="newStudentRoll" placeholder="উদা: 12701001 বা 72701001">
                             <button class="btn btn-outline-secondary" type="button" id="btnAutoGenerateRoll">
                               <i class="fa-solid fa-wand-magic-sparkles me-1"></i>জেনারেট
                             </button>
@@ -440,7 +528,7 @@
                     <div class="alert alert-light border rounded-3 mt-4 small mb-0">
                       <strong class="text-dark"><i class="fa-solid fa-shield-check text-success me-1"></i>স্বয়ংক্রিয় ৮-ডিজিট ইউনিক রোল নিরাপত্তা:</strong>
                       <p class="mb-0 text-muted mt-1">
-                        যদি রোল ফাঁকা রাখা হয়, বিজ্ঞান শিক্ষার্থীদের জন্য <code>127...</code>, মানবিকে <code>227...</code> ও ব্যবসায় শিক্ষায় <code>327...</code> ফরমেটে সিস্টেম পরবর্তী খালি রোল নম্বরটি প্রদান করবে।
+                        প্রিমিয়াম ব্যাচের জন্য <code>127..., 227...</code> এবং ক্র্যাক ব্যাচের জন্য <code>727..., 827...</code> ফরমেটে সিস্টেম পরবর্তী খালি রোল নম্বরটি প্রদান করবে।
                       </p>
                     </div>
                   </div>
@@ -456,13 +544,22 @@
         <!-- ============================================== -->
         <div class="tab-pane fade" id="questionsPane" role="tabpanel">
 
-          <!-- Exam Selection Toolbar -->
+          <!-- Exam Selection Toolbar with Batch Filters -->
           <div class="card card-custom p-3 p-md-4 mb-4">
             <div class="row g-3 align-items-center">
               <div class="col-md-7 col-lg-8">
-                <label for="examSelect" class="form-label fw-bold text-dark small mb-1">
-                  <i class="fa-solid fa-file-pen text-primary me-1"></i> পরীক্ষা বা মডেল টেস্ট নির্বাচন করুন:
-                </label>
+                <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-2">
+                  <label for="examSelect" class="form-label fw-bold text-dark small mb-0">
+                    <i class="fa-solid fa-file-pen text-primary me-1"></i> পরীক্ষা বা মডেল টেস্ট নির্বাচন করুন:
+                  </label>
+                  <div class="d-flex align-items-center gap-1" id="examFilterBtnGroup">
+                    <span class="small text-muted me-1"><i class="fa-solid fa-filter me-1"></i>ব্যাচ:</span>
+                    <button type="button" class="btn btn-sm btn-dark rounded-pill px-2 py-0 exam-batch-btn active" data-batch="all" style="font-size:0.75rem;">সকল</button>
+                    <button type="button" class="btn btn-sm btn-outline-warning text-dark border-warning rounded-pill px-2 py-0 exam-batch-btn" data-batch="crack" style="font-size:0.75rem;"><i class="fa-solid fa-bolt text-warning me-1"></i>⚡ ক্র্যাক ব্যাচ</button>
+                    <button type="button" class="btn btn-sm btn-outline-primary rounded-pill px-2 py-0 exam-batch-btn" data-batch="premium" style="font-size:0.75rem;"><i class="fa-solid fa-crown text-warning me-1"></i>💎 প্রিমিয়াম</button>
+                    <button type="button" class="btn btn-sm btn-outline-success rounded-pill px-2 py-0 exam-batch-btn" data-batch="free" style="font-size:0.75rem;"><i class="fa-solid fa-gift me-1"></i>🎁 ফ্রি</button>
+                  </div>
+                </div>
                 <select class="form-select form-select-lg fw-semibold" id="examSelect">
                   <!-- Populated dynamically -->
                 </select>
@@ -503,9 +600,40 @@
                 <div id="questionAlert" class="alert d-none"></div>
 
                 <form id="addQuestionForm">
+                  <!-- Batch Option for Adding Question (NEW REQUESTED FEATURE) -->
+                  <div class="mb-3 p-3 rounded-3 bg-light border">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                      <label for="questionBatchOption" class="form-label fw-bold text-dark small mb-0">
+                        <i class="fa-solid fa-layer-group text-primary me-1"></i>ব্যাচ অপশন (Batch Option) *
+                      </label>
+                      <span id="questionBatchSelectedBadge" class="badge bg-warning text-dark border border-dark rounded-pill px-2 py-1 fw-bold">
+                        ⚡ ক্র্যাক ব্যাচ
+                      </span>
+                    </div>
+                    <select class="form-select form-select-sm fw-bold" id="questionBatchOption">
+                      <option value="crack" selected>⚡ ক্র্যাক ব্যাচ (Crack Batch - এক্সক্লুসিভ লাইভ পরীক্ষা)</option>
+                      <option value="premium">💎 প্রিমিয়াম ব্যাচ (Premium Batch)</option>
+                      <option value="free">🎁 ফ্রি ব্যাচ (Free Batch)</option>
+                      <option value="all">🌐 বর্তমান নির্বাচিত মডেল টেস্ট (All)</option>
+                    </select>
+                    <div class="form-text small text-muted mt-1" id="questionBatchHelpText">
+                      ক্র্যাক ব্যাচ নির্বাচন করলে স্বয়ংক্রিয়ভাবে ক্র্যাক ব্যাচের পরীক্ষাগুলো সক্রিয় হবে এবং ক্র্যাক ব্যাচের শিক্ষার্থীদের জন্য প্রশ্ন যুক্ত হবে।
+                    </div>
+                  </div>
+
+                  <!-- Target Exam Dropdown inside Add Question -->
+                  <div class="mb-3">
+                    <label for="questionTargetExamSelect" class="form-label fw-semibold small text-muted">
+                      টার্গেট মডেল টেস্ট (Target Exam) *
+                    </label>
+                    <select class="form-select form-select-sm fw-semibold" id="questionTargetExamSelect">
+                      <!-- Populated dynamically according to batch option -->
+                    </select>
+                  </div>
+
                   <div class="mb-3">
                     <label for="qText" class="form-label fw-semibold small text-muted">প্রশ্নের বিবরণ (Question Text) *</label>
-                    <textarea class="form-control" id="qText" rows="3" required></textarea>
+                    <textarea class="form-control" id="qText" rows="3" required placeholder="প্রশ্নের বিবরণ লিখুন..."></textarea>
                   </div>
 
                   <div class="mb-2">
@@ -610,7 +738,7 @@
     </div>
   </main>
 
-  <!-- CREATE NEW EXAM MODAL -->
+  <!-- CREATE NEW EXAM MODAL (Includes Crack Batch Option) -->
   <div class="modal fade" id="createExamModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content rounded-4 border-0 shadow">
@@ -629,6 +757,7 @@
                 <label for="newExamBatch" class="form-label fw-semibold small text-muted">পরীক্ষার ব্যাচ ধরন *</label>
                 <select class="form-select fw-semibold text-primary" id="newExamBatch" required>
                   <option value="premium">💎 প্রিমিয়াম ব্যাচ (Premium Batch)</option>
+                  <option value="crack">⚡ ক্র্যাক ব্যাচ (Crack Batch - এক্সক্লুসিভ পরীক্ষা)</option>
                   <option value="free">🎁 ফ্রি ব্যাচ (Free Batch - লাইভ পরীক্ষা + লিডারবোর্ড)</option>
                 </select>
               </div>
@@ -645,7 +774,7 @@
 
             <div class="mb-3">
               <label for="newExamTitle" class="form-label fw-semibold small text-muted">পরীক্ষার নাম (Title) *</label>
-              <input type="text" class="form-control" id="newExamTitle" placeholder="যেমন: Science Model Test 02" required>
+              <input type="text" class="form-control" id="newExamTitle" placeholder="যেমন: Science Crack Live Exam 01" required>
             </div>
 
             <div class="mb-3">
@@ -682,7 +811,7 @@
   </div>
 
 
-  <!-- GOOGLE FORM / DRIVE IMPORT MODAL -->
+  <!-- GOOGLE FORM / DRIVE IMPORT MODAL (Includes Crack Batch Option) -->
   <div class="modal fade" id="googleFormImportModal" tabindex="-1" aria-labelledby="googleFormImportModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-scrollable">
       <div class="modal-content border-0 shadow-lg rounded-4">
@@ -700,15 +829,32 @@
         </div>
 
         <div class="modal-body p-4">
-          <!-- Target Exam Selection -->
+          <!-- Target Exam Selection with Batch Option -->
           <div class="bg-light p-3 rounded-3 mb-4 border">
-            <label for="importTargetExamSelect" class="form-label fw-bold text-dark small mb-1">
-              <i class="fa-solid fa-bullseye text-primary me-1"></i> কোন মডেল টেস্টে প্রশ্ন যুক্ত করতে চান?
-            </label>
-            <select class="form-select fw-semibold" id="importTargetExamSelect">
-              <!-- Populated dynamically -->
-            </select>
-            <div class="form-text small text-muted mt-1">নির্বাচিত মডেল টেস্টে নতুন প্রশ্নগুলো সরাসরি যুক্ত হয়ে যাবে এবং পূর্ণমান স্বয়ংক্রিয়ভাবে আপডেট হবে।</div>
+            <div class="row g-2 align-items-center mb-2">
+              <div class="col-sm-5">
+                <label for="importBatchFilter" class="form-label fw-bold text-dark small mb-1">
+                  <i class="fa-solid fa-layer-group text-primary me-1"></i> ব্যাচ অপশন (Batch Option):
+                </label>
+                <select class="form-select form-select-sm fw-bold" id="importBatchFilter">
+                  <option value="all">🌐 সকল ব্যাচের পরীক্ষা</option>
+                  <option value="crack" selected>⚡ ক্র্যাক ব্যাচ (Crack Batch)</option>
+                  <option value="premium">💎 প্রিমিয়াম ব্যাচ (Premium Batch)</option>
+                  <option value="free">🎁 ফ্রি ব্যাচ (Free Batch)</option>
+                </select>
+              </div>
+              <div class="col-sm-7">
+                <label for="importTargetExamSelect" class="form-label fw-bold text-dark small mb-1">
+                  <i class="fa-solid fa-bullseye text-primary me-1"></i> কোন মডেল টেস্টে প্রশ্ন যুক্ত করতে চান? *
+                </label>
+                <select class="form-select form-select-sm fw-semibold" id="importTargetExamSelect">
+                  <!-- Populated dynamically -->
+                </select>
+              </div>
+            </div>
+            <div class="form-text small text-muted mt-1">
+              ক্র্যাক ব্যাচ নির্বাচন করলে সরাসরি ক্র্যাক ব্যাচের মডেল টেস্টগুলোতে ইমপোর্ট করা প্রশ্ন যুক্ত হয়ে যাবে।
+            </div>
           </div>
 
           <!-- Tabs for Import Methods -->
@@ -819,7 +965,7 @@ Answer: A"></textarea>
     </div>
   </div>
 
-  <!-- MODAL: APPROVE STUDENT & 8-DIGIT ROLL ALLOCATION -->
+  <!-- MODAL: APPROVE STUDENT & 8-DIGIT ROLL ALLOCATION (With Batch Selection) -->
   <div class="modal fade" id="approveStudentModal" tabindex="-1" aria-labelledby="approveStudentModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content rounded-4 border-0 shadow">
@@ -855,6 +1001,23 @@ Answer: A"></textarea>
             <div class="d-flex justify-content-between py-1">
               <span class="text-muted small">TrxID:</span>
               <code class="fw-bold text-primary fs-6" id="modalApproveTrxId">-</code>
+            </div>
+          </div>
+
+          <!-- Target Batch Selector in Modal -->
+          <div class="mb-3 p-3 bg-light rounded-3 border">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <label for="modalApproveBatchSelect" class="form-label small fw-bold text-dark mb-0">
+                <i class="fa-solid fa-layer-group text-primary me-1"></i>অনুমোদন ব্যাচ নির্বাচন করুন *
+              </label>
+              <span class="badge bg-primary rounded-pill px-2 py-1" id="modalApproveBatchBadge">💎 প্রিমিয়াম</span>
+            </div>
+            <select class="form-select fw-semibold" id="modalApproveBatchSelect">
+              <option value="premium">💎 প্রিমিয়াম ব্যাচ (Premium Batch)</option>
+              <option value="crack">⚡ ক্র্যাক ব্যাচ (Crack Batch - আলাদা রোল সিরিজ ৭/৮/৯)</option>
+            </select>
+            <div class="small text-muted mt-1" id="modalApproveBatchNote">
+              ক্র্যাক ব্যাচ নির্বাচন করলে আলাদা ক্র্যাক রোল (৭২৭..., ৮২৭...) বরাদ্দ হবে।
             </div>
           </div>
 
@@ -1000,11 +1163,18 @@ Answer: A"></textarea>
               <input type="text" class="form-control" id="editStudentName" required>
             </div>
             <div class="row g-2 mb-3">
-              <div class="col-6">
+              <div class="col-4">
                 <label for="editStudentRoll" class="form-label small fw-semibold text-muted">রোল নম্বর *</label>
                 <input type="text" class="form-control font-monospace fw-bold" id="editStudentRoll" required>
               </div>
-              <div class="col-6">
+              <div class="col-4">
+                <label for="editStudentBatch" class="form-label small fw-semibold text-muted">ব্যাচ *</label>
+                <select class="form-select fw-semibold" id="editStudentBatch" required>
+                  <option value="premium">💎 প্রিমিয়াম</option>
+                  <option value="crack">⚡ ক্র্যাক</option>
+                </select>
+              </div>
+              <div class="col-4">
                 <label for="editStudentGroup" class="form-label small fw-semibold text-muted">বিভাগ *</label>
                 <select class="form-select" id="editStudentGroup" required>
                   <option value="science">Science</option>
@@ -1038,7 +1208,7 @@ Answer: A"></textarea>
     </div>
   </div>
 
-  <!-- MODAL: VIEW FULL STUDENT DETAILS (শিক্ষার্থীর সকল তথ্যের পূর্ণাঙ্গ বিবরণী) -->
+  <!-- MODAL: VIEW FULL STUDENT DETAILS -->
   <div class="modal fade" id="viewStudentDetailsModal" tabindex="-1" aria-labelledby="viewStudentDetailsModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content rounded-4 border-0 shadow">
@@ -1157,15 +1327,12 @@ Answer: A"></textarea>
         <div class="modal-footer bg-light px-4 py-3 d-flex justify-content-between">
           <button type="button" class="btn btn-outline-secondary rounded-pill px-3" data-bs-dismiss="modal">বন্ধ করুন</button>
           <div class="d-flex gap-2" id="modalDetailActionButtons">
-            <!-- Dynamically populated buttons (Approve, WhatsApp send, Edit) -->
+            <!-- Dynamically populated buttons -->
           </div>
         </div>
       </div>
     </div>
   </div>
-
-
-
 
   <!-- Google Sheet Sync & Export Modal -->
   <div class="modal fade" id="googleSheetSyncModal" tabindex="-1" aria-labelledby="googleSheetSyncModalLabel" aria-hidden="true" style="z-index: 1060;">
