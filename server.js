@@ -132,6 +132,7 @@ async function triggerGitHubSync(data) {
 // ==========================================
 // API ROUTES
 // ==========================================
+
 // 1. Student Login via Unique Roll and Name (Supports Premium & Crack Batches)
 app.post('/api/auth/login', (req, res) => {
   const { roll, name } = req.body;
@@ -185,43 +186,6 @@ app.post('/api/auth/login', (req, res) => {
   });
 });
 
-  // Check approval status: New registrations must be approved by admin!
-  const status = student.status || 'approved';
-  if (status === 'pending') {
-    return res.status(403).json({
-      success: false,
-      pendingApproval: true,
-      message: `আপনার রোলটি (${student.name} - রোল: ${student.roll}) এখনো এডমিন দ্বারা অনুমোদিত (Approve) হয়নি। এডমিন অনুমোদন করার পর আপনি প্রবেশ করতে পারবেন।`
-    });
-  }
-
-  // Determine redirect page strictly based on group
-  let targetPage = 'science-exams.html';
-  if (student.group === 'arts') targetPage = 'arts-exams.html';
-  if (student.group === 'commerce') targetPage = 'commerce-exams.html';
-
-  const isCrack = student.batch === 'crack' || ['7', '8', '9'].includes(String(student.roll).charAt(0));
-
-  return res.json({
-    success: true,
-    message: 'লগইন সফল হয়েছে!',
-    student: {
-      roll: student.roll,
-      name: student.name,
-      group: student.group,
-      batch: isCrack ? 'crack' : 'premium',
-      status: student.status || 'approved'
-    },
-    targetPage
-  });
-});
-let targetPage = 'science-exams.html';
-  if (studentBatch === 'crack') {
-    targetPage = `crack-exams.html?group=${student.group || 'science'}`;
-  } else {
-    if (student.group === 'arts') targetPage = 'arts-exams.html';
-    if (student.group === 'commerce') targetPage = 'commerce-exams.html';
-  }
 // ==========================================
 // 8-DIGIT UNIQUE ROLL GENERATOR (ACCORDING TO USER FORMULA)
 // Premium Batch:
@@ -1728,7 +1692,7 @@ function parseQuizRawText(text) {
   let currentQ = null;
 
   const qNumRegex = /^(\d+|[০-৯]+)[\.\:\-\)]\s*(.+)/;
-  const optRegex = /^(\([a-dA-Dক-ঘ১-৪]\)|\[[a-dA-Dক-ঘ১-৪]\]|[a-dA-Dক-ঘ১-৪][\.\:\-\)\s])\s*(.+)/;
+  const optRegex = /^(\([a-dA-Dক-ঘ১-৪]\)|[[a-dA-Dক-ঘ১-৪]]|[a-dA-Dক-ঘ১-৪][\.\:\-\)\s])\s*(.+)/;
   const ansRegex = /^(ans|answer|উত্তর|সঠিক|সঠিক উত্তর)[\s\:\-\=]+([a-dA-D]|ক|খ|গ|ঘ|[১-৪]|1-4)/i;
   const expRegex = /^(explanation|ব্যাখ্যা|নোট)[\s\:\-\=]+(.+)/i;
 
