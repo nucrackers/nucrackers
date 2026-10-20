@@ -1951,7 +1951,12 @@ app.all('/api/*', (req, res) => {
     message: `API Route not found: ${req.method} ${req.path}`
   });
 });
-
+app.get('/premium-login.html', (req, res, next) => {
+  if (String(req.query.batch || '').toLowerCase() === 'crack') {
+    return res.redirect('/crack-login.html');
+  }
+  next();
+});
 // ==========================================
 // STATIC ASSET SERVING
 // ==========================================
