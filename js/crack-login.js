@@ -53,15 +53,15 @@ document.addEventListener('DOMContentLoaded', () => {
       const name = nameInput.value.trim();
 
       if (!roll) {
-        showAlert('<i class="fa-solid fa-triangle-exclamation me-1"></i> à¦…à¦¨à§à¦—à§à¦°à¦¹ à¦•à¦°à§‡ à¦†à¦ªà¦¨à¦¾à¦° à§®-à¦¡à¦¿à¦œà¦¿à¦Ÿ à¦•à§à¦°à§à¦¯à¦¾à¦• à¦°à§‹à¦² à¦¨à¦®à§à¦¬à¦° à¦²à¦¿à¦–à§à¦¨à¥¤', 'danger');
+        showAlert('<i class="fa-solid fa-triangle-exclamation me-1"></i> অনুগ্রহ করে আপনার ৮-ডিজিট ক্র্যাক রোল নম্বর লিখুন।', 'danger');
         rollInput.focus();
         return;
       }
 
       const normalState = submitBtn.querySelector('.normal-state');
       const loadingState = submitBtn.querySelector('.loading-state');
-      normalState.classList.add('d-none');
-      loadingState.classList.remove('d-none');
+      if (normalState) normalState.classList.add('d-none');
+      if (loadingState) loadingState.classList.remove('d-none');
       submitBtn.disabled = true;
 
       try {
@@ -75,20 +75,20 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
           data = await res.json();
         } catch (jsonErr) {
-          throw new Error('à¦¸à¦¾à¦°à§à¦­à¦¾à¦°à§‡à¦° à¦¸à¦¾à¦¥à§‡ à¦¸à¦‚à¦¯à§‹à¦— à¦¸à§à¦¥à¦¾à¦ªà¦¨ à¦•à¦°à¦¾ à¦¯à¦¾à§Ÿà¦¨à¦¿à¥¤ à¦…à¦¨à§à¦—à§à¦°à¦¹ à¦•à¦°à§‡ à¦•à¦¿à¦›à§à¦•à§à¦·à¦£ à¦ªà¦° à¦†à¦¬à¦¾à¦° à¦šà§‡à¦·à§à¦Ÿà¦¾ à¦•à¦°à§à¦¨à¥¤');
+          throw new Error('সার্ভারের সাথে সংযোগ স্থাপন করা যায়নি। অনুগ্রহ করে কিছুক্ষণ পর আবার চেষ্টা করুন।');
         }
 
         if (!res.ok || !data.success) {
-          throw new Error(data.message || 'à¦•à§à¦°à§à¦¯à¦¾à¦• à¦¬à§à¦¯à¦¾à¦š à¦²à¦—à¦‡à¦¨ à¦¬à§à¦¯à¦°à§à¦¥ à¦¹à§Ÿà§‡à¦›à§‡à¥¤');
+          throw new Error(data.message || 'ক্র্যাক ব্যাচ লগইন ব্যর্থ হয়েছে।');
         }
 
         // Store student session in localStorage
         localStorage.setItem('nu_student', JSON.stringify(data.student));
 
         const groupNames = {
-          science: 'à¦¬à¦¿à¦œà§à¦žà¦¾à¦¨ à¦¬à¦¿à¦­à¦¾à¦— (Science)',
-          arts: 'à¦®à¦¾à¦¨à¦¬à¦¿à¦• à¦¬à¦¿à¦­à¦¾à¦— (Arts)',
-          commerce: 'à¦¬à§à¦¯à¦¬à¦¸à¦¾à§Ÿ à¦¶à¦¿à¦•à§à¦·à¦¾ à¦¬à¦¿à¦­à¦¾à¦— (Commerce)'
+          science: 'বিজ্ঞান বিভাগ (Science)',
+          arts: 'মানবিক বিভাগ (Arts)',
+          commerce: 'ব্যবসা শিক্ষা বিভাগ (Commerce)'
         };
 
         const isCrackStudent = data.student.batch === 'crack' || (String(data.student.roll).startsWith('7') || String(data.student.roll).startsWith('8') || String(data.student.roll).startsWith('9'));
@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!isCrackStudent) {
           // A premium student logged in through the crack portal
           showAlert(
-            `ðŸ’Ž <strong>à¦¸à§à¦¬à¦¾à¦—à¦¤à¦®, ${data.student.name}!</strong> à¦†à¦ªà¦¨à¦¿ à¦ªà§à¦°à¦¿à¦®à¦¿à§Ÿà¦¾à¦® à¦¬à§à¦¯à¦¾à¦šà§‡à¦° à¦¶à¦¿à¦•à§à¦·à¦¾à¦°à§à¦¥à§€à¥¤ à¦†à¦ªà¦¨à¦¾à¦•à§‡ à¦ªà§à¦°à¦¿à¦®à¦¿à§Ÿà¦¾à¦® à¦¬à§à¦¯à¦¾à¦š à¦ªà§‹à¦°à§à¦Ÿà¦¾à¦²à§‡ à¦¨à¦¿à§Ÿà§‡ à¦¯à¦¾à¦“à§Ÿà¦¾ à¦¹à¦šà§à¦›à§‡...`,
+            `💎 <strong>স্বাগতম, ${data.student.name}!</strong> আপনি প্রিমিয়াম ব্যাচের শিক্ষার্থী। আপনাকে প্রিমিয়াম ব্যাচ পোর্টালে নিয়ে যাওয়া হচ্ছে...`,
             'info'
           );
           setTimeout(() => {
@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Crack student login success
         showAlert(
-          `âš¡ <strong>à¦¸à§à¦¬à¦¾à¦—à¦¤à¦®, ${data.student.name}!</strong> à¦†à¦ªà¦¨à¦¾à¦° à¦•à§à¦°à§à¦¯à¦¾à¦• à¦¬à§à¦¯à¦¾à¦š à¦…à¦¨à§à¦®à§‹à¦¦à¦¿à¦¤ (${groupNames[data.student.group] || data.student.group})à¥¤ à¦¸à¦°à¦¾à¦¸à¦°à¦¿ à¦•à§à¦°à§à¦¯à¦¾à¦• à¦¬à§à¦¯à¦¾à¦š à¦²à¦¾à¦‡à¦­ à¦à¦•à§à¦¸à¦¾à¦® à¦ªà§‹à¦°à§à¦Ÿà¦¾à¦²à§‡ à¦¨à¦¿à§Ÿà§‡ à¦¯à¦¾à¦“à§Ÿà¦¾ à¦¹à¦šà§à¦›à§‡...`,
+          `⚡ <strong>স্বাগতম, ${data.student.name}!</strong> আপনার ক্র্যাক ব্যাচ অনুমোদিত (${groupNames[data.student.group] || data.student.group})। সরাসরি ক্র্যাক ব্যাচ লাইভ এক্সাম পোর্টালে নিয়ে যাওয়া হচ্ছে...`,
           'success'
         );
 
@@ -124,8 +124,8 @@ document.addEventListener('DOMContentLoaded', () => {
       } catch (err) {
         showAlert(`<i class="fa-solid fa-triangle-exclamation me-1"></i> ${err.message}`, 'danger');
       } finally {
-        normalState.classList.remove('d-none');
-        loadingState.classList.add('d-none');
+        if (normalState) normalState.classList.remove('d-none');
+        if (loadingState) loadingState.classList.add('d-none');
         submitBtn.disabled = false;
       }
     });
