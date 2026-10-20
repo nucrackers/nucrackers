@@ -132,7 +132,6 @@ async function triggerGitHubSync(data) {
 // ==========================================
 // API ROUTES
 // ==========================================
-
 // 1. Student Login via Unique Roll and Name (Supports Premium & Crack Batches)
 app.post('/api/auth/login', (req, res) => {
   const { roll, name } = req.body;
@@ -150,6 +149,41 @@ app.post('/api/auth/login', (req, res) => {
       message: `রোল "${cleanRoll}"-এর কোনো শিক্ষার্থী তালিকায় পাওয়া যায়নি। সঠিক রোল লিখুন অথবা এডমিনের সাথে যোগাযোগ করুন।`
     });
   }
+
+  // Check approval status: New registrations must be approved by admin!
+  const status = student.status || 'approved';
+  if (status === 'pending') {
+    return res.status(403).json({
+      success: false,
+      pendingApproval: true,
+      message: `আপনার রোলটি (${student.name} - রোল: ${student.roll}) এখনো এডমিন দ্বারা অনুমোদিত (Approve) হয়নি। এডমিন অনুমোদন করার পর আপনি প্রবেশ করতে পারবেন।`
+    });
+  }
+
+  const isCrack = student.batch === 'crack' || ['7', '8', '9'].includes(String(student.roll).charAt(0));
+
+  // Determine redirect page strictly based on batch & group
+  let targetPage = 'science-exams.html';
+  if (isCrack) {
+    targetPage = `crack-exams.html?group=${student.group || 'science'}`;
+  } else {
+    if (student.group === 'arts') targetPage = 'arts-exams.html';
+    if (student.group === 'commerce') targetPage = 'commerce-exams.html';
+  }
+
+  return res.json({
+    success: true,
+    message: 'লগইন সফল হয়েছে!',
+    student: {
+      roll: student.roll,
+      name: student.name,
+      group: student.group,
+      batch: isCrack ? 'crack' : 'premium',
+      status: student.status || 'approved'
+    },
+    targetPage
+  });
+});
 
   // Check approval status: New registrations must be approved by admin!
   const status = student.status || 'approved';
