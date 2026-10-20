@@ -1,5 +1,11 @@
 // Premium Login JS for NU Crackers
-
+// Crack link e click korle crack-login page e pathao
+(function () {
+  const p = new URLSearchParams(window.location.search);
+  if ((p.get('batch') || '').toLowerCase() === 'crack') {
+    window.location.replace('crack-login.html');
+  }
+})();
 document.addEventListener('DOMContentLoaded', () => {
   const loginForm = document.getElementById('loginForm');
   const alertBox = document.getElementById('alertBox');
